@@ -6,8 +6,10 @@
 class GameState : public State 
 {
 public:
-    GameState(sf::RenderWindow * window);
+    GameState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys);
     ~GameState();
+
+    virtual void initKeybinds() override;
 
     virtual void updateKeybinds(const float & dt) override;
     virtual void update(const float & dt) override;

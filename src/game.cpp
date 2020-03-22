@@ -2,7 +2,9 @@
 
 Game::Game()
 {
+    std::cout << "The start of GameApp\n";
     initWindow();
+    initSupportedKeys();
     initStates();
 }
 
@@ -17,23 +19,41 @@ Game::~Game()
 
 void Game::initWindow()
 {
-    std::ifstream ifs("/home/mark/dev/cpp/work/LastHero/config/window.ini");
+    std::ifstream ifs("/home/mark/dev/cpp/work/LastHero/config/window.ini"); // Bad practice, necessary to change frough any filesystem/path;
     std::string windowTitle = "Game";
     int width = 1080, height = 720, framerateLimit = 60;
 
     if (ifs.is_open()) {
         std::getline(ifs, windowTitle);
         ifs >> width >> height >> framerateLimit;
-        ifs.close();
     }
+    ifs.close();
 
     m_mainWindow = new sf::RenderWindow(sf::VideoMode(width, height), windowTitle);
     m_mainWindow->setFramerateLimit(framerateLimit);
 }
 
+void Game::initSupportedKeys()
+{
+    std::ifstream ifs("/home/mark/dev/cpp/work/LastHero/config/supportedKeys.ini"); // Bad practice, necessary to change frough any filesystem/path;
+    std::string key = "";
+    int key_value = 0;
+
+    if (ifs.is_open()) {
+        while (ifs >> key >> key_value) {
+            m_supportedKeys[key] = key_value;
+        }
+    }
+    ifs.close();
+
+    for (const auto & el : m_supportedKeys) {
+        std::cout << el.first << " -> " << el.second << "\n";
+    }
+}
+
 void Game::initStates()
 {
-    m_states.emplace(new GameState(m_mainWindow));
+    m_states.emplace(new GameState(m_mainWindow, &m_supportedKeys));
 }
 
 void Game::updateDt() 
@@ -87,6 +107,6 @@ void Game::run()
 
 void Game::endApplication()
 {
-    std::cout << "The end of application\n";
+    std::cout << "The end of GameApp\n";
     m_mainWindow->close();
 }

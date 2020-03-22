@@ -10,6 +10,7 @@ public:
     ~Game();
 
     void initWindow();
+    void initSupportedKeys();
     void initStates();
     void updateDt();
     void updateSfmlEvents();
@@ -24,6 +25,7 @@ private:
     sf::Clock m_dtClock;
 
     std::stack<State *> m_states;
+    std::map<std::string, int> m_supportedKeys;
 
     float m_dt;
 };

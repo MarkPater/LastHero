@@ -2,11 +2,12 @@
 #define STATE_HPP
 
 #include "entity.hpp"
-class State 
-{
+class State {
 public:
-    State(sf::RenderWindow * window);
+    State(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys);
     virtual ~State();
+
+    virtual void initKeybinds() = 0;
 
     void checkForQuit();
     const bool & getQuit() const;
@@ -18,7 +19,11 @@ public:
 
 protected:
     std::vector<sf::Texture *> m_textures;
+    std::map<std::string, int> * m_supportedKeys;
+    std::map<std::string, int> m_keybinds;
+
     sf::RenderWindow * m_window;
+
     bool m_quit;
 };
 
