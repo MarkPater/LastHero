@@ -70,11 +70,10 @@ void Game::update()
 
 void Game::render()
 {
+    m_mainWindow->clear();
     if (!m_states.empty()) {
         m_states.top()->render(m_mainWindow);
     }
-
-    m_mainWindow->clear();
     m_mainWindow->display();
 }
 

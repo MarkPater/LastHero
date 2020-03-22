@@ -17,9 +17,11 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 add_executable(${PROJECT_NAME}
     include/states/state.hpp
     include/states/gameState.hpp
+    include/entity.hpp
     include/game.hpp
     src/states/state.cpp
     src/states/gameState.cpp
+    src/entity.cpp
     src/game.cpp
     src/main.cpp)
 

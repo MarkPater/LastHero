@@ -13,6 +13,9 @@ public:
     virtual void update(const float & dt) override;
     virtual void render(sf::RenderTarget * target = nullptr) override;
     virtual void endState() override;
+
+protected:
+    Entity player;
 };
 
 #endif /* GAME_STATE_HPP */

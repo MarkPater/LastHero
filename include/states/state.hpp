@@ -1,15 +1,7 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <stack>
-
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
-
+#include "entity.hpp"
 class State 
 {
 public:
@@ -24,7 +16,7 @@ public:
     virtual void render(sf::RenderTarget * target = nullptr) = 0;
     virtual void endState() = 0;
 
-private:
+protected:
     std::vector<sf::Texture *> m_textures;
     sf::RenderWindow * m_window;
     bool m_quit;
