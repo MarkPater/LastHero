@@ -5,12 +5,22 @@ MainMenuState::MainMenuState(sf::RenderWindow * window, std::map<std::string, in
     m_mainPreview(sf::Vector2f(m_window->getSize()))
 {
     std::cout << "The start of MainMenuState\n";
+    
+    initFont();
     initKeybinds();
     m_mainPreview.setFillColor(sf::Color::Yellow);
 }
 
 MainMenuState::~MainMenuState()
 {
+}
+
+void MainMenuState::initFont()
+{
+    if (!m_font.loadFromFile("/home/mark/dev/cpp/work/LastHero/fonts/Dosis-Light.ttf")) {
+        assert("MainMenuState::initFont::!loadFromFile");
+        exit(1);
+    }
 }
 
 void MainMenuState::initKeybinds()
@@ -33,6 +43,7 @@ void MainMenuState::updateKeybinds(const float & dt)
 
 void MainMenuState::update(const float & dt)
 {
+    updateMousePos();
     updateKeybinds(dt);
 }
 

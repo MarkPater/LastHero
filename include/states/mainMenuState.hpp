@@ -8,6 +8,8 @@ public:
     MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys);
     virtual ~MainMenuState();
 
+    void initFont();
+
     virtual void initKeybinds() override;
     virtual void updateKeybinds(const float & dt) override;
     virtual void update(const float & dt) override;
@@ -16,6 +18,7 @@ public:
 
 protected:
     sf::RectangleShape m_mainPreview;
+    sf::Font m_font;
 };
 
 #endif /* MAIN_MENU_STATE_HPP */

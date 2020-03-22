@@ -12,6 +12,7 @@ public:
     void checkForQuit();
     const bool & getQuit() const;
 
+    virtual void updateMousePos();
     virtual void updateKeybinds(const float & dt) = 0;
     virtual void update(const float & dt) = 0;
     virtual void render(sf::RenderTarget * target = nullptr) = 0;
@@ -23,6 +24,9 @@ protected:
     std::map<std::string, int> m_keybinds;
 
     sf::RenderWindow * m_window;
+    sf::Vector2i m_mousePosScreen;
+    sf::Vector2i m_mousePosWindow;
+    sf::Vector2f m_mousePosView;
 
     bool m_quit;
 };

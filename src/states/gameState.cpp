@@ -31,6 +31,7 @@ void GameState::updateKeybinds(const float & dt)
 
 void GameState::update(const float & dt)
 {
+    updateMousePos();
     updateKeybinds(dt);
     
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["MOVE_LEFT"]))) {
