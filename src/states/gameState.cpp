@@ -49,6 +49,10 @@ void GameState::update(const float & dt)
 
 void GameState::render(sf::RenderTarget * target)
 {
+    if (!target) {
+        target = m_window;
+    }
+
     player.render(m_window);
 }
 
