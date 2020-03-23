@@ -23,7 +23,7 @@ void State::updateMousePos()
 {
     m_mousePosScreen = sf::Mouse::getPosition();
     m_mousePosWindow = sf::Mouse::getPosition(*m_window);
-    m_mousePosView = m_window->mapPixelToCoords(sf::Mouse::getPosition()); //sf::View correct pos
+    m_mousePosView = m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window)); //sf::View correct pos
 
     std::cout << m_mousePosView.x << "x" << m_mousePosView.y << "\n";
 }

@@ -2,6 +2,7 @@
 #define MAIN_MENU_STATE_HPP
 
 #include "states/gameState.hpp"
+#include "button.hpp"
 
 class MainMenuState : public State {
 public:
@@ -19,6 +20,8 @@ public:
 protected:
     sf::RectangleShape m_mainPreview;
     sf::Font m_font;
+
+    Button * m_gameStateButton;
 };
 
 #endif /* MAIN_MENU_STATE_HPP */

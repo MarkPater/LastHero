@@ -26,4 +26,4 @@ protected:
     float m_movementSpeed;
 };
 
-#endif
+#endif /* ENTITY_HPP */

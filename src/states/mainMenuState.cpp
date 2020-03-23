@@ -9,6 +9,9 @@ MainMenuState::MainMenuState(sf::RenderWindow * window, std::map<std::string, in
     initFont();
     initKeybinds();
     m_mainPreview.setFillColor(sf::Color::Yellow);
+
+    m_gameStateButton = new Button(100, 100, 150, 50, &m_font, "New Game", 
+        sf::Color(70, 70, 70, 200), sf::Color(200, 200, 200, 255), sf::Color(20, 20, 20, 200));
 }
 
 MainMenuState::~MainMenuState()
@@ -45,6 +48,7 @@ void MainMenuState::update(const float & dt)
 {
     updateMousePos();
     updateKeybinds(dt);
+    m_gameStateButton->update(m_mousePosView);
 }
 
 void MainMenuState::render(sf::RenderTarget * target)
@@ -54,6 +58,7 @@ void MainMenuState::render(sf::RenderTarget * target)
     }
 
     target->draw(m_mainPreview);
+    m_gameStateButton->render(target);
 }
 
 void MainMenuState::endState()
