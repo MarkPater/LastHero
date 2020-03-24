@@ -6,10 +6,13 @@
 
 class MainMenuState : public State {
 public:
-    MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys);
+    MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states);
     virtual ~MainMenuState();
 
     void initFont();
+    void initButtons();
+    void updateButtons(sf::Vector2f mousePos);
+    void renderButtons(sf::RenderTarget * target = nullptr);
 
     virtual void initKeybinds() override;
     virtual void updateKeybinds(const float & dt) override;
@@ -21,7 +24,7 @@ protected:
     sf::RectangleShape m_mainPreview;
     sf::Font m_font;
 
-    Button * m_gameStateButton;
+    std::map<std::string, Button *> m_buttons;
 };
 
 #endif /* MAIN_MENU_STATE_HPP */

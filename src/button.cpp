@@ -15,8 +15,8 @@ Button::Button(const float & x, const float & y,
     m_text.setString(text);
     m_text.setCharacterSize(24);
     m_text.setPosition(
-        m_buttonShape.getPosition().x + m_buttonShape.getSize().x / m_text.getGlobalBounds().width,
-        m_buttonShape.getPosition().y + m_buttonShape.getSize().y / m_text.getGlobalBounds().height
+        m_buttonShape.getPosition().x + width / 2 - m_text.getGlobalBounds().width / 2,
+        m_buttonShape.getPosition().y + height / 2 - m_text.getGlobalBounds().height / 1.45f
     );
 
     m_idleColor = idleColor;

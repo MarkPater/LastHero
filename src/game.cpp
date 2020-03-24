@@ -53,7 +53,7 @@ void Game::initSupportedKeys()
 
 void Game::initStates()
 {
-    m_states.emplace(new MainMenuState(m_mainWindow, &m_supportedKeys));
+    m_states.emplace(new MainMenuState(m_mainWindow, &m_supportedKeys, &m_states));
 }
 
 void Game::updateDt() 

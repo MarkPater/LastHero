@@ -1,9 +1,10 @@
 #include "states/state.hpp"
 
-State::State(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys) :
+State::State(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states) :
     m_window(window),
     m_supportedKeys(supportedKeys),
-    m_quit(false)
+    m_quit(false),
+    m_states(states)
 {
 
 }
