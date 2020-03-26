@@ -11,6 +11,9 @@ public:
 
     void initFont();
     void initButtons();
+    void initMousePos();
+    void initBackground();
+    void updateMousePosText();
     void updateButtons(sf::Vector2f mousePos);
     void renderButtons(sf::RenderTarget * target = nullptr);
 
@@ -18,10 +21,11 @@ public:
     virtual void updateKeybinds(const float & dt) override;
     virtual void update(const float & dt) override;
     virtual void render(sf::RenderTarget * target = nullptr) override;
-    virtual void endState() override;
 
 protected:
-    sf::RectangleShape m_mainPreview;
+    sf::RectangleShape m_background;
+    sf::Texture m_backgroundTexture;
+    sf::Text m_mousePosText;
     sf::Font m_font;
 
     std::map<std::string, Button *> m_buttons;

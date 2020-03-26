@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <cassert>
+#include <sstream>
 #include <vector>
 #include <stack>
 #include <map>
@@ -17,12 +18,15 @@ public:
     Entity();
     ~Entity();
 
+    void createSprite(sf::Texture * texture);
     void move(const float & dt, const float dir_x, const float dir_y);
     void render(sf::RenderTarget * target);
     void update(const float & dt);
 
 protected:
-    sf::RectangleShape m_testRect;
+    sf::Sprite * m_sprite;
+    sf::Texture * m_texture;
+
     float m_movementSpeed;
 };
 

@@ -26,7 +26,6 @@ void GameState::initKeybinds()
 
 void GameState::updateKeybinds(const float & dt) 
 {
-    checkForQuit();
 }
 
 void GameState::update(const float & dt)
@@ -46,6 +45,10 @@ void GameState::update(const float & dt)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["MOVE_DOWN"]))) {
         player.move(dt, 0.f, 1.0f);
     }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["CLOSE"]))) {
+        endState();
+    }
 }
 
 void GameState::render(sf::RenderTarget * target)
@@ -55,9 +58,4 @@ void GameState::render(sf::RenderTarget * target)
     }
 
     player.render(m_window);
-}
-
-void GameState::endState()
-{
-    std::cout << "The end of GameState\n";
 }

@@ -9,14 +9,13 @@ public:
 
     virtual void initKeybinds() = 0;
 
-    void checkForQuit();
     const bool & getQuit() const;
+    virtual void endState();
 
     virtual void updateMousePos();
     virtual void updateKeybinds(const float & dt) = 0;
     virtual void update(const float & dt) = 0;
     virtual void render(sf::RenderTarget * target = nullptr) = 0;
-    virtual void endState() = 0;
 
 protected:
     std::stack<State *> * m_states;

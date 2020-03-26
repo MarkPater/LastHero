@@ -9,15 +9,14 @@ State::State(sf::RenderWindow * window, std::map<std::string, int> * supportedKe
 
 }
 
-void State::checkForQuit()
+const bool & State::getQuit() const 
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["CLOSE"]))) {
-        m_quit = true;
-    }
+    return m_quit;
 }
 
-const bool & State::getQuit() const {
-    return m_quit;
+void State::endState()
+{
+    m_quit = true;
 }
 
 void State::updateMousePos() 

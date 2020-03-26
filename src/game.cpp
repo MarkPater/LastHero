@@ -1,6 +1,10 @@
 #include "game.hpp"
 
-Game::Game()
+Game::Game() :
+    m_windowTitle("LastHero"),
+    m_windowBounds(1080, 720),
+    m_isFullscreen(false),
+    m_framerateLimit(60)
 {
     std::cout << "The start of GameApp\n";
     initWindow();
@@ -20,17 +24,23 @@ Game::~Game()
 void Game::initWindow()
 {
     std::ifstream ifs("/home/mark/dev/cpp/work/LastHero/config/window.ini"); // Bad practice, necessary to change frough any filesystem/path;
-    std::string windowTitle = "Game";
-    int width = 1080, height = 720, framerateLimit = 60;
+    m_videoModes = sf::VideoMode::getFullscreenModes();
 
     if (ifs.is_open()) {
-        std::getline(ifs, windowTitle);
-        ifs >> width >> height >> framerateLimit;
+        std::getline(ifs, m_windowTitle);
+        ifs >> m_windowBounds.width >> m_windowBounds.height;
+        ifs >> m_framerateLimit;
+        ifs >> m_isFullscreen;
     }
     ifs.close();
 
-    m_mainWindow = new sf::RenderWindow(sf::VideoMode(width, height), windowTitle);
-    m_mainWindow->setFramerateLimit(framerateLimit);
+    if (m_isFullscreen) {
+        m_mainWindow = new sf::RenderWindow(m_videoModes[0], m_windowTitle, sf::Style::Fullscreen);
+    }
+    else {
+        m_mainWindow = new sf::RenderWindow(m_windowBounds, m_windowTitle, sf::Style::Titlebar | sf::Style::Close);
+    }
+    m_mainWindow->setFramerateLimit(m_framerateLimit);
 }
 
 void Game::initSupportedKeys()
