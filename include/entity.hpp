@@ -19,6 +19,8 @@ public:
     ~Entity();
 
     void createSprite(sf::Texture * texture);
+    void setPosition(float x, float y);
+
     void move(const float & dt, const float dir_x, const float dir_y);
     void render(sf::RenderTarget * target);
     void update(const float & dt);

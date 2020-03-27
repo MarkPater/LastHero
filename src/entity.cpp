@@ -15,6 +15,12 @@ Entity::~Entity()
 void Entity::createSprite(sf::Texture * texture)
 {
     m_texture = texture;
+    m_sprite = new sf::Sprite(*m_texture);
+}
+
+void Entity::setPosition(float x, float y)
+{
+    m_sprite->setPosition(x, y);
 }
 
 void Entity::move(const float & dt, const float dir_x, const float dir_y)

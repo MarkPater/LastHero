@@ -19,12 +19,14 @@ add_executable(${PROJECT_NAME}
     include/states/gameState.hpp
     include/states/mainMenuState.hpp
     include/entity.hpp
+    include/player.hpp
     include/button.hpp
     include/game.hpp
     src/states/state.cpp
     src/states/gameState.cpp
     src/states/mainMenuState.cpp
     src/entity.cpp
+    src/player.cpp
     src/button.cpp
     src/game.cpp
     src/main.cpp)

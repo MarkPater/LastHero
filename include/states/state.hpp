@@ -1,7 +1,7 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
-#include "entity.hpp"
+#include "player.hpp"
 class State {
 public:
     State(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states);
@@ -19,7 +19,7 @@ public:
 
 protected:
     std::stack<State *> * m_states;
-    std::vector<sf::Texture *> m_textures;
+    std::map<std::string, sf::Texture> m_textures;
     std::map<std::string, int> * m_supportedKeys;
     std::map<std::string, int> m_keybinds;
 

@@ -10,12 +10,15 @@ public:
     ~GameState();
 
     virtual void initKeybinds() override;
+    void initTextures();
+    void initPlayers();
+
     virtual void updateKeybinds(const float & dt) override;
     virtual void update(const float & dt) override;
     virtual void render(sf::RenderTarget * target = nullptr) override;
 
 protected:
-    Entity player;
+    Player * m_player;
 };
 
 #endif /* GAME_STATE_HPP */
