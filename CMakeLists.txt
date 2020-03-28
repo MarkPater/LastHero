@@ -18,6 +18,7 @@ add_executable(${PROJECT_NAME}
     include/states/state.hpp
     include/states/gameState.hpp
     include/states/mainMenuState.hpp
+    include/components/movementComponent.hpp
     include/entity.hpp
     include/player.hpp
     include/button.hpp
@@ -25,6 +26,7 @@ add_executable(${PROJECT_NAME}
     src/states/state.cpp
     src/states/gameState.cpp
     src/states/mainMenuState.cpp
+    src/components/movementComponent.cpp
     src/entity.cpp
     src/player.cpp
     src/button.cpp

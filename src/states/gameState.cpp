@@ -37,34 +37,35 @@ void GameState::initTextures()
 
 void GameState::initPlayers()
 {
-    m_player = new Player(0, 0, &m_textures["PLAYER_IDLE"]);
+    m_player = new Player(0, 0, m_textures["PLAYER_IDLE"]);
 }
 
-void GameState::updateKeybinds(const float & dt) 
+void GameState::updateInput() 
 {
-}
-
-void GameState::update(const float & dt)
-{
-    updateMousePos();
-    updateKeybinds(dt);
-    
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["MOVE_LEFT"]))) {
-        m_player->move(dt, -1.0f, 0.f);
+        m_player->move(-1.0f, 0.f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["MOVE_RIGHT"]))) {
-        m_player->move(dt, 1.0f, 0.f);
+        m_player->move(1.0f, 0.f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["MOVE_UP"]))) {
-        m_player->move(dt, 0.f, -1.0f);
+        m_player->move(0.f, -1.0f);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["MOVE_DOWN"]))) {
-        m_player->move(dt, 0.f, 1.0f);
+        m_player->move(0.f, 1.0f);
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["CLOSE"]))) {
         endState();
     }
+}
+
+void GameState::update(const float & dt)
+{
+    updateMousePos();
+    updateInput();
+
+    m_player->update(dt);
 }
 
 void GameState::render(sf::RenderTarget * target)

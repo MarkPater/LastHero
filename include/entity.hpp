@@ -1,35 +1,26 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
-#include <iostream>
-#include <fstream>
-#include <cassert>
-#include <sstream>
-#include <vector>
-#include <stack>
-#include <map>
+#include "components/movementComponent.hpp"
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
 class Entity 
 {
 public:
     Entity();
     ~Entity();
 
-    void createSprite(sf::Texture * texture);
+    void createMovementComponent(const float & maxVelocity, const float & acceleration, const float & deceleration);
     void setPosition(float x, float y);
+    void setTexture(sf::Texture & texture);
 
-    void move(const float & dt, const float dir_x, const float dir_y);
+    void move(const float dir_x, const float dir_y);
     void render(sf::RenderTarget * target);
     void update(const float & dt);
 
 protected:
-    sf::Sprite * m_sprite;
-    sf::Texture * m_texture;
+    sf::Sprite m_sprite;
 
-    float m_movementSpeed;
+    MovementComponent * m_movementComponent;
 };
 
 #endif /* ENTITY_HPP */

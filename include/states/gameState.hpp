@@ -13,7 +13,7 @@ public:
     void initTextures();
     void initPlayers();
 
-    virtual void updateKeybinds(const float & dt) override;
+    virtual void updateInput();
     virtual void update(const float & dt) override;
     virtual void render(sf::RenderTarget * target = nullptr) override;
 

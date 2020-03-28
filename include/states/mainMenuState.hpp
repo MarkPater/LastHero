@@ -13,12 +13,12 @@ public:
     void initButtons();
     void initMousePos();
     void initBackground();
+    void updateInput();
     void updateMousePosText();
     void updateButtons(sf::Vector2f mousePos);
     void renderButtons(sf::RenderTarget * target = nullptr);
 
     virtual void initKeybinds() override;
-    virtual void updateKeybinds(const float & dt) override;
     virtual void update(const float & dt) override;
     virtual void render(sf::RenderTarget * target = nullptr) override;
 

@@ -1,42 +1,45 @@
 #include <entity.hpp>
 
 Entity::Entity() :
-    m_sprite(nullptr),
-    m_texture(nullptr),
-    m_movementSpeed(300.f)
+    m_movementComponent(nullptr)
 {
 }
 
 Entity::~Entity()
 {
-    delete m_sprite;
+    delete m_movementComponent;
 }
 
-void Entity::createSprite(sf::Texture * texture)
+void Entity::setTexture(sf::Texture & texture)
 {
-    m_texture = texture;
-    m_sprite = new sf::Sprite(*m_texture);
+    m_sprite.setTexture(texture);
+}
+
+void Entity::createMovementComponent(const float & maxVelocity, const float & acceleration, const float & deceleration)
+{
+    m_movementComponent = new MovementComponent(m_sprite, maxVelocity, acceleration, deceleration);
 }
 
 void Entity::setPosition(float x, float y)
 {
-    m_sprite->setPosition(x, y);
+    m_sprite.setPosition(x, y);
 }
 
-void Entity::move(const float & dt, const float dir_x, const float dir_y)
+void Entity::move(const float dir_x, const float dir_y)
 {
-    if (m_sprite) {
-        m_sprite->move(m_movementSpeed * dir_x * dt, m_movementSpeed * dir_y * dt);
+    if (m_movementComponent) {
+        m_movementComponent->move(dir_x, dir_y);
     }
 }
 
 void Entity::update(const float & dt)
 {
+    if (m_movementComponent) {
+        m_movementComponent->update(dt);
+    }
 }
 
 void Entity::render(sf::RenderTarget * target)
 {
-    if (m_sprite) {
-        target->draw(*m_sprite);
-    }
+    target->draw(m_sprite);
 }

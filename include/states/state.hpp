@@ -13,7 +13,6 @@ public:
     virtual void endState();
 
     virtual void updateMousePos();
-    virtual void updateKeybinds(const float & dt) = 0;
     virtual void update(const float & dt) = 0;
     virtual void render(sf::RenderTarget * target = nullptr) = 0;
 
