@@ -27,14 +27,17 @@ void MainMenuState::initFont()
 
 void MainMenuState::initButtons()
 {
-    m_buttons["NEW_GAME"] = new Button(1400, 280, 150, 50, &m_font, "New Game",
-        sf::Color(100, 100, 100, 200), sf::Color(200, 200, 200, 255), sf::Color(20, 20, 20, 250));
+    m_buttons["GAME_STATE"] = new Button(1400, 280, 150, 50, &m_font, "New Game", 50,
+        sf::Color(0, 200, 0, 255), sf::Color(250, 135, 50, 200), sf::Color(50, 250, 165, 250),
+        sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0));
 
-    m_buttons["EDITOR_STATE"] = new Button(1400, 400, 150, 50, &m_font, "Editor",
-        sf::Color(100, 100, 100, 200), sf::Color(200, 200, 200, 255), sf::Color(20, 20, 20, 250));
+    m_buttons["EDITOR_STATE"] = new Button(1400, 430, 150, 50, &m_font, "Editor", 50,
+        sf::Color(0, 200, 0, 250), sf::Color(250, 135, 45, 200), sf::Color(50, 250, 165, 250),
+        sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0));
 
-    m_buttons["EXIT"] = new Button(1400, 520, 150, 50, &m_font, "Exit",
-        sf::Color(100, 100, 100, 200), sf::Color(200, 200, 200, 255), sf::Color(20, 20, 20, 250));
+    m_buttons["EXIT"] = new Button(1400, 580, 150, 50, &m_font, "Exit", 50,
+        sf::Color(0, 200, 0, 250), sf::Color(250, 135, 50, 200), sf::Color(50, 250, 165, 250),
+        sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0));
 }
 
 void MainMenuState::initBackground()
@@ -61,14 +64,14 @@ void MainMenuState::updateButtons(sf::Vector2f mousePos)
         button.second->update(mousePos);
     }
 
-    if (m_buttons["NEW_GAME"]->isPressed()) {
+    if (m_buttons["GAME_STATE"]->isPressed()) {
         m_states->push(new GameState(m_window, m_supportedKeys, m_states));
     }
     if (m_buttons["EDITOR_STATE"]->isPressed()) {
         // openEditor();
     }
     if (m_buttons["EXIT"]->isPressed()) {
-        m_quit = true;
+        endState();
     }
 }
 

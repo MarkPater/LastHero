@@ -10,7 +10,8 @@ class Button
 public:
     Button(const float & x, const float & y, 
            const float & width, const float & height,
-           sf::Font * font, std::string text,
+           sf::Font * font, std::string text, unsigned characterSize,
+           sf::Color idleTextColor, sf::Color hoverTextColor, sf::Color activeTextColor,
            sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
     ~Button();
 
@@ -32,6 +33,9 @@ private:
     sf::Color m_idleColor;
     sf::Color m_hoverColor;
     sf::Color m_activeColor;
+    sf::Color m_idleTextColor;
+    sf::Color m_hoverTextColor;
+    sf::Color m_activeTextColor;
 
     unsigned short m_buttonState;
 };
