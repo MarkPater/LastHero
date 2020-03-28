@@ -29,7 +29,7 @@ void GameState::initKeybinds()
 
 void GameState::initTextures()
 {
-    if (!m_textures["PLAYER_IDLE"].loadFromFile("/home/mark/dev/cpp/work/LastHero/resources/images/sprites/player/Knight.png")) {
+    if (!m_textures["PLAYER_SHEET"].loadFromFile("/home/mark/dev/cpp/work/LastHero/resources/images/sprites/player/Player_sheet.png")) {
         assert(false && "GameState::initTextures::!lodaFromFile");
         exit(EXIT_FAILURE);
     }
@@ -37,7 +37,7 @@ void GameState::initTextures()
 
 void GameState::initPlayers()
 {
-    m_player = new Player(0, 0, m_textures["PLAYER_IDLE"]);
+    m_player = new Player(0, 0, m_textures["PLAYER_SHEET"]);
 }
 
 void GameState::updateInput() 

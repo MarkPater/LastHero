@@ -9,6 +9,11 @@ MovementComponent::MovementComponent(sf::Sprite & sprite, float maxVelocity, flo
 {
 }
 
+const bool MovementComponent::isIdle() const
+{
+    return (m_velocity.x == 0 && m_velocity.y == 0);
+}
+
 void MovementComponent::move(const float & dirX, const float & dirY)
 {
     m_velocity.x += m_acceleration * dirX;

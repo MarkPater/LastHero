@@ -6,11 +6,10 @@
 class Player : public Entity
 {
 public:
-    Player(float x, float y, sf::Texture & texture);
+    Player(float x, float y, sf::Texture & texture_sheet);
     ~Player();
-    
-private:
-    void initComponents();
+
+    virtual void update(const float & dt) override;
 };
 
 #endif /* PLAYER_HPP */

@@ -6,6 +6,7 @@
 #include <cassert>
 #include <sstream>
 #include <vector>
+#include <string> 
 #include <stack>
 #include <map>
 
@@ -17,6 +18,8 @@ class MovementComponent
 {
 public:
     MovementComponent(sf::Sprite & sprite, float maxVelocity, float acceleration, float deceleration);
+
+    const bool isIdle() const;
 
     void move(const float & dirX, const float & dirY);
     void update(const float & dt);
