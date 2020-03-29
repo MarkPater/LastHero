@@ -9,9 +9,28 @@ MovementComponent::MovementComponent(sf::Sprite & sprite, float maxVelocity, flo
 {
 }
 
-const bool MovementComponent::isIdle() const
+const bool MovementComponent::getState(const unsigned short & state) const
 {
-    return (m_velocity.x == 0 && m_velocity.y == 0);
+    switch (state) {
+        case MovementState::IDLE: {
+            return (m_velocity.x == 0 && m_velocity.y == 0);
+        }
+        case MovementState::MOVING_LEFT: {
+            return m_velocity.x < 0;
+        }
+        case MovementState::MOVING_RIGHT: {
+            return m_velocity.x > 0;
+        }
+        case MovementState::MOVING_UP: {
+            return m_velocity.y < 0;
+        }
+        case MovementState::MOVING_DOWN: {
+            return m_velocity.y > 0;
+        }
+        default: {
+            return false;
+        }
+    }
 }
 
 void MovementComponent::move(const float & dirX, const float & dirY)

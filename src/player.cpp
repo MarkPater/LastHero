@@ -20,10 +20,10 @@ void Player::update(const float & dt)
 {
     m_movementComponent->update(dt);
 
-    if (m_movementComponent->isIdle()) {
+    if (m_movementComponent->getState(MovementState::IDLE)) {
         m_animationComponent->play("IDLE_LEFT", dt);
     }
-    else {
+    else if (m_movementComponent->getState(MovementState::MOVING_LEFT)) {
         m_animationComponent->play("WALK_LEFT", dt);
     }
 }
