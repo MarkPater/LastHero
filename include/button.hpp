@@ -23,7 +23,7 @@ public:
 
     const bool isPressed() const;
     void update(sf::Vector2f mousePos);
-    void render(sf::RenderTarget * target);
+    void render(sf::RenderTarget & target);
 
 private:
     sf::RectangleShape m_buttonShape;

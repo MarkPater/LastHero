@@ -92,7 +92,7 @@ void MainMenuState::updateMousePosText()
     m_mousePosText.setString(ss.str());
 }
 
-void MainMenuState::renderButtons(sf::RenderTarget * target)
+void MainMenuState::renderButtons(sf::RenderTarget & target)
 {
     for (const auto & button : m_buttons) {
         button.second->render(target);
@@ -127,6 +127,6 @@ void MainMenuState::render(sf::RenderTarget * target)
     }
 
     target->draw(m_background);
-    renderButtons(target);
+    renderButtons(*target);
     target->draw(m_mousePosText);
 }

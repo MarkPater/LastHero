@@ -16,7 +16,7 @@ public:
     void updateInput();
     void updateMousePosText();
     void updateButtons(sf::Vector2f mousePos);
-    void renderButtons(sf::RenderTarget * target = nullptr);
+    void renderButtons(sf::RenderTarget & target);
 
     virtual void initKeybinds() override;
     virtual void update(const float & dt) override;

@@ -65,7 +65,7 @@ void EditorState::updateMousePosText()
     m_mousePosText.setString(ss.str());
 }
 
-void EditorState::renderButtons(sf::RenderTarget * target)
+void EditorState::renderButtons(sf::RenderTarget & target)
 {
     for (const auto & button : m_buttons) {
         button.second->render(target);
@@ -99,6 +99,6 @@ void EditorState::render(sf::RenderTarget * target)
         target = m_window;
     }
 
-    renderButtons(target);
+    renderButtons(*target);
     target->draw(m_mousePosText);
 }
