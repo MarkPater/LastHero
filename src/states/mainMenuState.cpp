@@ -1,4 +1,5 @@
 #include "states/mainMenuState.hpp"
+#include "states/editorState.hpp"
 
 MainMenuState::MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states) :
     State(window, supportedKeys, states),
@@ -68,7 +69,7 @@ void MainMenuState::updateButtons(sf::Vector2f mousePos)
         m_states->push(new GameState(m_window, m_supportedKeys, m_states));
     }
     if (m_buttons["EDITOR_STATE"]->isPressed()) {
-        // openEditor();
+        m_states->push(new EditorState(m_window, m_supportedKeys, m_states));
     }
     if (m_buttons["EXIT"]->isPressed()) {
         endState();
