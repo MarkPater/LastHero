@@ -49,7 +49,8 @@ void AnimationComponent::Animation::reset()
 
 AnimationComponent::AnimationComponent(sf::Sprite & sprite, sf::Texture & textureSheet) :
     m_sprite(sprite),
-    m_textureSheet(textureSheet)
+    m_textureSheet(textureSheet),
+    m_lastAnimation(nullptr)
 {
 }
 
@@ -75,5 +76,14 @@ void AnimationComponent::addAnimation(const std::string key,
 
 void AnimationComponent::play(const std::string key, const float & dt)
 {
+    if (m_lastAnimation != m_animations[key]) {
+        if (m_lastAnimation == nullptr) {
+            m_lastAnimation = m_animations[key];
+        }
+
+        m_lastAnimation->reset();
+        m_lastAnimation = m_animations[key];
+    }
+
     m_animations[key]->play(dt);
 }

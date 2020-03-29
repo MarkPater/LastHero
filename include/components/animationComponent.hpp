@@ -39,6 +39,7 @@ private:
     sf::Sprite & m_sprite;
     sf::Texture & m_textureSheet;
 
+    Animation * m_lastAnimation;
     std::map<std::string, Animation *> m_animations;
 
 public:
