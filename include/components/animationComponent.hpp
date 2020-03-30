@@ -32,7 +32,7 @@ private:
         sf::IntRect m_currentRect;
         sf::IntRect m_endRect;
 
-        void play(const float & dt);
+        void play(const float & dt, const float & percentage);
         void reset();
     };
 
@@ -46,7 +46,7 @@ public:
     AnimationComponent(sf::Sprite & sprite, sf::Texture & textureSheet);
     ~AnimationComponent();
 
-    void play(const std::string key, const float & dt);
+    void play(const std::string key, const float & dt, const float & currentVelocity, const float & maxVelocity);
     void addAnimation(const std::string key,
                       float animationTimer,
                       int start_frame_x, int start_frame_y,

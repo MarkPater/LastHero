@@ -33,6 +33,16 @@ const bool MovementComponent::getState(const unsigned short & state) const
     }
 }
 
+const sf::Vector2f MovementComponent::getVelocity() const
+{
+    return m_velocity;
+}
+
+const float MovementComponent::getMaxVelocity() const
+{
+    return m_maxVelocity;
+}
+
 void MovementComponent::move(const float & dirX, const float & dirY)
 {
     m_velocity.x += m_acceleration * dirX;

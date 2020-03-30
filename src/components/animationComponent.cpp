@@ -24,9 +24,10 @@ AnimationComponent::Animation::~Animation()
 {
 }
 
-void AnimationComponent::Animation::play(const float & dt)
+#include <iostream>
+void AnimationComponent::Animation::play(const float & dt, const float & percentage)
 {
-    m_timer += 1000.f * dt;
+    m_timer += (percentage > 0.5 ? percentage : 0.5) * 100.f * dt;
 
     if (m_timer >= m_animationTimer) {
         m_timer = 0;
@@ -44,7 +45,6 @@ void AnimationComponent::Animation::play(const float & dt)
 void AnimationComponent::Animation::reset()
 {
     m_currentRect = m_startRect;
-    m_timer = 0.f;
 }
 
 AnimationComponent::AnimationComponent(sf::Sprite & sprite, sf::Texture & textureSheet) :
@@ -74,7 +74,7 @@ void AnimationComponent::addAnimation(const std::string key,
                                       widht, height);
 }
 
-void AnimationComponent::play(const std::string key, const float & dt)
+void AnimationComponent::play(const std::string key, const float & dt, const float & currentVelocity, const float & maxVelocity)
 {
     if (m_lastAnimation != m_animations[key]) {
         if (m_lastAnimation == nullptr) {
@@ -85,5 +85,6 @@ void AnimationComponent::play(const std::string key, const float & dt)
         m_lastAnimation = m_animations[key];
     }
 
-    m_animations[key]->play(dt);
+    m_animations[key]->play(dt, (currentVelocity / maxVelocity) > 0.f ? 
+    (currentVelocity / maxVelocity) : -(currentVelocity / maxVelocity));
 }
