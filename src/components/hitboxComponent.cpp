@@ -10,9 +10,14 @@ HitboxComponent::HitboxComponent(sf::Sprite & sprite, sf::Vector2f offset, sf::V
     m_hitbox.setOutlineColor(sf::Color::Green);
 }
 
+bool HitboxComponent::checkIntersect(const sf::FloatRect & frect)
+{
+    return m_hitbox.getGlobalBounds().intersects(frect);
+}
+
 void HitboxComponent::update()
 {
-    m_hitbox.setPosition(m_sprite.getGlobalBounds().left + m_offset.x, m_sprite.getGlobalBounds().top + m_offset.y);
+    m_hitbox.setPosition(m_sprite.getPosition().x + m_offset.x, m_sprite.getPosition().y + m_offset.y);
 }
 
 void HitboxComponent::render(sf::RenderTarget & target)
