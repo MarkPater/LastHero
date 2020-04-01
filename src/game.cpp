@@ -1,10 +1,12 @@
 #include "game.hpp"
+#include <filesystem>
 
 Game::Game() :
     m_windowTitle("LastHero"),
     m_windowBounds(1080, 720),
     m_isFullscreen(false),
-    m_framerateLimit(60)
+    m_framerateLimit(60),
+    m_currentPath(std::filesystem::current_path())
 {
     std::cout << "The start of GameApp\n";
     initWindow();
@@ -23,7 +25,9 @@ Game::~Game()
 
 void Game::initWindow()
 {
-    std::ifstream ifs("/home/mark/dev/cpp/work/LastHero/config/window.ini"); // Bad practice, necessary to change frough any filesystem/path;
+    std::filesystem::path pathToShow();
+
+    std::ifstream ifs(m_currentPath + "/config/window.ini"); // Bad practice, necessary to change frough any filesystem/path;
     m_videoModes = sf::VideoMode::getFullscreenModes();
 
     if (ifs.is_open()) {
@@ -45,7 +49,7 @@ void Game::initWindow()
 
 void Game::initSupportedKeys()
 {
-    std::ifstream ifs("/home/mark/dev/cpp/work/LastHero/config/supportedKeys.ini"); // Bad practice, necessary to change frough any filesystem/path;
+    std::ifstream ifs(m_currentPath + "/config/supportedKeys.ini"); // Bad practice, necessary to change frough any filesystem/path;
     std::string key = "";
     int key_value = 0;
 

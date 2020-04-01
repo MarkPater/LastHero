@@ -30,9 +30,10 @@ private:
     std::vector<sf::VideoMode> m_videoModes;
 
     float m_dt;
-    std::string m_windowTitle;
     bool m_isFullscreen;
     int m_framerateLimit;
+    std::string m_windowTitle;
+    std::string m_currentPath;
 };
 
 #endif /* GAME_HPP */

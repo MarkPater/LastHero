@@ -16,7 +16,7 @@ GameState::~GameState()
 
 void GameState::initKeybinds()
 {
-    std::ifstream ifs("/home/mark/dev/cpp/work/LastHero/config/gameStateKeybinds.ini"); // Bad practice, necessary to change frough any filesystem/path;
+    std::ifstream ifs(m_currentPath + "/config/gameStateKeybinds.ini"); // Bad practice, necessary to change frough any filesystem/path;
     std::string key1 = "", key2 = "";
 
     if (ifs.is_open()) {
@@ -29,7 +29,7 @@ void GameState::initKeybinds()
 
 void GameState::initTextures()
 {
-    if (!m_textures["PLAYER_SHEET"].loadFromFile("/home/mark/dev/cpp/work/LastHero/resources/images/sprites/player/Player_sheet.png")) {
+    if (!m_textures["PLAYER_SHEET"].loadFromFile(m_currentPath + "/resources/images/sprites/player/Player_sheet.png")) {
         assert(false && "GameState::initTextures::!lodaFromFile");
         exit(EXIT_FAILURE);
     }

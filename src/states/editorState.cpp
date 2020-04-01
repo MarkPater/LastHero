@@ -17,7 +17,7 @@ EditorState::~EditorState()
 
 void EditorState::initFont()
 {
-    if (!m_font.loadFromFile("/home/mark/dev/cpp/work/LastHero/fonts/Dosis-Light.ttf")) {
+    if (!m_font.loadFromFile(m_currentPath + "/fonts/Dosis-Light.ttf")) {
         assert(false && "EditorState::initFont::!loadFromFile");
         exit(EXIT_FAILURE);
     }
@@ -74,7 +74,7 @@ void EditorState::renderButtons(sf::RenderTarget & target)
 
 void EditorState::initKeybinds()
 {
-    std::ifstream ifs("/home/mark/dev/cpp/work/LastHero/config/editorStateKeybinds.ini"); // Bad practice, necessary to change frough any filesystem/path;
+    std::ifstream ifs(m_currentPath + "/config/editorStateKeybinds.ini"); // Bad practice, necessary to change frough any filesystem/path;
     std::string key1 = "", key2 = "";
 
     if (ifs.is_open()) {

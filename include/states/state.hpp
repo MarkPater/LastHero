@@ -28,6 +28,7 @@ protected:
     sf::Vector2f m_mousePosView;
 
     bool m_quit;
+    std::string m_currentPath;
 };
 
 #endif /* STATE_HPP */
