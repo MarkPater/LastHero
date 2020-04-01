@@ -5,7 +5,7 @@ Player::Player(float x, float y, sf::Texture & texture_sheet)
     setTexture(texture_sheet);
     setPosition(x, y);
 
-    createMovementComponent(600.f, 15.4f, 10.f);
+    createMovementComponent(600.f, 15.0f, 10.f);
     createAnimationComponent(texture_sheet);
     createHitboxComponent(sf::Vector2f(86, 66), sf::Vector2f(86, 111));
 

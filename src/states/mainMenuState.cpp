@@ -20,7 +20,7 @@ MainMenuState::~MainMenuState()
 
 void MainMenuState::initFont()
 {
-    if (!m_font.loadFromFile("/home/mark/dev/cpp/work/LastHero/fonts/Dosis-Light.ttf")) {
+    if (!m_font.loadFromFile(m_currentPath + "/fonts/Dosis-Light.ttf")) {
         assert(false && "MainMenuState::initFont::!loadFromFile");
         exit(EXIT_FAILURE);
     }
@@ -43,7 +43,7 @@ void MainMenuState::initButtons()
 
 void MainMenuState::initBackground()
 {
-    if (!m_backgroundTexture.loadFromFile("/home/mark/dev/cpp/work/LastHero/resources/images/backgrounds/bg1.jpg")) {
+    if (!m_backgroundTexture.loadFromFile(m_currentPath + "/resources/images/backgrounds/bg1.jpg")) {
         assert(false && "MainMenuState::init::!loadFromFile");
         exit(EXIT_FAILURE);
     }
@@ -101,7 +101,7 @@ void MainMenuState::renderButtons(sf::RenderTarget & target)
 
 void MainMenuState::initKeybinds()
 {
-    std::ifstream ifs("/home/mark/dev/cpp/work/LastHero/config/mainMenuStateKeybinds.ini"); // Bad practice, necessary to change frough any filesystem/path;
+    std::ifstream ifs(m_currentPath + "/config/mainMenuStateKeybinds.ini"); // Bad practice, necessary to change frough any filesystem/path;
     std::string key1 = "", key2 = "";
 
     if (ifs.is_open()) {

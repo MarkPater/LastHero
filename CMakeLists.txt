@@ -6,7 +6,7 @@ project(LastHero
     DESCRIPTION "Open-Source RPG written in C++"
     LANGUAGES CXX)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1y -Wall -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -Wall -pedantic")
 set(CMAKE_BUILD_TYPE "Debug")
 
 message(STATUS "LastHero version: ${VERSION_LASTHERO}")
