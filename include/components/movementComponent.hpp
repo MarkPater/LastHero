@@ -24,6 +24,8 @@ public:
     MovementComponent(sf::Sprite & sprite, float maxVelocity, float acceleration, float deceleration);
 
     const bool getState(const unsigned short & state) const;
+    const sf::Vector2f getVelocity() const;
+    const float getMaxVelocity() const; 
     
     void move(const float & dirX, const float & dirY);
     void update(const float & dt);
