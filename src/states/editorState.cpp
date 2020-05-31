@@ -1,7 +1,7 @@
 #include "states/editorState.hpp"
 
-EditorState::EditorState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states) :
-    State(window, supportedKeys, states)
+EditorState::EditorState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states)
+    : State(window, supportedKeys, states)
 {
     std::cout << "The start of EditorState\n";
     
@@ -28,6 +28,19 @@ void EditorState::initButtons()
     m_buttons["EXIT"] = new Button(885, 515, 150, 50, &m_font, "Exit", 50,
         sf::Color(0, 200, 0, 250), sf::Color(250, 135, 50, 200), sf::Color(50, 250, 165, 250),
         sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0));
+}
+
+void EditorState::initKeybinds()
+{
+    std::ifstream ifs(m_currentPath + "/config/editorStateKeybinds.ini");
+    std::string action = "", key = "";
+
+    if (ifs.is_open()) {
+        while (ifs >> action >> key) {
+            m_keybinds[action] = m_supportedKeys->at(key);
+        }
+    } 
+    ifs.close();
 }
 
 void EditorState::initMousePos()
@@ -70,19 +83,6 @@ void EditorState::renderButtons(sf::RenderTarget & target)
     for (const auto & button : m_buttons) {
         button.second->render(target);
     }
-}
-
-void EditorState::initKeybinds()
-{
-    std::ifstream ifs(m_currentPath + "/config/editorStateKeybinds.ini"); // Bad practice, necessary to change frough any filesystem/path;
-    std::string key1 = "", key2 = "";
-
-    if (ifs.is_open()) {
-        while (ifs >> key1 >> key2) {
-            m_keybinds[key1] = m_supportedKeys->at(key2);
-        }
-    } 
-    ifs.close();
 }
 
 void EditorState::update(const float & dt)

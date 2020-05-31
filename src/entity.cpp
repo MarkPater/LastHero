@@ -1,8 +1,9 @@
 #include <entity.hpp>
 
-Entity::Entity() :
-    m_movementComponent(nullptr),
-    m_animationComponent(nullptr)
+Entity::Entity()
+    : m_movementComponent(nullptr)
+    , m_animationComponent(nullptr)
+    , m_hitboxComponent(nullptr)
 {
 }
 
@@ -10,6 +11,7 @@ Entity::~Entity()
 {
     delete m_movementComponent;
     delete m_animationComponent;
+    delete m_hitboxComponent;
 }
 
 void Entity::setTexture(sf::Texture & texture)
@@ -42,10 +44,6 @@ void Entity::move(const float dir_x, const float dir_y)
     if (m_movementComponent) {
         m_movementComponent->move(dir_x, dir_y);
     }
-}
-
-void Entity::update(const float & dt)
-{
 }
 
 void Entity::render(sf::RenderTarget * target)

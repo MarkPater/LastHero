@@ -1,9 +1,9 @@
 #include "states/mainMenuState.hpp"
 #include "states/editorState.hpp"
 
-MainMenuState::MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states) :
-    State(window, supportedKeys, states),
-    m_background(sf::Vector2f(m_window->getSize()))
+MainMenuState::MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states)
+    : State(window, supportedKeys, states)
+    , m_background(sf::Vector2f(m_window->getSize()))
 {
     std::cout << "The start of MainMenuState\n";
     
@@ -68,10 +68,10 @@ void MainMenuState::updateButtons(sf::Vector2f mousePos)
     if (m_buttons["GAME_STATE"]->isPressed()) {
         m_states->push(new GameState(m_window, m_supportedKeys, m_states));
     }
-    if (m_buttons["EDITOR_STATE"]->isPressed()) {
+    else if (m_buttons["EDITOR_STATE"]->isPressed()) {
         m_states->push(new EditorState(m_window, m_supportedKeys, m_states));
     }
-    if (m_buttons["EXIT"]->isPressed()) {
+    else if (m_buttons["EXIT"]->isPressed()) {
         endState();
     }
 }
@@ -101,14 +101,14 @@ void MainMenuState::renderButtons(sf::RenderTarget & target)
 
 void MainMenuState::initKeybinds()
 {
-    std::ifstream ifs(m_currentPath + "/config/mainMenuStateKeybinds.ini"); // Bad practice, necessary to change frough any filesystem/path;
-    std::string key1 = "", key2 = "";
+    std::ifstream ifs(m_currentPath + "/config/mainMenuStateKeybinds.ini");
+    std::string action = "", key = "";
 
     if (ifs.is_open()) {
-        while (ifs >> key1 >> key2) {
-            m_keybinds[key1] = m_supportedKeys->at(key2);
+        while (ifs >> action >> key) {
+            m_keybinds[action] = m_supportedKeys->at(key);
         }
-    } 
+    }
     ifs.close();
 }
 

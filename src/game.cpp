@@ -27,7 +27,7 @@ void Game::initWindow()
 {
     std::filesystem::path pathToShow();
 
-    std::ifstream ifs(m_currentPath + "/config/window.ini"); // Bad practice, necessary to change frough any filesystem/path;
+    std::ifstream ifs(m_currentPath + "/config/window.ini");
     m_videoModes = sf::VideoMode::getFullscreenModes();
 
     if (ifs.is_open()) {
@@ -49,7 +49,7 @@ void Game::initWindow()
 
 void Game::initSupportedKeys()
 {
-    std::ifstream ifs(m_currentPath + "/config/supportedKeys.ini"); // Bad practice, necessary to change frough any filesystem/path;
+    std::ifstream ifs(m_currentPath + "/config/supportedKeys.ini");
     std::string key = "";
     int key_value = 0;
 
@@ -59,10 +59,6 @@ void Game::initSupportedKeys()
         }
     }
     ifs.close();
-
-    for (const auto & el : m_supportedKeys) {
-        std::cout << el.first << " -> " << el.second << "\n";
-    }
 }
 
 void Game::initStates()
@@ -92,7 +88,6 @@ void Game::update()
     if (!m_states.empty()) {
         m_states.top()->update(m_dt);
         if (m_states.top()->getQuit()) {
-            m_states.top()->endState();
             delete m_states.top();
             m_states.pop();
         }

@@ -1,11 +1,11 @@
 #include "components/movementComponent.hpp"
 
-MovementComponent::MovementComponent(sf::Sprite & sprite, float maxVelocity, float acceleration, float deceleration) :
-    m_sprite(sprite),
-    m_maxVelocity(maxVelocity),
-    m_acceleration(acceleration),
-    m_deceleration(deceleration),
-    m_velocity(sf::Vector2f(0, 0))
+MovementComponent::MovementComponent(sf::Sprite & sprite, float maxVelocity, float acceleration, float deceleration)
+    : m_sprite(sprite)
+    , m_maxVelocity(maxVelocity)
+    , m_acceleration(acceleration)
+    , m_deceleration(deceleration)
+    , m_velocity(sf::Vector2f(0, 0))
 {
 }
 
@@ -51,7 +51,7 @@ void MovementComponent::move(const float & dirX, const float & dirY)
 
 void MovementComponent::update(const float & dt)
 {
-    // Horizontal deceleration
+    // Horizontal move
     if (m_velocity.x > 0) {
         if (m_velocity.x > m_maxVelocity) {
             m_velocity.x = m_maxVelocity;
@@ -69,7 +69,7 @@ void MovementComponent::update(const float & dt)
         }
     }
 
-    // Vertical deceleration
+    // Vertical move
     if (m_velocity.y > 0) {
         if (m_velocity.y > m_maxVelocity) {
             m_velocity.y = m_maxVelocity;

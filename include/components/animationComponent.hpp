@@ -8,6 +8,8 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 
+class Animation;
+
 class AnimationComponent
 {
 private:
@@ -46,7 +48,7 @@ public:
     AnimationComponent(sf::Sprite & sprite, sf::Texture & textureSheet);
     ~AnimationComponent();
 
-    void play(const std::string key, const float & dt, const float & currentVelocity, const float & maxVelocity);
+    void play(const std::string action, const float & dt, const float & currentVelocity, const float & maxVelocity);
     void addAnimation(const std::string key,
                       float animationTimer,
                       int start_frame_x, int start_frame_y,

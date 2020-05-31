@@ -4,8 +4,8 @@ Button::Button(const float & x, const float & y,
                const float & width, const float & height,
                sf::Font * font, std::string text, unsigned characterSize,
                sf::Color idleTextColor, sf::Color hoverTextColor, sf::Color activeTextColor,
-               sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor) :
-    m_buttonState(static_cast<unsigned short>(buttonState::BTN_IDLE))
+               sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor)
+    : m_buttonState(static_cast<unsigned short>(buttonState::BTN_IDLE))
 {
     m_buttonShape.setPosition(x, y);
     m_buttonShape.setSize(sf::Vector2f(width, height));
@@ -71,7 +71,7 @@ void Button::update(sf::Vector2f mousePos)
         }
         default: {
             m_buttonShape.setFillColor(sf::Color::Red);
-            m_text.setFillColor(sf::Color::Red);
+            m_text.setFillColor(sf::Color::Green);
             break;
         }
     }

@@ -1,7 +1,8 @@
 #include "components/hitboxComponent.hpp"
 
-HitboxComponent::HitboxComponent(sf::Sprite & sprite, sf::Vector2f offset, sf::Vector2f size) :
-    m_sprite(sprite), m_offset(offset)
+HitboxComponent::HitboxComponent(sf::Sprite & sprite, sf::Vector2f offset, sf::Vector2f size)
+    : m_sprite(sprite)
+    , m_offset(offset)
 {
     m_hitbox.setPosition(sprite.getGlobalBounds().left + offset.x, sprite.getGlobalBounds().top + offset.y);
     m_hitbox.setSize(size);

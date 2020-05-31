@@ -18,9 +18,8 @@ public:
 
     virtual void setPosition(float x, float y);
     virtual void move(const float dir_x, const float dir_y);
-    
     virtual void render(sf::RenderTarget * target);
-    virtual void update(const float & dt);
+    virtual void update(const float & dt) = 0;
 
 protected:
     sf::Sprite m_sprite;

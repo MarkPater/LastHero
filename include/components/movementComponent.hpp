@@ -16,8 +16,12 @@
 
 enum MovementState {
     IDLE = 0,
-    MOVING_LEFT, MOVING_RIGHT, MOVING_UP, MOVING_DOWN
+    MOVING_LEFT,
+    MOVING_RIGHT,
+    MOVING_UP,
+    MOVING_DOWN
 };
+
 class MovementComponent
 {
 public:
