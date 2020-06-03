@@ -10,6 +10,11 @@ public:
     ~Player();
 
     virtual void update(const float & dt) override;
+
+private:
+    void updateAttack();
+    void updateAnnimation(const float & dt);
+    bool m_attacking{ false };
 };
 
 #endif /* PLAYER_HPP */
