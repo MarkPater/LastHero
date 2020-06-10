@@ -19,7 +19,7 @@ public:
     void renderButtons(sf::RenderTarget & target);
 
     virtual void initKeybinds() override;
-    virtual void update(const float & dt) override;
+    virtual void update(float dt) override;
     virtual void render(sf::RenderTarget * target = nullptr) override;
 
 protected:

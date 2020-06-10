@@ -7,13 +7,16 @@ public:
     State(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states);
     virtual ~State();
 
-    virtual void initKeybinds() = 0;
-
     const bool & getQuit() const;
+    void pauseMenu();
+    void unpauseMenu();
+    void updateDelayTime(float dt);
+    bool delayOccurred();
     virtual void endState();
-
     virtual void updateMousePos();
-    virtual void update(const float & dt) = 0;
+    virtual void initKeybinds() = 0;
+    virtual void updateInput() = 0;
+    virtual void update(float dt) = 0;
     virtual void render(sf::RenderTarget * target = nullptr) = 0;
 
 protected:
@@ -28,6 +31,9 @@ protected:
     sf::Vector2f m_mousePosView;
 
     bool m_quit;
+    bool m_paused;
+    float m_delayTime;
+    const float m_maxDelayTime;
     std::string m_currentPath;
 };
 

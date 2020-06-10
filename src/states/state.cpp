@@ -6,8 +6,38 @@ State::State(sf::RenderWindow * window, std::map<std::string, int> * supportedKe
     , m_supportedKeys(supportedKeys)
     , m_states(states)
     , m_quit(false)
+    , m_paused(false)
+    , m_delayTime(0.f)
+    , m_maxDelayTime(10.f)
     , m_currentPath(std::filesystem::current_path())
 {
+}
+
+void State::pauseMenu()
+{
+    m_paused = true;
+}
+
+void State::unpauseMenu()
+{
+    m_paused = false;
+}
+
+void State::updateDelayTime(float dt)
+{
+    if (m_delayTime <= m_maxDelayTime) {
+        m_delayTime += 60.f * dt;
+    }
+}
+
+bool State::delayOccurred()
+{
+    if (m_delayTime > m_maxDelayTime) {
+        m_delayTime = 0;
+        return true;
+    }
+
+    return false;
 }
 
 const bool & State::getQuit() const 

@@ -112,7 +112,7 @@ void MainMenuState::initKeybinds()
     ifs.close();
 }
 
-void MainMenuState::update(const float & dt)
+void MainMenuState::update(float dt)
 {
     updateInput();
     updateMousePos();
