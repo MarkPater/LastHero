@@ -21,8 +21,8 @@ public:
         BTN_ACTIVE
     };
 
-    const bool isPressed() const;
-    void update(sf::Vector2f mousePos);
+    bool isPressed() const;
+    void update(const sf::Vector2f & mousePos);
     void render(sf::RenderTarget & target);
 
 private:

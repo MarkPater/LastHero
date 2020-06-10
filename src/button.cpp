@@ -34,12 +34,12 @@ Button::~Button()
 
 }
 
-const bool Button::isPressed() const
+bool Button::isPressed() const
 {
     return m_buttonState == static_cast<unsigned short>(buttonState::BTN_ACTIVE) ? true : false;
 }
 
-void Button::update(sf::Vector2f mousePos)
+void Button::update(const sf::Vector2f & mousePos)
 {
     m_buttonState = static_cast<unsigned short>(buttonState::BTN_IDLE);
 

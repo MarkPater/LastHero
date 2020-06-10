@@ -85,7 +85,7 @@ void EditorState::renderButtons(sf::RenderTarget & target)
     }
 }
 
-void EditorState::update(const float & dt)
+void EditorState::update(float dt)
 {
     updateInput();
     updateMousePos();

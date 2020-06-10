@@ -22,6 +22,7 @@ add_executable(${PROJECT_NAME}
     include/components/hitboxComponent.hpp
     include/components/movementComponent.hpp
     include/components/animationComponent.hpp
+    include/GUI/pauseMenu.hpp
     include/entity.hpp
     include/player.hpp
     include/button.hpp
@@ -33,6 +34,7 @@ add_executable(${PROJECT_NAME}
     src/components/hitboxComponent.cpp
     src/components/movementComponent.cpp
     src/components/animationComponent.cpp
+    src/GUI/pauseMenu.cpp
     src/entity.cpp
     src/player.cpp
     src/button.cpp
