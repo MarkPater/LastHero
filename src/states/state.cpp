@@ -38,7 +38,7 @@ void State::updateMousePos()
 void State::updateDelayTime(float dt)
 {
     if (m_delayTime <= m_maxDelayTime) {
-        m_delayTime += 60.f * dt;
+        m_delayTime += 50.f * dt;
     }
 }
 

@@ -24,9 +24,9 @@ add_executable(${PROJECT_NAME}
     include/components/movementComponent.hpp
     include/components/animationComponent.hpp
     include/GUI/pauseMenu.hpp
+    include/GUI/gui.hpp
     include/entity.hpp
     include/player.hpp
-    include/button.hpp
     include/game.hpp
     src/states/state.cpp
     src/states/gameState.cpp
@@ -37,9 +37,9 @@ add_executable(${PROJECT_NAME}
     src/components/movementComponent.cpp
     src/components/animationComponent.cpp
     src/GUI/pauseMenu.cpp
+    src/GUI/gui.cpp
     src/entity.cpp
     src/player.cpp
-    src/button.cpp
     src/game.cpp
     src/main.cpp)
 

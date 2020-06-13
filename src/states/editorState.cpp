@@ -25,9 +25,9 @@ void EditorState::initFont()
 
 void EditorState::initButtons()
 {
-    m_buttons["EXIT"] = new Button(885, 515, 150, 50, &m_font, "Exit", 50,
-        sf::Color(0, 200, 0, 250), sf::Color(250, 135, 50, 200), sf::Color(50, 250, 165, 250),
-        sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0));
+    m_buttons["EXIT"] = new gui::Button(885, 515, 150, 50, m_font, "Exit");
+    m_buttons["EXIT"]->set_check_only_text(true);
+    m_buttons["EXIT"]->set_button_colors();
 }
 
 void EditorState::initKeybinds()
@@ -57,7 +57,7 @@ void EditorState::updateButtons(sf::Vector2f mousePos)
         button.second->update(mousePos);
     }
 
-    if (m_buttons["EXIT"]->isPressed()) {
+    if (m_buttons["EXIT"]->is_pressed()) {
         endState();
     }
 }

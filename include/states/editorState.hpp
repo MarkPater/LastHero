@@ -2,7 +2,7 @@
 #define EDITOR_STATE_HPP
 
 #include "states/state.hpp"
-#include "button.hpp"
+#include "GUI/gui.hpp"
 
 class EditorState : public State {
 public:
@@ -25,7 +25,7 @@ protected:
     sf::Text m_mousePosText;
     sf::Font m_font;
 
-    std::map<std::string, Button *> m_buttons;
+    std::map<std::string, gui::Button *> m_buttons;
 };
 
 #endif /* EDITOR_STATE_HPP */

@@ -11,8 +11,6 @@ public:
     const bool & getQuit() const;
     void pauseMenu();
     void unpauseMenu();
-    void updateDelayTime(float dt);
-    bool delayOccurred();
     virtual void endState();
     virtual void updateMousePos();
     virtual void initKeybinds() = 0;
@@ -21,6 +19,9 @@ public:
     virtual void render(sf::RenderTarget * target = nullptr) = 0;
 
 protected:
+    void updateDelayTime(float dt);
+    bool delayOccurred();
+
     std::stack<State *> * m_states;
     std::map<std::string, sf::Texture> m_textures;
     std::map<std::string, int> * m_supportedKeys;

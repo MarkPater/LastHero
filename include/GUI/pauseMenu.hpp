@@ -1,12 +1,8 @@
 #ifndef PAUSE_MENU_HPP
 #define PAUSE_MENU_HPP
 
-#include "button.hpp"
-
+#include "GUI/gui.hpp"
 #include "string"
-#include "SFML/Graphics.hpp"
-#include "SFML/Window.hpp"
-#include "SFML/System.hpp"
 
 class PauseMenu
 {
@@ -26,7 +22,7 @@ private:
     sf::Text m_menuTitle;
     sf::Font & m_font;
 
-    std::map<std::string, Button *> m_buttons;
+    std::map<std::string, gui::Button *> m_buttons;
 };
 
 #endif /* PAUSE_MENU_HPP */
