@@ -1,5 +1,8 @@
 #include "states/mainMenuState.hpp"
 #include "states/editorState.hpp"
+#include "states/gameState.hpp"
+#include "states/settingsState.hpp"
+#include "button.hpp"
 
 MainMenuState::MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states)
     : State(window, supportedKeys, states)
@@ -7,7 +10,7 @@ MainMenuState::MainMenuState(sf::RenderWindow * window, std::map<std::string, in
 {
     std::cout << "The start of MainMenuState\n";
     
-    initFont();
+    initFonts();
     initButtons();
     initKeybinds();
     initMousePos();
@@ -16,9 +19,12 @@ MainMenuState::MainMenuState(sf::RenderWindow * window, std::map<std::string, in
 
 MainMenuState::~MainMenuState()
 {
+    for (auto & button : m_buttons) {
+        delete button.second;
+    }
 }
 
-void MainMenuState::initFont()
+void MainMenuState::initFonts()
 {
     if (!m_font.loadFromFile(m_currentPath + "/fonts/Dosis-Light.ttf")) {
         assert(false && "MainMenuState::initFont::!loadFromFile");
@@ -32,23 +38,30 @@ void MainMenuState::initButtons()
         sf::Color(0, 200, 0, 255), sf::Color(250, 135, 50, 200), sf::Color(50, 250, 165, 250),
         sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0));
 
-    m_buttons["EDITOR_STATE"] = new Button(1400, 430, 150, 50, &m_font, "Editor", 50,
+    m_buttons["SETTINGS_STATE"] = new Button(1400, 430, 150, 50, &m_font, "Settings", 50,
+        sf::Color(0, 200, 0, 255), sf::Color(250, 135, 50, 200), sf::Color(50, 250, 165, 250),
+        sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0));
+
+    m_buttons["EDITOR_STATE"] = new Button(1400, 580, 150, 50, &m_font, "Editor", 50,
         sf::Color(0, 200, 0, 250), sf::Color(250, 135, 45, 200), sf::Color(50, 250, 165, 250),
         sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0));
 
-    m_buttons["EXIT"] = new Button(1400, 580, 150, 50, &m_font, "Exit", 50,
+    m_buttons["EXIT"] = new Button(1400, 730, 150, 50, &m_font, "Exit", 50,
         sf::Color(0, 200, 0, 250), sf::Color(250, 135, 50, 200), sf::Color(50, 250, 165, 250),
         sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0));
 }
 
-void MainMenuState::initBackground()
+void MainMenuState::initKeybinds()
 {
-    if (!m_backgroundTexture.loadFromFile(m_currentPath + "/resources/images/backgrounds/bg1.jpg")) {
-        assert(false && "MainMenuState::init::!loadFromFile");
-        exit(EXIT_FAILURE);
-    }
+    std::ifstream ifs(m_currentPath + "/config/mainMenuStateKeybinds.ini");
+    std::string action = "", key = "";
 
-    m_background.setTexture(&m_backgroundTexture);
+    if (ifs.is_open()) {
+        while (ifs >> action >> key) {
+            m_keybinds[action] = m_supportedKeys->at(key);
+        }
+    }
+    ifs.close();
 }
 
 void MainMenuState::initMousePos()
@@ -59,21 +72,14 @@ void MainMenuState::initMousePos()
     m_mousePosText.setStyle(sf::Text::Italic);
 }
 
-void MainMenuState::updateButtons(sf::Vector2f mousePos)
+void MainMenuState::initBackground()
 {
-    for (const auto & button : m_buttons) {
-        button.second->update(mousePos);
+    if (!m_backgroundTexture.loadFromFile(m_currentPath + "/resources/images/backgrounds/bg1.jpg")) {
+        assert(false && "MainMenuState::init::!loadFromFile");
+        exit(EXIT_FAILURE);
     }
 
-    if (m_buttons["GAME_STATE"]->isPressed()) {
-        m_states->push(new GameState(m_window, m_supportedKeys, m_states));
-    }
-    else if (m_buttons["EDITOR_STATE"]->isPressed()) {
-        m_states->push(new EditorState(m_window, m_supportedKeys, m_states));
-    }
-    else if (m_buttons["EXIT"]->isPressed()) {
-        endState();
-    }
+    m_background.setTexture(&m_backgroundTexture);
 }
 
 void MainMenuState::updateInput()
@@ -92,24 +98,24 @@ void MainMenuState::updateMousePosText()
     m_mousePosText.setString(ss.str());
 }
 
-void MainMenuState::renderButtons(sf::RenderTarget & target)
+void MainMenuState::updateButtons(sf::Vector2f mousePos)
 {
     for (const auto & button : m_buttons) {
-        button.second->render(target);
+        button.second->update(mousePos);
     }
-}
 
-void MainMenuState::initKeybinds()
-{
-    std::ifstream ifs(m_currentPath + "/config/mainMenuStateKeybinds.ini");
-    std::string action = "", key = "";
-
-    if (ifs.is_open()) {
-        while (ifs >> action >> key) {
-            m_keybinds[action] = m_supportedKeys->at(key);
-        }
+    if (m_buttons["GAME_STATE"]->isPressed()) {
+        m_states->push(new GameState(m_window, m_supportedKeys, m_states));
     }
-    ifs.close();
+    else if (m_buttons["EDITOR_STATE"]->isPressed()) {
+        m_states->push(new EditorState(m_window, m_supportedKeys, m_states));
+    }
+    else if (m_buttons["SETTINGS_STATE"]->isPressed()) {
+        m_states->push(new SettingsState(m_window, m_supportedKeys, m_states));
+    }
+    else if (m_buttons["EXIT"]->isPressed()) {
+        endState();
+    }
 }
 
 void MainMenuState::update(float dt)
@@ -118,6 +124,13 @@ void MainMenuState::update(float dt)
     updateMousePos();
     updateMousePosText();
     updateButtons(m_mousePosView);
+}
+
+void MainMenuState::renderButtons(sf::RenderTarget & target)
+{
+    for (const auto & button : m_buttons) {
+        button.second->render(target);
+    }
 }
 
 void MainMenuState::render(sf::RenderTarget * target)
