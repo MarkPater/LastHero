@@ -15,14 +15,8 @@ public:
            sf::Color idleColor, sf::Color hoverColor, sf::Color activeColor);
     ~Button();
 
-    enum class buttonState {
-        BTN_IDLE = 0,
-        BTN_HOVER,
-        BTN_ACTIVE
-    };
-
     bool isPressed() const;
-    void update(const sf::Vector2f & mousePos);
+    void update(sf::Vector2f mousePos);
     void render(sf::RenderTarget & target);
 
 private:
@@ -38,6 +32,12 @@ private:
     sf::Color m_activeTextColor;
 
     unsigned short m_buttonState;
+
+    enum class buttonState {
+        BTN_IDLE = 0,
+        BTN_HOVER,
+        BTN_ACTIVE
+    };
 };
 
 #endif /* BUTTON_HPP */

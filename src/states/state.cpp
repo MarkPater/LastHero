@@ -13,6 +13,11 @@ State::State(sf::RenderWindow * window, std::map<std::string, int> * supportedKe
 {
 }
 
+State::~State()
+{
+
+}
+
 void State::pauseMenu()
 {
     m_paused = true;
@@ -21,6 +26,13 @@ void State::pauseMenu()
 void State::unpauseMenu()
 {
     m_paused = false;
+}
+
+void State::updateMousePos() 
+{
+    m_mousePosScreen = sf::Mouse::getPosition();
+    m_mousePosWindow = sf::Mouse::getPosition(*m_window);
+    m_mousePosView = m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window)); //sf::View correct pos
 }
 
 void State::updateDelayTime(float dt)
@@ -48,15 +60,4 @@ const bool & State::getQuit() const
 void State::endState()
 {
     m_quit = true;
-}
-
-void State::updateMousePos() 
-{
-    m_mousePosScreen = sf::Mouse::getPosition();
-    m_mousePosWindow = sf::Mouse::getPosition(*m_window);
-    m_mousePosView = m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window)); //sf::View correct pos
-}
-
-State::~State()
-{
 }

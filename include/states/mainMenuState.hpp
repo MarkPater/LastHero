@@ -1,23 +1,24 @@
 #ifndef MAIN_MENU_STATE_HPP
 #define MAIN_MENU_STATE_HPP
 
-#include "states/gameState.hpp"
-#include "button.hpp"
+#include "states/state.hpp"
+
+class Button;
 
 class MainMenuState : public State {
 public:
     MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states);
     virtual ~MainMenuState();
 
-    void initFont();
+    void initFonts();
     void initButtons();
     void initMousePos();
     void initBackground();
-    void updateInput();
     void updateMousePosText();
     void updateButtons(sf::Vector2f mousePos);
     void renderButtons(sf::RenderTarget & target);
 
+    virtual void updateInput() override;
     virtual void initKeybinds() override;
     virtual void update(float dt) override;
     virtual void render(sf::RenderTarget * target = nullptr) override;

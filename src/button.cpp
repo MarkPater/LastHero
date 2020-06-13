@@ -1,4 +1,5 @@
 #include "button.hpp"
+#include <cassert>
 
 Button::Button(const float & x, const float & y, 
                const float & width, const float & height,
@@ -39,7 +40,7 @@ bool Button::isPressed() const
     return m_buttonState == static_cast<unsigned short>(buttonState::BTN_ACTIVE) ? true : false;
 }
 
-void Button::update(const sf::Vector2f & mousePos)
+void Button::update(sf::Vector2f mousePos)
 {
     m_buttonState = static_cast<unsigned short>(buttonState::BTN_IDLE);
 
@@ -70,9 +71,8 @@ void Button::update(const sf::Vector2f & mousePos)
             break;
         }
         default: {
-            m_buttonShape.setFillColor(sf::Color::Red);
-            m_text.setFillColor(sf::Color::Green);
-            break;
+            assert(false && "Button::update::undefined_button_state");
+            exit(EXIT_FAILURE);
         }
     }
 }

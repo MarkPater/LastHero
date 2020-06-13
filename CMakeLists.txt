@@ -19,6 +19,7 @@ add_executable(${PROJECT_NAME}
     include/states/gameState.hpp
     include/states/editorState.hpp
     include/states/mainMenuState.hpp
+    include/states/settingsState.hpp
     include/components/hitboxComponent.hpp
     include/components/movementComponent.hpp
     include/components/animationComponent.hpp
@@ -31,6 +32,7 @@ add_executable(${PROJECT_NAME}
     src/states/gameState.cpp
     src/states/editorState.cpp
     src/states/mainMenuState.cpp
+    src/states/settingsState.cpp
     src/components/hitboxComponent.cpp
     src/components/movementComponent.cpp
     src/components/animationComponent.cpp

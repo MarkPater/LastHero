@@ -2,7 +2,8 @@
 #define STATE_HPP
 
 #include "player.hpp"
-class State {
+class State
+{
 public:
     State(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states);
     virtual ~State();
