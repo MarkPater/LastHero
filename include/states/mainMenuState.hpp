@@ -2,8 +2,7 @@
 #define MAIN_MENU_STATE_HPP
 
 #include "states/state.hpp"
-
-class Button;
+#include "GUI/gui.hpp"
 
 class MainMenuState : public State {
 public:
@@ -11,7 +10,7 @@ public:
     virtual ~MainMenuState();
 
     void initFonts();
-    void initButtons();
+    void init_gui();
     void initMousePos();
     void initBackground();
     void updateMousePosText();
@@ -29,7 +28,7 @@ protected:
     sf::Text m_mousePosText;
     sf::Font m_font;
 
-    std::map<std::string, Button *> m_buttons;
+    std::map<std::string, gui::Button *> m_buttons;
 };
 
 #endif /* MAIN_MENU_STATE_HPP */

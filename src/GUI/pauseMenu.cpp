@@ -29,15 +29,15 @@ PauseMenu::~PauseMenu()
 void PauseMenu::addButton(const std::string & action, sf::Text & text, const float & x, const float & y)
 {
     std::string s_text = text.getString().toAnsiString();
-    m_buttons[action] = new Button(
-        x, y, text.getGlobalBounds().width + 10, text.getGlobalBounds().height + 5, &m_font, s_text, 50, 
-        sf::Color(0, 0, 200, 255), sf::Color(0, 200, 0, 255), sf::Color(50, 250, 165, 250),
-        sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0), sf::Color(0, 0, 0, 0));
+    m_buttons[action] = new gui::Button(x, y, text.getGlobalBounds().width + 10, text.getGlobalBounds().height + 5, m_font, s_text);
+
+    m_buttons[action]->set_check_only_text(true);
+    m_buttons[action]->set_button_colors();
 }
 
 bool PauseMenu::isButtonPressed(const std::string & action) const
 {
-    return m_buttons.at(action)->isPressed();
+    return m_buttons.at(action)->is_pressed();
 }
 
 const sf::RectangleShape & PauseMenu::getContainer()
