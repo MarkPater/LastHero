@@ -3,17 +3,17 @@
 #include "states/gameState.hpp"
 #include "states/settingsState.hpp"
 
-MainMenuState::MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states)
-    : State(window, supportedKeys, states)
+MainMenuState::MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
+    : State(window, supported_keys, states)
     , m_background(sf::Vector2f(m_window->getSize()))
 {
     std::cout << "The start of MainMenuState\n";
     
-    initFonts();
+    init_fonts();
     init_gui();
-    initKeybinds();
-    initMousePos();
-    initBackground();
+    init_keybinds();
+    init_background();
+    init_mouse_pos_text();
 }
 
 MainMenuState::~MainMenuState()
@@ -23,9 +23,9 @@ MainMenuState::~MainMenuState()
     }
 }
 
-void MainMenuState::initFonts()
+void MainMenuState::init_fonts()
 {
-    if (!m_font.loadFromFile(m_currentPath + "/fonts/Dosis-Light.ttf")) {
+    if (!m_font.loadFromFile(m_current_path + "/fonts/Dosis-Light.ttf")) {
         assert(false && "MainMenuState::initFont::!loadFromFile");
         exit(EXIT_FAILURE);
     }
@@ -46,82 +46,70 @@ void MainMenuState::init_gui()
     }
 }
 
-void MainMenuState::initKeybinds()
+void MainMenuState::init_keybinds()
 {
-    std::ifstream ifs(m_currentPath + "/config/mainMenuStateKeybinds.ini");
+    std::ifstream ifs(m_current_path + "/config/mainMenuStateKeybinds.ini");
     std::string action = "", key = "";
 
     if (ifs.is_open()) {
         while (ifs >> action >> key) {
-            m_keybinds[action] = m_supportedKeys->at(key);
+            m_keybinds[action] = m_supported_keys->at(key);
         }
     }
     ifs.close();
 }
 
-void MainMenuState::initMousePos()
+void MainMenuState::init_background()
 {
-    m_mousePosText.setFont(m_font);
-    m_mousePosText.setCharacterSize(12);
-    m_mousePosText.setColor(sf::Color::White);
-    m_mousePosText.setStyle(sf::Text::Italic);
-}
-
-void MainMenuState::initBackground()
-{
-    if (!m_backgroundTexture.loadFromFile(m_currentPath + "/resources/images/backgrounds/bg1.jpg")) {
+    if (!m_background_texture.loadFromFile(m_current_path + "/resources/images/backgrounds/bg1.jpg")) {
         assert(false && "MainMenuState::init::!loadFromFile");
         exit(EXIT_FAILURE);
     }
 
-    m_background.setTexture(&m_backgroundTexture);
+    m_background.setTexture(&m_background_texture);
 }
 
-void MainMenuState::updateInput()
+void MainMenuState::init_mouse_pos_text()
+{
+    m_mouse_pos_text.setFont(m_font);
+}
+
+void MainMenuState::update_input()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["EXIT"]))) {
-        endState();
+        end_state();
     }
 }
 
-void MainMenuState::updateMousePosText()
-{
-    m_mousePosText.setPosition(m_mousePosView.x, m_mousePosView.y - 25);
-
-    std::stringstream ss;
-    ss << m_mousePosView.x << "x" << m_mousePosView.y;
-    m_mousePosText.setString(ss.str());
-}
-
-void MainMenuState::updateButtons(sf::Vector2f mousePos)
+void MainMenuState::update_buttons(sf::Vector2f mousePos)
 {
     for (const auto & button : m_buttons) {
         button.second->update(mousePos);
     }
 
     if (m_buttons["GAME_STATE"]->is_pressed()) {
-        m_states->push(new GameState(m_window, m_supportedKeys, m_states));
+        m_states->push(new GameState(m_window, m_supported_keys, m_states));
     }
     else if (m_buttons["EDITOR_STATE"]->is_pressed()) {
-        m_states->push(new EditorState(m_window, m_supportedKeys, m_states));
+        m_states->push(new EditorState(m_window, m_supported_keys, m_states));
     }
     else if (m_buttons["SETTINGS_STATE"]->is_pressed()) {
-        m_states->push(new SettingsState(m_window, m_supportedKeys, m_states));
+        m_states->push(new SettingsState(m_window, m_supported_keys, m_states));
     }
     else if (m_buttons["EXIT"]->is_pressed()) {
-        endState();
+        end_state();
     }
 }
 
 void MainMenuState::update(float dt)
 {
-    updateInput();
-    updateMousePos();
-    updateMousePosText();
-    updateButtons(m_mousePosView);
+    update_input();
+    update_mouse_pos();
+    update_mouse_pos_text();
+    update_buttons(m_mouse_pos_view);
 }
 
-void MainMenuState::renderButtons(sf::RenderTarget & target)
+void MainMenuState::render_buttons(sf::RenderTarget & target)
 {
     for (const auto & button : m_buttons) {
         button.second->render(target);
@@ -135,6 +123,6 @@ void MainMenuState::render(sf::RenderTarget * target)
     }
 
     target->draw(m_background);
-    renderButtons(*target);
-    target->draw(m_mousePosText);
+    render_buttons(*target);
+    target->draw(m_mouse_pos_text);
 }

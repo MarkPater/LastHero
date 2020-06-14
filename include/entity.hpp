@@ -11,12 +11,12 @@ public:
     Entity();
     ~Entity();
 
-    void setTexture(sf::Texture & texture);
-    void createMovementComponent(const float & maxVelocity, const float & acceleration, const float & deceleration);
-    void createAnimationComponent(sf::Texture & texture_sheet);
-    void createHitboxComponent(sf::Vector2f offset, sf::Vector2f size);
+    void set_texture(sf::Texture & texture);
+    void create_movement_component(const float & max_velocity, const float & acceleration, const float & deceleration);
+    void create_animation_component(sf::Texture & texture_sheet);
+    void create_hitbox_component(sf::Vector2f offset, sf::Vector2f size);
 
-    virtual void setPosition(float x, float y);
+    virtual void set_position(float x, float y);
     virtual void move(const float dir_x, const float dir_y);
     virtual void render(sf::RenderTarget * target);
     virtual void update(const float & dt) = 0;
@@ -24,9 +24,9 @@ public:
 protected:
     sf::Sprite m_sprite;
 
-    HitboxComponent * m_hitboxComponent;
-    MovementComponent * m_movementComponent;
-    AnimationComponent * m_animationComponent;
+    HitboxComponent * m_hitbox_component;
+    MovementComponent * m_movement_component;
+    AnimationComponent * m_animation_component;
 };
 
 #endif /* ENTITY_HPP */

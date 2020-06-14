@@ -12,8 +12,8 @@ public:
     virtual void update(const float & dt) override;
 
 private:
-    void updateAttack();
-    void updateAnnimation(const float & dt);
+    void update_attack();
+    void update_annimation(const float & dt);
     bool m_attacking{ false };
 };
 

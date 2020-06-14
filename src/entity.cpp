@@ -1,48 +1,48 @@
 #include <entity.hpp>
 
 Entity::Entity()
-    : m_movementComponent(nullptr)
-    , m_animationComponent(nullptr)
-    , m_hitboxComponent(nullptr)
+    : m_movement_component(nullptr)
+    , m_animation_component(nullptr)
+    , m_hitbox_component(nullptr)
 {
 }
 
 Entity::~Entity()
 {
-    delete m_movementComponent;
-    delete m_animationComponent;
-    delete m_hitboxComponent;
+    delete m_movement_component;
+    delete m_animation_component;
+    delete m_hitbox_component;
 }
 
-void Entity::setTexture(sf::Texture & texture)
+void Entity::set_texture(sf::Texture & texture)
 {
     m_sprite.setTexture(texture);
 }
 
-void Entity::createMovementComponent(const float & maxVelocity, const float & acceleration, const float & deceleration)
+void Entity::create_movement_component(const float & maxVelocity, const float & acceleration, const float & deceleration)
 {
-    m_movementComponent = new MovementComponent(m_sprite, maxVelocity, acceleration, deceleration);
+    m_movement_component = new MovementComponent(m_sprite, maxVelocity, acceleration, deceleration);
 }
 
-void Entity::createAnimationComponent(sf::Texture & texture_sheet)
+void Entity::create_animation_component(sf::Texture & texture_sheet)
 {
-    m_animationComponent = new AnimationComponent(m_sprite, texture_sheet);
+    m_animation_component = new AnimationComponent(m_sprite, texture_sheet);
 }
 
-void Entity::createHitboxComponent(sf::Vector2f offset, sf::Vector2f size)
+void Entity::create_hitbox_component(sf::Vector2f offset, sf::Vector2f size)
 {
-    m_hitboxComponent = new HitboxComponent(m_sprite, offset, size);
+    m_hitbox_component = new HitboxComponent(m_sprite, offset, size);
 }
 
-void Entity::setPosition(float x, float y)
+void Entity::set_position(float x, float y)
 {
     m_sprite.setPosition(x, y);
 }
 
 void Entity::move(const float dir_x, const float dir_y)
 {
-    if (m_movementComponent) {
-        m_movementComponent->move(dir_x, dir_y);
+    if (m_movement_component) {
+        m_movement_component->move(dir_x, dir_y);
     }
 }
 
@@ -50,5 +50,5 @@ void Entity::render(sf::RenderTarget * target)
 {
     target->draw(m_sprite);
 
-    m_hitboxComponent->render(*target);
+    m_hitbox_component->render(*target);
 }

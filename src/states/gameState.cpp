@@ -1,80 +1,80 @@
 #include "states/gameState.hpp"
 
-GameState::GameState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states)
-    : State(window, supportedKeys, states)
+GameState::GameState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
+    : State(window, supported_keys, states)
 {
     std::cout << "The start of GameState\n";
-    initKeybinds();
-    initTextures();
-    initFont();
-    initPauseMenu();
-    initPlayers();
+    init_keybinds();
+    init_textures();
+    init_font();
+    init_pause_menu();
+    init_players();
 }
 
 GameState::~GameState()
 {
     delete m_player;
-    delete m_pauseMenu;
+    delete m_pause_menu;
 }
 
-void GameState::initKeybinds()
+void GameState::init_keybinds()
 {
-    std::ifstream ifs(m_currentPath + "/config/gameStateKeybinds.ini");
+    std::ifstream ifs(m_current_path + "/config/gameStateKeybinds.ini");
     std::string action = "", key = "";
 
     if (ifs.is_open()) {
         while (ifs >> action >> key) {
-            m_keybinds[action] = m_supportedKeys->at(key);
+            m_keybinds[action] = m_supported_keys->at(key);
         }
     } 
     ifs.close();
 }
 
-void GameState::initTextures()
+void GameState::init_textures()
 {
-    if (!m_textures["PLAYER_SHEET"].loadFromFile(m_currentPath + "/resources/images/sprites/player/Player_sheet.png")) {
-        assert(false && "GameState::initTextures::!lodaFromFile");
+    if (!m_textures["PLAYER_SHEET"].loadFromFile(m_current_path + "/resources/images/sprites/player/Player_sheet.png")) {
+        assert(false && "GameState::init_textures::!lodaFromFile");
         exit(EXIT_FAILURE);
     }
 }
 
-void GameState::initFont()
+void GameState::init_font()
 {
-    if (!m_font.loadFromFile(m_currentPath + "/fonts/Dosis-Light.ttf")) {
-        assert(false && "GameState::initFont::!loadFromFile");
+    if (!m_font.loadFromFile(m_current_path + "/fonts/Dosis-Light.ttf")) {
+        assert(false && "GameState::init_font::!loadFromFile");
         exit(EXIT_FAILURE);
     }
 }
 
-void GameState::initPauseMenu()
+void GameState::init_pause_menu()
 {
-    m_pauseMenu = new PauseMenu(*m_window, m_font);
+    m_pause_menu = new PauseMenu(*m_window, m_font);
 
     sf::Text quitText;
     quitText.setString("Quit");
-    m_pauseMenu->addButton("QUIT", quitText,
-        m_pauseMenu->getContainer().getPosition().x + m_pauseMenu->getContainer().getSize().x / 2 - quitText.getGlobalBounds().width,
-        m_pauseMenu->getContainer().getPosition().y + m_pauseMenu->getContainer().getSize().y / 1.1 - quitText.getGlobalBounds().height);
+    m_pause_menu->add_button("QUIT", quitText,
+        m_pause_menu->get_container().getPosition().x + m_pause_menu->get_container().getSize().x / 2 - quitText.getGlobalBounds().width,
+        m_pause_menu->get_container().getPosition().y + m_pause_menu->get_container().getSize().y / 1.1 - quitText.getGlobalBounds().height);
 }
 
-void GameState::initPlayers()
+void GameState::init_players()
 {
     m_player = new Player(0, 0, m_textures["PLAYER_SHEET"]);
 }
 
-void GameState::updateInput()
+void GameState::update_input()
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["PAUSE"])) && delayOccurred()) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["PAUSE"])) && delay_occurred()) {
         if (!m_paused) {
-            pauseMenu();
+            pause_menu();
         }
         else {
-            unpauseMenu();
+            unpause_menu();
         }
     }
 }
 
-void GameState::updatePlayerInput()
+void GameState::update_player_input()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["MOVE_LEFT"]))) {
         m_player->move(-1.0f, 0.f);
@@ -90,26 +90,26 @@ void GameState::updatePlayerInput()
     }
 }
 
-void GameState::updatePauseMenuButtons()
+void GameState::update_pause_menu_buttons()
 {
-    if (m_pauseMenu->isButtonPressed("QUIT")) {
-        endState();
+    if (m_pause_menu->is_button_pressed("QUIT")) {
+        end_state();
     }
 }
 
 void GameState::update(float dt)
 {
-    updateDelayTime(dt);
-    updateMousePos();
-    updateInput();
+    update_delay_time(dt);
+    update_mouse_pos();
+    update_input();
 
     if (!m_paused) {
-        updatePlayerInput();
+        update_player_input();
         m_player->update(dt);
     }
     else {
-        m_pauseMenu->update(m_mousePosView);
-        updatePauseMenuButtons();
+        m_pause_menu->update(m_mouse_pos_view);
+        update_pause_menu_buttons();
     }
 }
 
@@ -122,6 +122,6 @@ void GameState::render(sf::RenderTarget * target)
     m_player->render(target);
 
     if (m_paused) {
-        m_pauseMenu->render(*target);
+        m_pause_menu->render(*target);
     }
 }

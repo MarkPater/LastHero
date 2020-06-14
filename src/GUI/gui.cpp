@@ -1,6 +1,5 @@
 #include "GUI/gui.hpp"
 #include <cassert>
-#include <iostream>
 
 ////////////////////////////   gui::Button   ////////////////////////////
 gui::Button::Button(unsigned x,
@@ -40,8 +39,6 @@ gui::Button::Button(unsigned x,
         m_button_shape.getPosition().x + width / 2.f - m_text.getGlobalBounds().width / 2.f,
         m_button_shape.getPosition().y + height / 2.f - for_center.getGlobalBounds().height / 1.20f
     );
-
-    std::cout << for_center.getGlobalBounds().height << " " << for_center.getString().toAnsiString() << "\n";
 }
 
 gui::Button::~Button()
@@ -266,6 +263,11 @@ void gui::ComboBox::add_items(const std::string text[], unsigned size, unsigned 
         m_elements.push_back(new Button(m_x, m_y + (m_elements.size() * m_height), m_width, m_height, m_font, text[i], character_size));
         m_elements[m_elements.size() - 1]->set_id(m_last_id++);
     }
+}
+
+int gui::ComboBox::current_index() const
+{
+    return m_active_element->id();
 }
 
 void gui::ComboBox::set_current_index(unsigned index)

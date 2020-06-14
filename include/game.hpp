@@ -9,31 +9,31 @@ public:
     Game();
     ~Game();
 
-    void initWindow();
-    void initSupportedKeys();
-    void initStates();
-    void updateDt();
-    void updateSfmlEvents();
+    void init_window();
+    void init_supported_keys();
+    void init_states();
+    void update_dt();
+    void update_sfml_events();
     void update();
     void render();
     void run();
-    void endApplication();
+    void end_application();
 
 private:
-    sf::RenderWindow * m_mainWindow;
-    sf::Event m_sfEvent;
-    sf::Clock m_dtClock;
-    sf::VideoMode m_windowBounds;
+    sf::RenderWindow * m_main_window;
+    sf::Event m_sf_event;
+    sf::Clock m_dt_clock;
+    sf::VideoMode m_window_bounds;
 
     std::stack<State *> m_states;
-    std::map<std::string, int> m_supportedKeys;
-    std::vector<sf::VideoMode> m_videoModes;
+    std::map<std::string, int> m_supported_keys;
+    std::vector<sf::VideoMode> m_video_modes;
 
     float m_dt;
-    bool m_isFullscreen;
-    int m_framerateLimit;
-    std::string m_windowTitle;
-    std::string m_currentPath;
+    bool m_is_fullscreen;
+    int m_framerate_limit;
+    std::string m_window_title;
+    std::string m_current_path;
 };
 
 #endif /* GAME_HPP */

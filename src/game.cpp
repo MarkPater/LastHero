@@ -2,16 +2,16 @@
 #include <filesystem>
 
 Game::Game() :
-    m_windowTitle("LastHero"),
-    m_windowBounds(1080, 720),
-    m_isFullscreen(false),
-    m_framerateLimit(60),
-    m_currentPath(std::filesystem::current_path())
+    m_window_title("LastHero"),
+    m_window_bounds(1080, 720),
+    m_is_fullscreen(false),
+    m_framerate_limit(60),
+    m_current_path(std::filesystem::current_path())
 {
     std::cout << "The start of GameApp\n";
-    initWindow();
-    initSupportedKeys();
-    initStates();
+    init_window();
+    init_supported_keys();
+    init_states();
 }
 
 Game::~Game()
@@ -20,102 +20,101 @@ Game::~Game()
         delete m_states.top();
         m_states.pop();
     }
-    delete m_mainWindow;
+    delete m_main_window;
 }
 
-void Game::initWindow()
+void Game::init_window()
 {
-    std::filesystem::path pathToShow();
-
-    std::ifstream ifs(m_currentPath + "/config/window.ini");
-    m_videoModes = sf::VideoMode::getFullscreenModes();
+    std::ifstream ifs(m_current_path + "/config/window.ini");
+    m_video_modes = sf::VideoMode::getFullscreenModes();
 
     if (ifs.is_open()) {
-        std::getline(ifs, m_windowTitle);
-        ifs >> m_windowBounds.width >> m_windowBounds.height;
-        ifs >> m_framerateLimit;
-        ifs >> m_isFullscreen;
+        std::getline(ifs, m_window_title);
+        ifs >> m_window_bounds.width >> m_window_bounds.height;
+        ifs >> m_framerate_limit;
+        ifs >> m_is_fullscreen;
     }
     ifs.close();
 
-    if (m_isFullscreen) {
-        m_mainWindow = new sf::RenderWindow(m_videoModes[0], m_windowTitle, sf::Style::Fullscreen);
+    if (m_is_fullscreen) {
+        m_main_window = new sf::RenderWindow(m_video_modes[0], m_window_title, sf::Style::Fullscreen);
     }
     else {
-        m_mainWindow = new sf::RenderWindow(m_windowBounds, m_windowTitle, sf::Style::Titlebar | sf::Style::Close);
+        m_main_window = new sf::RenderWindow(m_window_bounds, m_window_title, sf::Style::Titlebar | sf::Style::Close);
+        m_main_window->setPosition(sf::Vector2i(0, 0));
     }
-    m_mainWindow->setFramerateLimit(m_framerateLimit);
+    m_main_window->setFramerateLimit(m_framerate_limit);
 }
 
-void Game::initSupportedKeys()
+void Game::init_supported_keys()
 {
-    std::ifstream ifs(m_currentPath + "/config/supportedKeys.ini");
+    std::ifstream ifs(m_current_path + "/config/supportedKeys.ini");
     std::string key = "";
     int key_value = 0;
 
     if (ifs.is_open()) {
         while (ifs >> key >> key_value) {
-            m_supportedKeys[key] = key_value;
+            m_supported_keys[key] = key_value;
         }
     }
     ifs.close();
 }
 
-void Game::initStates()
+void Game::init_states()
 {
-    m_states.emplace(new MainMenuState(m_mainWindow, &m_supportedKeys, &m_states));
+    m_states.emplace(new MainMenuState(m_main_window, &m_supported_keys, &m_states));
 }
 
-void Game::updateDt() 
+void Game::update_dt() 
 {
-    m_dt = m_dtClock.restart().asSeconds(); // ~0.001 for you
+    m_dt = m_dt_clock.restart().asSeconds(); // ~0.001 for you
 }
 
-void Game::updateSfmlEvents() 
+void Game::update_sfml_events() 
 {
-    while (m_mainWindow->pollEvent(m_sfEvent)) {
-        if (m_sfEvent.type == sf::Event::Closed) {
-            m_mainWindow->close();
+    while (m_main_window->pollEvent(m_sf_event)) {
+        if (m_sf_event.type == sf::Event::Closed) {
+            m_main_window->close();
         }
     }
 }
 
 void Game::update()
 {
-    updateSfmlEvents();
-    updateDt();
+    update_sfml_events();
+    update_dt();
 
     if (!m_states.empty()) {
         m_states.top()->update(m_dt);
-        if (m_states.top()->getQuit()) {
+        if (m_states.top()->get_quit()) {
             delete m_states.top();
             m_states.pop();
         }
     }
     else {
-        endApplication();
+        end_application();
     }
 }
 
 void Game::render()
 {
-    m_mainWindow->clear();
+    m_main_window->clear();
     if (!m_states.empty()) {
-        m_states.top()->render(m_mainWindow);
+        m_states.top()->render(m_main_window);
     }
-    m_mainWindow->display();
+    m_main_window->display();
 }
 
 void Game::run()
 {
-    while (m_mainWindow->isOpen()) {
+    while (m_main_window->isOpen()) {
         update();
         render();
     }
 }
 
-void Game::endApplication()
+void Game::end_application()
 {
     std::cout << "The end of GameApp\n";
-    m_mainWindow->close();
+    m_main_window->close();
 }
