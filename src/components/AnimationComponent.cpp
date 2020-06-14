@@ -1,5 +1,4 @@
-#include <iostream>
-#include "components/animationComponent.hpp"
+#include "components/AnimationComponent.hpp"
 
 AnimationComponent::Animation::Animation(sf::Sprite & sprite,
                                          sf::Texture & texture_sheet,

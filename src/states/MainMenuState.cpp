@@ -1,7 +1,7 @@
-#include "states/mainMenuState.hpp"
-#include "states/editorState.hpp"
-#include "states/gameState.hpp"
-#include "states/settingsState.hpp"
+#include "states/MainMenuState.hpp"
+#include "states/EditorState.hpp"
+#include "states/GameState.hpp"
+#include "states/SettingsState.hpp"
 
 MainMenuState::MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
     : State(window, supported_keys, states)

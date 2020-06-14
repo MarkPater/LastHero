@@ -1,4 +1,4 @@
-#include "states/settingsState.hpp"
+#include "states/SettingsState.hpp"
 
 SettingsState::SettingsState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
     : State(window, supported_keys, states)

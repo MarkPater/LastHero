@@ -1,9 +1,9 @@
 #ifndef ENTITY_HPP
 #define ENTITY_HPP
 
-#include "components/movementComponent.hpp"
-#include "components/animationComponent.hpp"
-#include "components/hitboxComponent.hpp"
+#include "components/MovementComponent.hpp"
+#include "components/AnimationComponent.hpp"
+#include "components/HitboxComponent.hpp"
 
 class Entity 
 {

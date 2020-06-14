@@ -1,4 +1,4 @@
-#include "states/state.hpp"
+#include "states/State.hpp"
 #include <filesystem>
 
 State::State(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states)

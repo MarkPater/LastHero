@@ -1,8 +1,8 @@
 #ifndef MAIN_MENU_STATE_HPP
 #define MAIN_MENU_STATE_HPP
 
-#include "states/state.hpp"
-#include "GUI/gui.hpp"
+#include "states/State.hpp"
+#include "GUI/Gui.hpp"
 
 class MainMenuState : public State {
 public:

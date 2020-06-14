@@ -1,4 +1,4 @@
-#include "components/hitboxComponent.hpp"
+#include "components/HitboxComponent.hpp"
 
 HitboxComponent::HitboxComponent(sf::Sprite & sprite, sf::Vector2f offset, sf::Vector2f size)
     : m_sprite(sprite)

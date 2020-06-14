@@ -1,7 +1,7 @@
 #ifndef PAUSE_MENU_HPP
 #define PAUSE_MENU_HPP
 
-#include "GUI/gui.hpp"
+#include "GUI/Gui.hpp"
 #include "string"
 
 class PauseMenu

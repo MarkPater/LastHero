@@ -1,4 +1,4 @@
-#include "GUI/pauseMenu.hpp"
+#include "GUI/PauseMenu.hpp"
 
 PauseMenu::PauseMenu(const sf::RenderWindow & window, sf::Font & font)
     : m_font(font)

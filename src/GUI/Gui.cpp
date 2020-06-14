@@ -1,4 +1,4 @@
-#include "GUI/gui.hpp"
+#include "GUI/Gui.hpp"
 #include <cassert>
 
 ////////////////////////////   gui::Button   ////////////////////////////
