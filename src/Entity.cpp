@@ -1,4 +1,4 @@
-#include <entity.hpp>
+#include <Entity.hpp>
 
 Entity::Entity()
     : m_movement_component(nullptr)

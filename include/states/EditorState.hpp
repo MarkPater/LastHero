@@ -1,8 +1,8 @@
 #ifndef EDITOR_STATE_HPP
 #define EDITOR_STATE_HPP
 
-#include "states/state.hpp"
-#include "GUI/gui.hpp"
+#include "states/State.hpp"
+#include "GUI/Gui.hpp"
 
 class EditorState : public State {
 public:

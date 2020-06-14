@@ -1,7 +1,7 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
-#include "player.hpp"
+#include "Player.hpp"
 class State
 {
 public:

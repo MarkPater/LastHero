@@ -1,4 +1,4 @@
-#include "player.hpp"
+#include "Player.hpp"
 
 const size_t hero_width{ 192 };
 

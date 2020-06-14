@@ -1,4 +1,4 @@
-#include "states/gameState.hpp"
+#include "states/GameState.hpp"
 
 GameState::GameState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
     : State(window, supported_keys, states)

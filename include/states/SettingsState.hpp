@@ -1,8 +1,8 @@
 #ifndef SETTINGS_STATE_H
 #define SETTINGS_STATE_H
 
-#include "states/state.hpp"
-#include "GUI/gui.hpp"
+#include "states/State.hpp"
+#include "GUI/Gui.hpp"
 
 class SettingsState : public State
 {

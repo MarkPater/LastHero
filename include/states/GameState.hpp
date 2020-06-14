@@ -1,8 +1,8 @@
 #ifndef GAME_STATE_HPP
 #define GAME_STATE_HPP
 
-#include "states/state.hpp"
-#include "GUI/pauseMenu.hpp"
+#include "states/State.hpp"
+#include "GUI/PauseMenu.hpp"
 
 class GameState : public State 
 {

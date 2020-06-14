@@ -1,4 +1,4 @@
-#include "components/movementComponent.hpp"
+#include "components/MovementComponent.hpp"
 
 MovementComponent::MovementComponent(sf::Sprite & sprite, float maxVelocity, float acceleration, float deceleration)
     : m_sprite(sprite)
