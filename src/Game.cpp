@@ -1,14 +1,13 @@
 #include "Game.hpp"
+#include "GraphicsSettings.hpp"
 #include <filesystem>
 
-Game::Game() :
-    m_window_title("LastHero"),
-    m_window_bounds(1080, 720),
-    m_is_fullscreen(false),
-    m_framerate_limit(60),
-    m_current_path(std::filesystem::current_path())
+Game::Game() 
+    : m_gfx_settings{ std::shared_ptr<GraphicsSettings>(new GraphicsSettings()) }
+    , m_current_path{ std::filesystem::current_path() }
 {
     std::cout << "The start of GameApp\n";
+    init_graphics_settings();
     init_window();
     init_supported_keys();
     init_states();
@@ -23,27 +22,24 @@ Game::~Game()
     delete m_main_window;
 }
 
+void Game::init_graphics_settings()
+{
+    m_gfx_settings->load_from_file(m_current_path + "/config/gfx_settings.ini");
+}
+
 void Game::init_window()
 {
-    std::ifstream ifs(m_current_path + "/config/window.ini");
-    m_video_modes = sf::VideoMode::getFullscreenModes();
-
-    if (ifs.is_open()) {
-        std::getline(ifs, m_window_title);
-        ifs >> m_window_bounds.width >> m_window_bounds.height;
-        ifs >> m_framerate_limit;
-        ifs >> m_is_fullscreen;
-    }
-    ifs.close();
-
-    if (m_is_fullscreen) {
-        m_main_window = new sf::RenderWindow(m_video_modes[0], m_window_title, sf::Style::Fullscreen);
+    if (m_gfx_settings->m_is_fullscreen) {
+        m_main_window = new sf::RenderWindow(m_gfx_settings->m_window_bounds, m_gfx_settings->m_window_title,
+                                             sf::Style::Fullscreen, m_gfx_settings->m_context_settings);
     }
     else {
-        m_main_window = new sf::RenderWindow(m_window_bounds, m_window_title, sf::Style::Titlebar | sf::Style::Close);
+        m_main_window = new sf::RenderWindow(m_gfx_settings->m_window_bounds, m_gfx_settings->m_window_title,
+                                             sf::Style::Titlebar | sf::Style::Close, m_gfx_settings->m_context_settings);
         m_main_window->setPosition(sf::Vector2i(0, 0));
     }
-    m_main_window->setFramerateLimit(m_framerate_limit);
+    m_main_window->setFramerateLimit(m_gfx_settings->m_framerate_limit);
+    m_main_window->setVerticalSyncEnabled(m_gfx_settings->m_vertical_sync_enabled);
 }
 
 void Game::init_supported_keys()
@@ -62,7 +58,7 @@ void Game::init_supported_keys()
 
 void Game::init_states()
 {
-    m_states.emplace(new MainMenuState(m_main_window, &m_supported_keys, &m_states));
+    m_states.emplace(new MainMenuState(m_main_window, m_gfx_settings, &m_supported_keys, &m_states));
 }
 
 void Game::update_dt() 

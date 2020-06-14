@@ -4,10 +4,14 @@
 #include "states/State.hpp"
 #include "GUI/Gui.hpp"
 
+#include <memory>
+
+class GraphicsSettings;
+
 class SettingsState : public State
 {
 public:
-    SettingsState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states);
+    SettingsState(sf::RenderWindow * window, std::shared_ptr<GraphicsSettings> gfx_settings, std::map<std::string, int> * supported_keys, std::stack<State *> * states);
     virtual ~SettingsState();
 
     void init_gui();
@@ -29,6 +33,8 @@ private:
     std::map<std::string, gui::ComboBox *> m_combo_boxes;
     std::map<std::string, gui::Button *> m_buttons;
     std::vector<sf::VideoMode> m_video_modes;
+    std::shared_ptr<GraphicsSettings> m_gfx_settings;
+
     sf::RectangleShape m_background;
     sf::Text m_settings_text;
     sf::Font m_font;

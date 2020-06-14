@@ -25,11 +25,12 @@ add_executable(${PROJECT_NAME}
     include/components/AnimationComponent.hpp
     include/GUI/PauseMenu.hpp
     include/GUI/Gui.hpp
-    include/map/Tile.hpp
-    include/map/TileMap.hpp
+    #include/map/Tile.hpp
+    #include/map/TileMap.hpp
     include/Entity.hpp
     include/Player.hpp
     include/Game.hpp
+    include/GraphicsSettings.hpp
     src/states/State.cpp
     src/states/GameState.cpp
     src/states/EditorState.cpp
@@ -40,11 +41,12 @@ add_executable(${PROJECT_NAME}
     src/components/AnimationComponent.cpp
     src/GUI/PauseMenu.cpp
     src/GUI/Gui.cpp
-    src/map/Tile.cpp
-    src/map/TileMap.cpp
+    #src/map/Tile.cpp
+    #src/map/TileMap.cpp
     src/Entity.cpp
     src/Player.cpp
     src/Game.cpp
+    src/GraphicsSettings.cpp
     src/main.cpp)
 
 target_link_libraries(${PROJECT_NAME} sfml-graphics sfml-window sfml-system)

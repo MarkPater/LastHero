@@ -2,6 +2,10 @@
 #define STATE_HPP
 
 #include "Player.hpp"
+#include <memory>
+
+class GraphicsSettings;
+
 class State
 {
 public:

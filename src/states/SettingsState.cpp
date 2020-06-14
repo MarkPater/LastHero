@@ -1,9 +1,11 @@
 #include "states/SettingsState.hpp"
+#include "GraphicsSettings.hpp"
 
-SettingsState::SettingsState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
+SettingsState::SettingsState(sf::RenderWindow * window, std::shared_ptr<GraphicsSettings> gfx_settings, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
     : State(window, supported_keys, states)
     , m_background(sf::Vector2f(m_window->getSize()))
     , m_video_modes(sf::VideoMode::getFullscreenModes())
+    , m_gfx_settings(std::move(gfx_settings))
 {
     init_fonts();
     init_gui();
@@ -105,7 +107,8 @@ void SettingsState::update_gui(float dt, sf::Vector2f mouse_pos)
         end_state();
     }
     else if (m_buttons["APPLY"]->is_pressed()) {
-        m_window->create(m_video_modes[m_combo_boxes["RESOLUTION"]->current_index()], "Test", sf::Style::Default);
+        m_gfx_settings->m_window_bounds = m_video_modes[m_combo_boxes["RESOLUTION"]->current_index()];
+        m_window->create(m_gfx_settings->m_window_bounds, m_gfx_settings->m_window_title, sf::Style::Default);
     }
 }
 
