@@ -6,25 +6,22 @@
 
 class EditorState : public State {
 public:
-    EditorState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states);
+    EditorState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states);
     virtual ~EditorState();
 
-    void initFont();
-    void initButtons();
-    void initMousePos();
-    void updateInput();
-    void updateMousePosText();
-    void updateButtons(sf::Vector2f mousePos);
-    void renderButtons(sf::RenderTarget & target);
+    void init_font();
+    void init_buttons();
+    void update_input();
+    void update_buttons(sf::Vector2f mouse_pos);
+    void render_buttons(sf::RenderTarget & target);
 
-    virtual void initKeybinds() override;
+    virtual void init_mouse_pos_text() override;
+    virtual void init_keybinds() override;
     virtual void update(float dt) override;
     virtual void render(sf::RenderTarget * target = nullptr) override;
 
 protected:
-    sf::Text m_mousePosText;
     sf::Font m_font;
-
     std::map<std::string, gui::Button *> m_buttons;
 };
 

@@ -2,65 +2,65 @@
 #include "components/animationComponent.hpp"
 
 AnimationComponent::Animation::Animation(sf::Sprite & sprite,
-                                         sf::Texture & textureSheet,
-                                         float animationTimer,
+                                         sf::Texture & texture_sheet,
+                                         float animation_timer,
                                          int start_frame_x, int start_frame_y,
                                          int x_frames, int y_frames,
                                          int widht, int height)
     : m_sprite(sprite)
-    , m_textureSheet(textureSheet)
-    , m_animationTimer(animationTimer)
+    , m_texture_sheet(texture_sheet)
+    , m_animation_timer(animation_timer)
     , m_timer(0)
-    , m_isDone(false)
+    , m_is_done(false)
     , m_width(widht)
     , m_height(height)
-    , m_startRect(start_frame_x * widht, start_frame_y * height, widht, height)
-    , m_currentRect(m_startRect)
-    , m_endRect(x_frames * m_width, y_frames * m_height, widht, height)
+    , m_start_rect(start_frame_x * widht, start_frame_y * height, widht, height)
+    , m_current_rect(m_start_rect)
+    , m_end_rect(x_frames * m_width, y_frames * m_height, widht, height)
 {
-    m_sprite.setTexture(textureSheet);
-    m_sprite.setTextureRect(m_startRect);
+    m_sprite.setTexture(texture_sheet);
+    m_sprite.setTextureRect(m_start_rect);
 }
 
 AnimationComponent::Animation::~Animation()
 {
 }
 
-const bool & AnimationComponent::Animation::play(const float & dt, const float & percentage)
+bool AnimationComponent::Animation::play(float dt, float percentage)
 {
     m_timer += (percentage > 0.5 ? percentage : 0.5) * 100.f * dt;
-    m_isDone = false;
+    m_is_done = false;
 
-    if (m_timer >= m_animationTimer) {
+    if (m_timer >= m_animation_timer) {
         m_timer = 0;
-        if (m_currentRect != m_endRect) {
-            m_currentRect.left += m_width;
+        if (m_current_rect != m_end_rect) {
+            m_current_rect.left += m_width;
         }
         else {
-            m_isDone = true;
+            m_is_done = true;
             reset();
         }
     }
-    m_sprite.setTextureRect(m_currentRect);
+    m_sprite.setTextureRect(m_current_rect);
     
-    return m_isDone;
+    return m_is_done;
 }
 
-const bool & AnimationComponent::Animation::isDone()
+bool AnimationComponent::Animation::is_done()
 {
-    return m_isDone;
+    return m_is_done;
 }
 
 void AnimationComponent::Animation::reset()
 {
-    m_currentRect = m_startRect;
+    m_current_rect = m_start_rect;
 }
 
-AnimationComponent::AnimationComponent(sf::Sprite & sprite, sf::Texture & textureSheet)
+AnimationComponent::AnimationComponent(sf::Sprite & sprite, sf::Texture & texture_sheet)
     : m_sprite(sprite)
-    , m_textureSheet(textureSheet)
-    , m_lastAnimation(nullptr)
-    , m_priorityAnimation(nullptr)
+    , m_texture_sheet(texture_sheet)
+    , m_last_animation(nullptr)
+    , m_priority_animation(nullptr)
 {
 }
 
@@ -71,48 +71,48 @@ AnimationComponent::~AnimationComponent()
     }
 }
 
-void AnimationComponent::addAnimation(const std::string action,
-                                      float animationTimer,
+void AnimationComponent::add_animation(const std::string & action,
+                                      float animation_timer,
                                       int start_frame_x, int start_frame_y,
                                       int x_frames, int y_frames,
                                       int widht, int height)
 {
-    m_animations[action] = new AnimationComponent::Animation(m_sprite, m_textureSheet,
-                                                             animationTimer,
+    m_animations[action] = new AnimationComponent::Animation(m_sprite, m_texture_sheet,
+                                                             animation_timer,
                                                              start_frame_x, start_frame_y,
                                                              x_frames, y_frames,
                                                              widht, height);
 }
 
-const bool & AnimationComponent::play(const std::string & action, const float & dt, const float & currentVelocity, const float & maxVelocity, const bool & priority)
+bool AnimationComponent::play(const std::string & action, float dt, float current_velocity, float max_velocity, const bool priority)
 {
-    stopPreviosAnimation(action);
+    stop_previos_animation(action);
 
-    if (m_priorityAnimation) {
-        const float percentage = (currentVelocity / maxVelocity) > 0.f ? (currentVelocity / maxVelocity) : -(currentVelocity / maxVelocity);
+    if (m_priority_animation) {
+        const float percentage = (current_velocity / max_velocity) > 0.f ? (current_velocity / max_velocity) : -(current_velocity / max_velocity);
         if (m_animations[action]->play(dt, percentage)) {
-            m_priorityAnimation = nullptr;
+            m_priority_animation = nullptr;
         }
     }
     else {
         if (priority) {
-            m_priorityAnimation = m_animations[action];
+            m_priority_animation = m_animations[action];
         }
-        const float percentage = (currentVelocity / maxVelocity) > 0.f ? (currentVelocity / maxVelocity) : -(currentVelocity / maxVelocity);
+        const float percentage = (current_velocity / max_velocity) > 0.f ? (current_velocity / max_velocity) : -(current_velocity / max_velocity);
         m_animations[action]->play(dt, percentage);
     }
 
-    return m_animations[action]->isDone();
+    return m_animations[action]->is_done();
 }
 
-void AnimationComponent::stopPreviosAnimation(const std::string & action)
+void AnimationComponent::stop_previos_animation(const std::string & action)
 {
-    if (m_lastAnimation != m_animations[action]) {
-        if (m_lastAnimation == nullptr) {
-            m_lastAnimation = m_animations[action];
+    if (m_last_animation != m_animations[action]) {
+        if (m_last_animation == nullptr) {
+            m_last_animation = m_animations[action];
         }
 
-        m_lastAnimation->reset();
-        m_lastAnimation = m_animations[action];
+        m_last_animation->reset();
+        m_last_animation = m_animations[action];
     }
 }

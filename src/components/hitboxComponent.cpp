@@ -11,7 +11,7 @@ HitboxComponent::HitboxComponent(sf::Sprite & sprite, sf::Vector2f offset, sf::V
     m_hitbox.setOutlineColor(sf::Color::Green);
 }
 
-bool HitboxComponent::checkIntersect(const sf::FloatRect & frect)
+bool HitboxComponent::check_intersect(const sf::FloatRect & frect)
 {
     return m_hitbox.getGlobalBounds().intersects(frect);
 }

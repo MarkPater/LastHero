@@ -10,11 +10,11 @@ PauseMenu::PauseMenu(const sf::RenderWindow & window, sf::Font & font)
     m_container.setPosition(window.getSize().x / 2 - m_container.getSize().x / 2, (window.getSize().y - m_container.getSize().y) / 2);
     m_container.setFillColor(sf::Color(20, 20, 20, 200));
 
-    m_menuTitle.setFont(m_font);
-    m_menuTitle.setString("PAUSED");
-    m_menuTitle.setCharacterSize(50);
-    m_menuTitle.setColor(sf::Color(234, 25, 55, 200));
-    m_menuTitle.setPosition(m_container.getPosition().x + (m_container.getSize().x / 2) - (m_menuTitle.getGlobalBounds().width / 2),
+    m_menu_title.setFont(m_font);
+    m_menu_title.setString("PAUSED");
+    m_menu_title.setCharacterSize(50);
+    m_menu_title.setColor(sf::Color(234, 25, 55, 200));
+    m_menu_title.setPosition(m_container.getPosition().x + (m_container.getSize().x / 2) - (m_menu_title.getGlobalBounds().width / 2),
                             m_container.getPosition().y + 25);
 }
 
@@ -26,7 +26,7 @@ PauseMenu::~PauseMenu()
     m_buttons.clear();
 }
 
-void PauseMenu::addButton(const std::string & action, sf::Text & text, const float & x, const float & y)
+void PauseMenu::add_button(const std::string & action, sf::Text & text, const float & x, const float & y)
 {
     std::string s_text = text.getString().toAnsiString();
     m_buttons[action] = new gui::Button(x, y, text.getGlobalBounds().width + 10, text.getGlobalBounds().height + 5, m_font, s_text);
@@ -35,12 +35,12 @@ void PauseMenu::addButton(const std::string & action, sf::Text & text, const flo
     m_buttons[action]->set_button_colors();
 }
 
-bool PauseMenu::isButtonPressed(const std::string & action) const
+bool PauseMenu::is_button_pressed(const std::string & action) const
 {
     return m_buttons.at(action)->is_pressed();
 }
 
-const sf::RectangleShape & PauseMenu::getContainer()
+const sf::RectangleShape & PauseMenu::get_container() const
 {
     return m_container;
 }
@@ -56,7 +56,7 @@ void PauseMenu::render(sf::RenderTarget & target)
 {
     target.draw(m_background);
     target.draw(m_container);
-    target.draw(m_menuTitle);
+    target.draw(m_menu_title);
 
     for (const auto & button : m_buttons) {
         button.second->render(target);

@@ -12,19 +12,25 @@ public:
 
     void init_gui();
     void init_fonts();
+    void init_settings();
     void init_background();
     void update_gui(float dt, sf::Vector2f mouse_pos);
     void render_gui(sf::RenderTarget & target);
 
-    virtual void initKeybinds() override;
-    virtual void updateInput() override;
+    virtual void init_mouse_pos_text() override;
+    virtual void init_keybinds() override;
+    virtual void update_input() override;
     virtual void update(float dt) override;
     virtual void render(sf::RenderTarget * target = nullptr) override;
 
 private:
-    std::map<std::string, gui::ComboBox * > m_combo_boxes;
+    std::vector<std::string> from_video_modes_to_strings() const;
+
+    std::map<std::string, gui::ComboBox *> m_combo_boxes;
     std::map<std::string, gui::Button *> m_buttons;
+    std::vector<sf::VideoMode> m_video_modes;
     sf::RectangleShape m_background;
+    sf::Text m_settings_text;
     sf::Font m_font;
 };
 

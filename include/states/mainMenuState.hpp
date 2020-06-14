@@ -6,26 +6,24 @@
 
 class MainMenuState : public State {
 public:
-    MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states);
+    MainMenuState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states);
     virtual ~MainMenuState();
 
-    void initFonts();
+    void init_fonts();
     void init_gui();
-    void initMousePos();
-    void initBackground();
-    void updateMousePosText();
-    void updateButtons(sf::Vector2f mousePos);
-    void renderButtons(sf::RenderTarget & target);
+    void init_background();
+    void update_buttons(sf::Vector2f mouse_pos);
+    void render_buttons(sf::RenderTarget & target);
 
-    virtual void updateInput() override;
-    virtual void initKeybinds() override;
+    virtual void init_mouse_pos_text() override;
+    virtual void update_input() override;
+    virtual void init_keybinds() override;
     virtual void update(float dt) override;
     virtual void render(sf::RenderTarget * target = nullptr) override;
 
 protected:
     sf::RectangleShape m_background;
-    sf::Texture m_backgroundTexture;
-    sf::Text m_mousePosText;
+    sf::Texture m_background_texture;
     sf::Font m_font;
 
     std::map<std::string, gui::Button *> m_buttons;

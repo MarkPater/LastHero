@@ -1,16 +1,17 @@
 #include "states/state.hpp"
 #include <filesystem>
 
-State::State(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states)
+State::State(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
     : m_window(window)
-    , m_supportedKeys(supportedKeys)
+    , m_supported_keys(supported_keys)
     , m_states(states)
     , m_quit(false)
     , m_paused(false)
-    , m_delayTime(0.f)
-    , m_maxDelayTime(10.f)
-    , m_currentPath(std::filesystem::current_path())
+    , m_delay_time(0.f)
+    , m_max_delay_time(10.f)
+    , m_current_path(std::filesystem::current_path())
 {
+    init_mouse_pos_text();
 }
 
 State::~State()
@@ -18,46 +19,61 @@ State::~State()
 
 }
 
-void State::pauseMenu()
+void State::init_mouse_pos_text()
+{
+    m_mouse_pos_text.setCharacterSize(12);
+    m_mouse_pos_text.setColor(sf::Color::White);
+}
+
+void State::update_mouse_pos_text()
+{
+    m_mouse_pos_text.setPosition(sf::Vector2f(m_mouse_pos_view.x, m_mouse_pos_view.y - 25));
+
+    std::stringstream ss;
+    ss << m_mouse_pos_view.x << "x" << m_mouse_pos_view.y;
+    m_mouse_pos_text.setString(ss.str());
+}
+
+void State::pause_menu()
 {
     m_paused = true;
 }
 
-void State::unpauseMenu()
+void State::unpause_menu()
 {
     m_paused = false;
 }
 
-void State::updateMousePos() 
+void State::update_mouse_pos() 
 {
-    m_mousePosScreen = sf::Mouse::getPosition();
-    m_mousePosWindow = sf::Mouse::getPosition(*m_window);
-    m_mousePosView = m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window)); //sf::View correct pos
+    m_mouse_pos_screen = sf::Mouse::getPosition();
+    m_mouse_pos_window = sf::Mouse::getPosition(*m_window);
+    m_mouse_pos_view = m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window)); //sf::View correct pos
 }
 
-void State::updateDelayTime(float dt)
+void State::update_delay_time(float dt)
 {
-    if (m_delayTime <= m_maxDelayTime) {
-        m_delayTime += 50.f * dt;
+    if (m_delay_time <= m_max_delay_time) {
+        m_delay_time += 50.f * dt;
     }
 }
 
-bool State::delayOccurred()
+bool State::delay_occurred()
 {
-    if (m_delayTime > m_maxDelayTime) {
-        m_delayTime = 0;
+    if (m_delay_time > m_max_delay_time) {
+        m_delay_time = 0;
         return true;
     }
 
     return false;
 }
 
-const bool & State::getQuit() const 
+const bool & State::get_quit() const 
 {
     return m_quit;
 }
 
-void State::endState()
+void State::end_state()
 {
     m_quit = true;
 }

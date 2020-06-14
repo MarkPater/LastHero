@@ -27,7 +27,7 @@ namespace gui
         void set_id(unsigned short id);
         void set_check_only_text(bool check_only_text);
         void set_idle_colors(sf::Color idle_button_color = sf::Color(35, 35, 35, 180),
-                             sf::Color idle_text_color = sf::Color(215, 215, 215, 235),
+                             sf::Color idle_text_color = sf::Color(255, 255, 255, 255),
                              sf::Color idle_outline_button_color = sf::Color::Transparent,
                              sf::Color idle_outline_text_color = sf::Color::Transparent);
         void set_hover_colors(sf::Color hover_button_color = sf::Color(80, 80, 80, 180),
@@ -101,6 +101,7 @@ namespace gui
                      unsigned character_size = 35);
         void add_items(const std::string text[],
                       unsigned size, unsigned character_size = 35);
+        int current_index() const;
         void set_current_index(unsigned index);
         void update_input(sf::Vector2f mouse_pos, Button * element);
         void update(float dt, sf::Vector2f mouse_pos);
@@ -118,8 +119,10 @@ namespace gui
         bool m_show_elements;
         float m_delay_time;
         const float m_max_delay_time;
-        const unsigned m_x, m_y;
-        const unsigned m_width, m_height;
+        const unsigned m_x;
+        const unsigned m_y;
+        const unsigned m_width;
+        const unsigned m_height;
         unsigned short m_last_id;
     };
 }

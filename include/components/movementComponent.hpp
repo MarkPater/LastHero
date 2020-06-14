@@ -25,17 +25,17 @@ enum MovementState {
 class MovementComponent
 {
 public:
-    MovementComponent(sf::Sprite & sprite, float maxVelocity, float acceleration, float deceleration);
+    MovementComponent(sf::Sprite & sprite, float max_velocity, float acceleration, float deceleration);
 
-    const bool getState(const unsigned short & state) const;
-    const sf::Vector2f getVelocity() const;
-    const float getMaxVelocity() const; 
+    bool get_state(const unsigned short & state) const;
+    sf::Vector2f get_velocity() const;
+    float get_max_velocity() const; 
     
     void move(const float & dirX, const float & dirY);
     void update(const float & dt);
 
 private:
-    float m_maxVelocity;
+    float m_max_velocity;
     float m_acceleration;
     float m_deceleration;
 

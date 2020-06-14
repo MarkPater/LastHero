@@ -5,80 +5,68 @@ EditorState::EditorState(sf::RenderWindow * window, std::map<std::string, int> *
 {
     std::cout << "The start of EditorState\n";
     
-    initFont();
-    initButtons();
-    initKeybinds();
-    initMousePos();
+    init_font();
+    init_buttons();
+    init_keybinds();
+    init_mouse_pos_text();
 }
 
 EditorState::~EditorState()
 {
 }
 
-void EditorState::initFont()
+void EditorState::init_font()
 {
-    if (!m_font.loadFromFile(m_currentPath + "/fonts/Dosis-Light.ttf")) {
-        assert(false && "EditorState::initFont::!loadFromFile");
+    if (!m_font.loadFromFile(m_current_path + "/fonts/Dosis-Light.ttf")) {
+        assert(false && "EditorState::init_font::!loadFromFile");
         exit(EXIT_FAILURE);
     }
 }
 
-void EditorState::initButtons()
+void EditorState::init_buttons()
 {
     m_buttons["EXIT"] = new gui::Button(885, 515, 150, 50, m_font, "Exit");
     m_buttons["EXIT"]->set_check_only_text(true);
     m_buttons["EXIT"]->set_button_colors();
 }
 
-void EditorState::initKeybinds()
+void EditorState::init_keybinds()
 {
-    std::ifstream ifs(m_currentPath + "/config/editorStateKeybinds.ini");
+    std::ifstream ifs(m_current_path + "/config/editorStateKeybinds.ini");
     std::string action = "", key = "";
 
     if (ifs.is_open()) {
         while (ifs >> action >> key) {
-            m_keybinds[action] = m_supportedKeys->at(key);
+            m_keybinds[action] = m_supported_keys->at(key);
         }
     } 
     ifs.close();
 }
 
-void EditorState::initMousePos()
+void EditorState::init_mouse_pos_text()
 {
-    m_mousePosText.setFont(m_font);
-    m_mousePosText.setCharacterSize(12);
-    m_mousePosText.setColor(sf::Color::White);
-    m_mousePosText.setStyle(sf::Text::Italic);
+    m_mouse_pos_text.setFont(m_font);
 }
 
-void EditorState::updateButtons(sf::Vector2f mousePos)
+void EditorState::update_buttons(sf::Vector2f mousePos)
 {
     for (const auto & button : m_buttons) {
         button.second->update(mousePos);
     }
 
     if (m_buttons["EXIT"]->is_pressed()) {
-        endState();
+        end_state();
     }
 }
 
-void EditorState::updateInput()
+void EditorState::update_input()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["CLOSE"]))) {
-        endState();
+        end_state();
     }
 }
 
-void EditorState::updateMousePosText()
-{
-    m_mousePosText.setPosition(m_mousePosView.x, m_mousePosView.y - 25);
-
-    std::stringstream ss;
-    ss << m_mousePosView.x << "x" << m_mousePosView.y;
-    m_mousePosText.setString(ss.str());
-}
-
-void EditorState::renderButtons(sf::RenderTarget & target)
+void EditorState::render_buttons(sf::RenderTarget & target)
 {
     for (const auto & button : m_buttons) {
         button.second->render(target);
@@ -87,10 +75,10 @@ void EditorState::renderButtons(sf::RenderTarget & target)
 
 void EditorState::update(float dt)
 {
-    updateInput();
-    updateMousePos();
-    updateMousePosText();
-    updateButtons(m_mousePosView);
+    update_input();
+    update_mouse_pos();
+    update_mouse_pos_text();
+    update_buttons(m_mouse_pos_view);
 }
 
 void EditorState::render(sf::RenderTarget * target)
@@ -99,6 +87,6 @@ void EditorState::render(sf::RenderTarget * target)
         target = m_window;
     }
 
-    renderButtons(*target);
-    target->draw(m_mousePosText);
+    render_buttons(*target);
+    target->draw(m_mouse_pos_text);
 }

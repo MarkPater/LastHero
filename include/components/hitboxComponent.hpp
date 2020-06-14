@@ -10,7 +10,7 @@ class HitboxComponent
 public:
     HitboxComponent(sf::Sprite & sprite, sf::Vector2f offset, sf::Vector2f size);
 
-    bool checkIntersect(const sf::FloatRect & frect);
+    bool check_intersect(const sf::FloatRect & frect);
     void update();
     void render(sf::RenderTarget & target);
 
