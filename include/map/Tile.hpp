@@ -9,9 +9,17 @@ class Tile
 {
 public:
     Tile();
+    Tile(float x, float y, unsigned grid_size_u);
     ~Tile();
-private:
 
+    void update();
+    void render(sf::RenderTarget & target);
+
+private:
+    float m_x;
+    float m_y;
+    unsigned m_grid_size_u;
+    sf::RectangleShape m_shape;
 };
 
 #endif /* TILE_MAP */

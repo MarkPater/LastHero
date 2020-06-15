@@ -1,4 +1,5 @@
 #include "states/GameState.hpp"
+#include "map/TileMap.hpp"
 
 GameState::GameState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
     : State(window, supported_keys, states)
@@ -9,12 +10,15 @@ GameState::GameState(sf::RenderWindow * window, std::map<std::string, int> * sup
     init_font();
     init_pause_menu();
     init_players();
+
+    m_map = new TileMap();
 }
 
 GameState::~GameState()
 {
     delete m_player;
     delete m_pause_menu;
+    delete m_map;
 }
 
 void GameState::init_keybinds()
@@ -118,7 +122,8 @@ void GameState::render(sf::RenderTarget * target)
     if (!target) {
         target = m_window;
     }
-
+    
+    m_map->render(*target);
     m_player->render(target);
 
     if (m_paused) {
