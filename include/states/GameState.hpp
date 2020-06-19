@@ -4,6 +4,8 @@
 #include "states/State.hpp"
 #include "GUI/PauseMenu.hpp"
 
+class TileMap;
+
 class GameState : public State 
 {
 public:
@@ -27,6 +29,7 @@ protected:
 
     Player * m_player;
     PauseMenu * m_pause_menu;
+    TileMap * m_map;
 };
 
 #endif /* GAME_STATE_HPP */
