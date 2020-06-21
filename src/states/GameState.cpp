@@ -1,8 +1,8 @@
 #include "states/GameState.hpp"
 #include "map/TileMap.hpp"
 
-GameState::GameState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
-    : State(window, supported_keys, states)
+GameState::GameState(std::shared_ptr<StateData> state_data)
+    : State{ state_data }
 {
     std::cout << "The start of GameState\n";
     init_keybinds();
@@ -10,15 +10,10 @@ GameState::GameState(sf::RenderWindow * window, std::map<std::string, int> * sup
     init_font();
     init_pause_menu();
     init_players();
-
-    m_map = new TileMap();
 }
 
 GameState::~GameState()
 {
-    delete m_player;
-    delete m_pause_menu;
-    delete m_map;
 }
 
 void GameState::init_keybinds()
@@ -30,7 +25,7 @@ void GameState::init_keybinds()
         while (ifs >> action >> key) {
             m_keybinds[action] = m_supported_keys->at(key);
         }
-    } 
+    }
     ifs.close();
 }
 
@@ -52,29 +47,24 @@ void GameState::init_font()
 
 void GameState::init_pause_menu()
 {
-    m_pause_menu = new PauseMenu(*m_window, m_font);
+    m_pause_menu = std::unique_ptr<PauseMenu>{ new PauseMenu(*m_window, m_font) };
 
-    sf::Text quitText;
-    quitText.setString("Quit");
-    m_pause_menu->add_button("QUIT", quitText,
-        m_pause_menu->get_container().getPosition().x + m_pause_menu->get_container().getSize().x / 2 - quitText.getGlobalBounds().width,
-        m_pause_menu->get_container().getPosition().y + m_pause_menu->get_container().getSize().y / 1.1 - quitText.getGlobalBounds().height);
+    sf::Text quit_text;
+    quit_text.setString("Quit");
+    m_pause_menu->add_button("QUIT", quit_text,
+        m_pause_menu->get_container().getPosition().x + m_pause_menu->get_container().getSize().x / 2 - quit_text.getGlobalBounds().width,
+        m_pause_menu->get_container().getPosition().y + m_pause_menu->get_container().getSize().y / 1.1 - quit_text.getGlobalBounds().height);
 }
 
 void GameState::init_players()
 {
-    m_player = new Player(0, 0, m_textures["PLAYER_SHEET"]);
+    m_player = std::unique_ptr<Player>{ new Player(0, 0, m_textures["PLAYER_SHEET"]) };
 }
 
 void GameState::update_input()
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["PAUSE"])) && delay_occurred()) {
-        if (!m_paused) {
-            pause_menu();
-        }
-        else {
-            unpause_menu();
-        }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["PAUSE"])) && exit_delay_occurred()) {
+        m_paused ? unpause_menu() : pause_menu();
     }
 }
 
@@ -94,7 +84,7 @@ void GameState::update_player_input()
     }
 }
 
-void GameState::update_pause_menu_buttons()
+void GameState::update_pause_menu_input()
 {
     if (m_pause_menu->is_button_pressed("QUIT")) {
         end_state();
@@ -103,17 +93,17 @@ void GameState::update_pause_menu_buttons()
 
 void GameState::update(float dt)
 {
-    update_delay_time(dt);
+    update_exit_delay_time(dt);
     update_mouse_pos();
     update_input();
 
-    if (!m_paused) {
-        update_player_input();
-        m_player->update(dt);
+    if (m_paused) {
+        m_pause_menu->update(m_mouse_pos_view);
+        update_pause_menu_input();
     }
     else {
-        m_pause_menu->update(m_mouse_pos_view);
-        update_pause_menu_buttons();
+        update_player_input();
+        m_player->update(dt);
     }
 }
 
@@ -122,8 +112,7 @@ void GameState::render(sf::RenderTarget * target)
     if (!target) {
         target = m_window;
     }
-    
-    m_map->render(*target);
+
     m_player->render(target);
 
     if (m_paused) {

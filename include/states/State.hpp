@@ -5,11 +5,12 @@
 #include <memory>
 
 class GraphicsSettings;
+class StateData;
 
 class State
 {
 public:
-    State(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states);
+    State(std::shared_ptr<StateData> state_data);
     virtual ~State();
 
     const bool & get_quit() const;
@@ -25,13 +26,15 @@ public:
     virtual void render(sf::RenderTarget * target = nullptr) = 0;
 
 protected:
-    void update_delay_time(float dt);
-    bool delay_occurred();
+    void update_exit_delay_time(float dt);
+    bool exit_delay_occurred();
 
-    std::stack<State *> * m_states;
-    std::map<std::string, sf::Texture> m_textures;
+    std::shared_ptr<StateData> m_state_data;
+    std::shared_ptr<GraphicsSettings> m_gfx_settings;
     std::map<std::string, int> * m_supported_keys;
+    std::map<std::string, sf::Texture> m_textures;
     std::map<std::string, int> m_keybinds;
+    std::stack<State *> * m_states;
 
     sf::RenderWindow * m_window;
     sf::Vector2i m_mouse_pos_screen;
@@ -41,8 +44,8 @@ protected:
 
     bool m_quit;
     bool m_paused;
-    float m_delay_time;
-    const float m_max_delay_time;
+    float m_exit_delay_time;
+    const float m_max_exit_delay_time;
     std::string m_current_path;
 };
 

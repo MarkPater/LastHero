@@ -4,9 +4,11 @@
 #include "states/State.hpp"
 #include "GUI/Gui.hpp"
 
+class StateData;
+
 class MainMenuState : public State {
 public:
-    MainMenuState(sf::RenderWindow * window, std::shared_ptr<GraphicsSettings> gfx_settings, std::map<std::string, int> * supported_keys, std::stack<State *> * states);
+    MainMenuState(std::shared_ptr<StateData> state_data);
     virtual ~MainMenuState();
 
     void init_fonts();
@@ -27,7 +29,6 @@ protected:
     sf::Font m_font;
 
     std::map<std::string, gui::Button *> m_buttons;
-    std::shared_ptr<GraphicsSettings> m_gfx_settings;
 };
 
 #endif /* MAIN_MENU_STATE_HPP */

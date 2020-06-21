@@ -4,12 +4,15 @@
 #include "states/State.hpp"
 #include "GUI/PauseMenu.hpp"
 
+#include <memory>
+
 class TileMap;
+class StateData;
 
 class GameState : public State 
 {
 public:
-    GameState(sf::RenderWindow * window, std::map<std::string, int> * supported_keys, std::stack<State *> * states);
+    GameState(std::shared_ptr<StateData> state_data);
     ~GameState();
 
     virtual void init_keybinds() override;
@@ -17,7 +20,7 @@ public:
     void init_players();
     void init_font();
     void init_pause_menu();
-    void update_pause_menu_buttons();
+    void update_pause_menu_input();
 
     virtual void update_input() override;
     virtual void update_player_input();
@@ -27,9 +30,8 @@ public:
 protected:
     sf::Font m_font;
 
-    Player * m_player;
-    PauseMenu * m_pause_menu;
-    TileMap * m_map;
+    std::unique_ptr<Player> m_player;
+    std::unique_ptr<PauseMenu> m_pause_menu;
 };
 
 #endif /* GAME_STATE_HPP */

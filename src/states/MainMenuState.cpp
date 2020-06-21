@@ -2,13 +2,11 @@
 #include "states/EditorState.hpp"
 #include "states/GameState.hpp"
 #include "states/SettingsState.hpp"
+#include "states/StateData.hpp"
 
-#include "GraphicsSettings.hpp"
-
-MainMenuState::MainMenuState(sf::RenderWindow * window, std::shared_ptr<GraphicsSettings> gfx_settings, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
-    : State(window, supported_keys, states)
-    , m_background(sf::Vector2f(m_window->getSize()))
-    , m_gfx_settings(gfx_settings)
+MainMenuState::MainMenuState(std::shared_ptr<StateData> state_data)
+    : State{ state_data }
+    , m_background{ sf::Vector2f{ m_window->getSize() } }
 {
     std::cout << "The start of MainMenuState\n";
     
@@ -91,13 +89,13 @@ void MainMenuState::update_buttons(sf::Vector2f mousePos)
     }
 
     if (m_buttons["GAME_STATE"]->is_pressed()) {
-        m_states->push(new GameState(m_window, m_supported_keys, m_states));
+        m_states->push(new GameState(m_state_data));
     }
     else if (m_buttons["EDITOR_STATE"]->is_pressed()) {
-        m_states->push(new EditorState(m_window, m_supported_keys, m_states));
+        m_states->push(new EditorState(m_state_data));
     }
     else if (m_buttons["SETTINGS_STATE"]->is_pressed()) {
-        m_states->push(new SettingsState(m_window, m_gfx_settings, m_supported_keys, m_states));
+        m_states->push(new SettingsState(m_state_data));
     }
     else if (m_buttons["EXIT"]->is_pressed()) {
         end_state();

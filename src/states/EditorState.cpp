@@ -1,13 +1,17 @@
 #include "states/EditorState.hpp"
+#include "states/StateData.hpp"
+#include "GUI/PauseMenu.hpp"
 
-EditorState::EditorState(sf::RenderWindow * window, std::map<std::string, int> * supportedKeys, std::stack<State *> * states)
-    : State(window, supportedKeys, states)
+EditorState::EditorState(std::shared_ptr<StateData> state_data)
+    : State{ state_data }
+    , m_tile_map{ std::unique_ptr<TileMap>{ new TileMap{} } }
 {
     std::cout << "The start of EditorState\n";
     
     init_font();
     init_buttons();
     init_keybinds();
+    init_pause_menu();
     init_mouse_pos_text();
 }
 
@@ -25,7 +29,7 @@ void EditorState::init_font()
 
 void EditorState::init_buttons()
 {
-    m_buttons["EXIT"] = new gui::Button(885, 515, 150, 50, m_font, "Exit");
+    m_buttons["EXIT"] = new gui::Button(m_window->getSize().x / 1.1, m_window->getSize().y / 1.1, 150, 50, m_font, "Exit");
     m_buttons["EXIT"]->set_check_only_text(true);
     m_buttons["EXIT"]->set_button_colors();
 }
@@ -39,8 +43,19 @@ void EditorState::init_keybinds()
         while (ifs >> action >> key) {
             m_keybinds[action] = m_supported_keys->at(key);
         }
-    } 
+    }
     ifs.close();
+}
+
+void EditorState::init_pause_menu()
+{
+    m_pause_menu = std::unique_ptr<PauseMenu>{ new PauseMenu{ *m_window, m_font } };
+
+    sf::Text quit_text;
+    quit_text.setString("Quit");
+    m_pause_menu->add_button("QUIT", quit_text,
+        m_pause_menu->get_container().getPosition().x + m_pause_menu->get_container().getSize().x / 2 - quit_text.getGlobalBounds().width / 2,
+        m_pause_menu->get_container().getPosition().y + m_pause_menu->get_container().getSize().y / 1.1 - quit_text.getGlobalBounds().height);
 }
 
 void EditorState::init_mouse_pos_text()
@@ -61,7 +76,14 @@ void EditorState::update_buttons(sf::Vector2f mousePos)
 
 void EditorState::update_input()
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["CLOSE"]))) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(m_keybinds["PAUSE"])) && exit_delay_occurred()) {
+        m_paused ? unpause_menu() : pause_menu();
+    }
+}
+
+void EditorState::update_pause_menu_input()
+{
+    if (m_pause_menu->is_button_pressed("QUIT")) {
         end_state();
     }
 }
@@ -75,10 +97,19 @@ void EditorState::render_buttons(sf::RenderTarget & target)
 
 void EditorState::update(float dt)
 {
-    update_input();
+    update_exit_delay_time(dt);
     update_mouse_pos();
-    update_mouse_pos_text();
-    update_buttons(m_mouse_pos_view);
+    update_input();
+
+    if (m_paused) {
+        m_pause_menu->update(m_mouse_pos_view);
+        update_pause_menu_input();
+    }
+    else {
+        m_tile_map->update(m_mouse_pos_view);
+        update_mouse_pos_text();
+        update_buttons(m_mouse_pos_view);
+    }
 }
 
 void EditorState::render(sf::RenderTarget * target)
@@ -87,6 +118,11 @@ void EditorState::render(sf::RenderTarget * target)
         target = m_window;
     }
 
+    m_tile_map->render(*target);
     render_buttons(*target);
     target->draw(m_mouse_pos_text);
+
+    if (m_paused) {
+        m_pause_menu->render(*target);
+    }
 }

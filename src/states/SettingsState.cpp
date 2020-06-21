@@ -1,11 +1,10 @@
 #include "states/SettingsState.hpp"
 #include "GraphicsSettings.hpp"
 
-SettingsState::SettingsState(sf::RenderWindow * window, std::shared_ptr<GraphicsSettings> gfx_settings, std::map<std::string, int> * supported_keys, std::stack<State *> * states)
-    : State(window, supported_keys, states)
-    , m_background(sf::Vector2f(m_window->getSize()))
-    , m_video_modes(sf::VideoMode::getFullscreenModes())
-    , m_gfx_settings(std::move(gfx_settings))
+SettingsState::SettingsState(std::shared_ptr<StateData> state_data)
+    : State{ state_data }
+    , m_background{ sf::Vector2f{ m_window->getSize() } }
+    , m_video_modes{ sf::VideoMode::getFullscreenModes() }
 {
     init_fonts();
     init_gui();

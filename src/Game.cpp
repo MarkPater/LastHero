@@ -1,6 +1,11 @@
 #include "Game.hpp"
 #include "GraphicsSettings.hpp"
+#include "states/StateData.hpp"
+#include "states/MainMenuState.hpp"
+
 #include <filesystem>
+#include <iostream>
+#include <fstream>
 
 Game::Game() 
     : m_gfx_settings{ std::shared_ptr<GraphicsSettings>(new GraphicsSettings()) }
@@ -10,6 +15,7 @@ Game::Game()
     init_graphics_settings();
     init_window();
     init_supported_keys();
+    init_state_data();
     init_states();
 }
 
@@ -56,9 +62,14 @@ void Game::init_supported_keys()
     ifs.close();
 }
 
+void Game::init_state_data()
+{
+    m_state_data = std::shared_ptr<StateData>{ new StateData{ m_main_window, m_gfx_settings, &m_supported_keys, &m_states } };
+}
+
 void Game::init_states()
 {
-    m_states.emplace(new MainMenuState(m_main_window, m_gfx_settings, &m_supported_keys, &m_states));
+    m_states.emplace(new MainMenuState(m_state_data));
 }
 
 void Game::update_dt() 

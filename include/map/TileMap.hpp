@@ -10,7 +10,7 @@ public:
     TileMap();
     ~TileMap();
 
-    void update();
+    void update(sf::Vector2f mouse_pos);
     void render(sf::RenderTarget & target);
 
 private:

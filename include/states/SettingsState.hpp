@@ -11,7 +11,7 @@ class GraphicsSettings;
 class SettingsState : public State
 {
 public:
-    SettingsState(sf::RenderWindow * window, std::shared_ptr<GraphicsSettings> gfx_settings, std::map<std::string, int> * supported_keys, std::stack<State *> * states);
+    SettingsState(std::shared_ptr<StateData> state_data);
     virtual ~SettingsState();
 
     void init_gui();

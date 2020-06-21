@@ -15,6 +15,8 @@ public:
     void update();
     void render(sf::RenderTarget & target);
 
+    sf::RectangleShape & get_tile();
+
 private:
     float m_x;
     float m_y;
