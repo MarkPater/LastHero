@@ -40,6 +40,7 @@ protected:
     sf::Vector2i m_mouse_pos_screen;
     sf::Vector2i m_mouse_pos_window;
     sf::Vector2f m_mouse_pos_view;
+    sf::Vector2i m_mouse_pos_grid;
     sf::Text m_mouse_pos_text;
 
     bool m_quit;

@@ -47,11 +47,13 @@ void State::unpause_menu()
     m_paused = false;
 }
 
-void State::update_mouse_pos() 
+void State::update_mouse_pos()
 {
     m_mouse_pos_screen = sf::Mouse::getPosition();
     m_mouse_pos_window = sf::Mouse::getPosition(*m_window);
     m_mouse_pos_view = m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window)); //sf::View correct pos
+    m_mouse_pos_grid = sf::Vector2i{ m_mouse_pos_view.x - static_cast<int>(m_mouse_pos_view.x) % m_state_data->grid_size()
+                                   , m_mouse_pos_view.y - static_cast<int>(m_mouse_pos_view.y) % m_state_data->grid_size()};
 }
 
 void State::update_exit_delay_time(float dt)

@@ -7,15 +7,18 @@
 class TileMap
 {
 public:
-    TileMap();
+    TileMap(float grid_size, sf::Vector2u max_size);
     ~TileMap();
+
+    void add_tile(short x, short y, short z);
+    void remove_tile(short x, short y, short z);
 
     void update(sf::Vector2f mouse_pos);
     void render(sf::RenderTarget & target);
 
 private:
+    float m_grid_size;
     short m_layers;
-    short m_grid_size;
     const sf::Vector2u m_max_size;
     std::vector<std::vector<std::vector<Tile *>>> m_map;
 };
