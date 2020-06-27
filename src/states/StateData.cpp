@@ -12,3 +12,23 @@ StateData::StateData(sf::RenderWindow * window,
     , m_states{ states }
 {
 }
+
+sf::RenderWindow * StateData::window()
+{
+    return m_window;
+}
+
+std::shared_ptr<GraphicsSettings> StateData::gfx_settings()
+{
+    return m_gfx_settings;
+}
+
+std::map<std::string, int> * StateData::supported_keys()
+{
+    return m_supported_keys;
+}
+
+std::stack<State *> * StateData::states()
+{
+    return m_states;
+}

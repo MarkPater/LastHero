@@ -27,11 +27,11 @@ public:
     virtual void render(sf::RenderTarget * target = nullptr) override;
 
 protected:
-    sf::Font m_font;
-    
-    std::map<std::string, gui::Button *> m_buttons;
-    std::unique_ptr<PauseMenu> m_pause_menu;
     std::unique_ptr<TileMap> m_tile_map;
+    std::unique_ptr<PauseMenu> m_pause_menu;
+    std::map<std::string, std::unique_ptr<gui::Button>> m_buttons;
+
+    sf::Font m_font;
 };
 
 #endif /* EDITOR_STATE_HPP */

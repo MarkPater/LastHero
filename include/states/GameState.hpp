@@ -28,10 +28,10 @@ public:
     virtual void render(sf::RenderTarget * target = nullptr) override;
 
 protected:
-    sf::Font m_font;
-
     std::unique_ptr<Player> m_player;
     std::unique_ptr<PauseMenu> m_pause_menu;
+
+    sf::Font m_font;
 };
 
 #endif /* GAME_STATE_HPP */

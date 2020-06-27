@@ -9,7 +9,7 @@ class Tile
 {
 public:
     Tile();
-    Tile(float x, float y, unsigned grid_size_u);
+    Tile(float x, float y, short grid_size);
     ~Tile();
 
     void update();
@@ -20,7 +20,7 @@ public:
 private:
     float m_x;
     float m_y;
-    unsigned m_grid_size_u;
+    short m_grid_size;
     sf::RectangleShape m_shape;
 };
 

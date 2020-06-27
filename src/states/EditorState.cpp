@@ -29,7 +29,7 @@ void EditorState::init_font()
 
 void EditorState::init_buttons()
 {
-    m_buttons["EXIT"] = new gui::Button(m_window->getSize().x / 1.1, m_window->getSize().y / 1.1, 150, 50, m_font, "Exit");
+    m_buttons["EXIT"] = std::unique_ptr<gui::Button>{ new gui::Button{ m_window->getSize().x / 1.1, m_window->getSize().y / 1.1, 150, 50, m_font, "Exit" }};
     m_buttons["EXIT"]->set_check_only_text(true);
     m_buttons["EXIT"]->set_button_colors();
 }
@@ -115,7 +115,7 @@ void EditorState::update(float dt)
 void EditorState::render(sf::RenderTarget * target)
 {
     if (!target) {
-        target = m_window;
+        target = m_state_data->window();
     }
 
     m_tile_map->render(*target);

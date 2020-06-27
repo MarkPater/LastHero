@@ -6,6 +6,8 @@ SettingsState::SettingsState(std::shared_ptr<StateData> state_data)
     , m_background{ sf::Vector2f{ m_window->getSize() } }
     , m_video_modes{ sf::VideoMode::getFullscreenModes() }
 {
+    std::cout << "The start of SettingsState\n";
+
     init_fonts();
     init_gui();
     init_settings();

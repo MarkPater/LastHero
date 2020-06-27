@@ -24,11 +24,11 @@ public:
     virtual void render(sf::RenderTarget * target = nullptr) override;
 
 protected:
+    std::map<std::string, gui::Button *> m_buttons;
+
     sf::RectangleShape m_background;
     sf::Texture m_background_texture;
     sf::Font m_font;
-
-    std::map<std::string, gui::Button *> m_buttons;
 };
 
 #endif /* MAIN_MENU_STATE_HPP */

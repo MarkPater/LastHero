@@ -5,6 +5,7 @@ GameState::GameState(std::shared_ptr<StateData> state_data)
     : State{ state_data }
 {
     std::cout << "The start of GameState\n";
+
     init_keybinds();
     init_textures();
     init_font();

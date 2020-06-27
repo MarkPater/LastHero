@@ -21,6 +21,12 @@ public:
               std::map<std::string, int> * supported_keys,
               std::stack<State *> * states);
 
+    sf::RenderWindow * window();
+    std::shared_ptr<GraphicsSettings> gfx_settings();
+    std::map<std::string, int> * supported_keys();
+    std::stack<State *> * states();
+
+private:
     sf::RenderWindow * m_window;
     std::shared_ptr<GraphicsSettings> m_gfx_settings;
     std::map<std::string, int> * m_supported_keys;
