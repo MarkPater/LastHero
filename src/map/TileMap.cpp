@@ -57,6 +57,11 @@ void TileMap::remove_tile(short x, short y, short z)
     }
 }
 
+const sf::Texture * TileMap::tile_map_texture_sheet() const
+{
+    return &m_tile_map_texture_sheet;
+}
+
 void TileMap::update(sf::Vector2f mouse_pos)
 {
     for (const auto & x : m_map) {

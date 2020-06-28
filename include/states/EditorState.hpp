@@ -28,8 +28,9 @@ public:
 
     virtual void init_mouse_pos_text() override;
     virtual void init_keybinds() override;
-    virtual void update(float dt) override;
     virtual void update_input() override;
+    virtual void update_mouse_pos_text() override;
+    virtual void update(float dt) override;
     virtual void render(sf::RenderTarget * target = nullptr) override;
 
 protected:
@@ -38,6 +39,7 @@ protected:
     std::map<std::string, std::unique_ptr<gui::Button>> m_buttons;
 
     sf::Font m_font;
+    sf::Text m_rect_pos_text;
     sf::RectangleShape m_selector_rect;
     sf::IntRect m_tile_rect;
 

@@ -6,7 +6,7 @@ EditorState::EditorState(std::shared_ptr<StateData> state_data)
     : State{ state_data }
     , m_tile_rect{ 0, 0, m_state_data->grid_size(), m_state_data->grid_size() }
     , m_tile_delay_time{ -12.f }
-    , m_tile_max_delay_time{ 2.5f }
+    , m_tile_max_delay_time{ 1.5f }
 {
     std::cout << "EditorState::EditorState():\t" << "The start of EditorState" << "\n";
     
@@ -30,9 +30,11 @@ void EditorState::init_gui()
                                                         m_state_data->current_path() } };
 
     m_selector_rect.setSize(sf::Vector2f{ m_state_data->grid_size(), m_state_data->grid_size() });
-    m_selector_rect.setFillColor(sf::Color::Transparent);
+    m_selector_rect.setFillColor(sf::Color(200, 200, 200, 140));
     m_selector_rect.setOutlineColor(sf::Color::Green);
     m_selector_rect.setOutlineThickness(1);
+    m_selector_rect.setTexture(m_tile_map->tile_map_texture_sheet());
+    m_selector_rect.setTextureRect(m_tile_rect);
 }
 
 void EditorState::init_font()
@@ -76,7 +78,9 @@ void EditorState::init_pause_menu()
 
 void EditorState::init_mouse_pos_text()
 {
-    m_mouse_pos_text.setFont(m_font);
+    m_rect_pos_text.setFont(m_font);
+    m_rect_pos_text.setCharacterSize(13);
+    m_rect_pos_text.setColor(sf::Color(255, 175, 250, 250));
 }
 
 bool EditorState::tile_delay_occurred()
@@ -106,6 +110,15 @@ void EditorState::update_input()
     }
 }
 
+void EditorState::update_mouse_pos_text()
+{
+    m_rect_pos_text.setPosition(m_mouse_pos_view.x, m_mouse_pos_view.y - 40);
+
+    std::stringstream ss;
+    ss << m_mouse_pos_view.x << "x" << m_mouse_pos_view.y << "\n" << m_tile_rect.left << " " << m_tile_rect.top;
+    m_rect_pos_text.setString(ss.str());
+}
+
 void EditorState::update_editor_input()
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && tile_delay_occurred()) {
@@ -122,21 +135,25 @@ void EditorState::update_editor_input()
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && tile_delay_occurred()) {
         if (m_tile_rect.left >= 100) {
             m_tile_rect.left -= 100;
+            m_selector_rect.setTextureRect(m_tile_rect);
         }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && tile_delay_occurred()) {
         if (m_tile_rect.left < 100) {
             m_tile_rect.left += 100;
+            m_selector_rect.setTextureRect(m_tile_rect);
         }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && tile_delay_occurred()) {
         if (m_tile_rect.top >= 100) {
             m_tile_rect.top -= 100;
+            m_selector_rect.setTextureRect(m_tile_rect);
         }
     }
     else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && tile_delay_occurred()) {
         if (m_tile_rect.top < 100) {
             m_tile_rect.top += 100;
+            m_selector_rect.setTextureRect(m_tile_rect);
         }
     }
 }
@@ -182,9 +199,9 @@ void EditorState::update(float dt)
 void EditorState::render_gui(sf::RenderTarget & target)
 {
     m_tile_map->render(target);
-    target.draw(m_selector_rect);
     render_buttons(target);
-    target.draw(m_mouse_pos_text);
+    target.draw(m_selector_rect);
+    target.draw(m_rect_pos_text);
 }
 
 void EditorState::render_buttons(sf::RenderTarget & target)

@@ -14,6 +14,7 @@ public:
 
     void add_tile(short x, short y, short z, const sf::IntRect & tile_rect);
     void remove_tile(short x, short y, short z);
+    const sf::Texture * tile_map_texture_sheet() const;
 
     void update(sf::Vector2f mouse_pos);
     void render(sf::RenderTarget & target);
