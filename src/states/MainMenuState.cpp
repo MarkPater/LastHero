@@ -8,7 +8,7 @@ MainMenuState::MainMenuState(std::shared_ptr<StateData> state_data)
     : State{ state_data }
     , m_background{ sf::Vector2f{ m_window->getSize() } }
 {
-    std::cout << "The start of MainMenuState\n";
+    std::cout << "MainMenuState::MainMenuState():\t" << "The start of MainMenuState" << "\n";
     
     init_fonts();
     init_gui();
@@ -22,6 +22,7 @@ MainMenuState::~MainMenuState()
     for (auto & button : m_buttons) {
         delete button.second;
     }
+    std::cout << "MainMenuState::~MainMenuState():\t" << "The end of MainMenuState" << "\n";
 }
 
 void MainMenuState::init_fonts()

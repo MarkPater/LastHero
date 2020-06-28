@@ -4,10 +4,11 @@
 
 EditorState::EditorState(std::shared_ptr<StateData> state_data)
     : State{ state_data }
+    , m_tile_rect{ 0, 0, m_state_data->grid_size(), m_state_data->grid_size() }
     , m_tile_delay_time{ -12.f }
     , m_tile_max_delay_time{ 2.5f }
 {
-    std::cout << "The start of EditorState\n";
+    std::cout << "EditorState::EditorState():\t" << "The start of EditorState" << "\n";
     
     init_gui();
     init_font();
@@ -19,11 +20,14 @@ EditorState::EditorState(std::shared_ptr<StateData> state_data)
 
 EditorState::~EditorState()
 {
+    std::cout << "EditorState::~EditorState():\t" << "The end of EditorState" << "\n";
 }
 
 void EditorState::init_gui()
 {
-    m_tile_map = std::unique_ptr<TileMap>{ new TileMap{m_state_data->grid_size(), m_state_data->max_tile_map_size()} };
+    m_tile_map = std::unique_ptr<TileMap>{ new TileMap{ m_state_data->grid_size(),
+                                                        m_state_data->max_tile_map_size(),
+                                                        m_state_data->current_path() } };
 
     m_selector_rect.setSize(sf::Vector2f{ m_state_data->grid_size(), m_state_data->grid_size() });
     m_selector_rect.setFillColor(sf::Color::Transparent);
@@ -107,12 +111,33 @@ void EditorState::update_editor_input()
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && tile_delay_occurred()) {
         m_tile_map->add_tile(m_mouse_pos_grid.x / m_state_data->grid_size(),
                              m_mouse_pos_grid.y / m_state_data->grid_size(),
-                             0);
+                             0, m_tile_rect);
     }
     else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right) && tile_delay_occurred()) {
         m_tile_map->remove_tile(m_mouse_pos_grid.x / m_state_data->grid_size(),
                                 m_mouse_pos_grid.y / m_state_data->grid_size(),
                                 0);
+    }
+    
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && tile_delay_occurred()) {
+        if (m_tile_rect.left >= 100) {
+            m_tile_rect.left -= 100;
+        }
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && tile_delay_occurred()) {
+        if (m_tile_rect.left < 100) {
+            m_tile_rect.left += 100;
+        }
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && tile_delay_occurred()) {
+        if (m_tile_rect.top >= 100) {
+            m_tile_rect.top -= 100;
+        }
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && tile_delay_occurred()) {
+        if (m_tile_rect.top < 100) {
+            m_tile_rect.top += 100;
+        }
     }
 }
 

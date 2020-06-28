@@ -2,15 +2,17 @@
 #include "states/State.hpp"
 #include "GraphicsSettings.hpp"
 
-StateData::StateData(sf::RenderWindow * window,
-                     std::shared_ptr<GraphicsSettings> gfx_settings,
+StateData::StateData(std::shared_ptr<GraphicsSettings> gfx_settings,
                      std::map<std::string, int> * supported_keys,
-                     std::stack<State *> * states)
+                     std::stack<State *> * states,
+                     const std::string & current_path,
+                     sf::RenderWindow * window)
     : m_gfx_settings{ std::move(gfx_settings) }
     , m_supported_keys{ supported_keys }
     , m_states{ states }
+    , m_current_path{ current_path }
     , m_window{ window }
-    , m_max_tile_map_size{ sf::Vector2u{20, 10} }
+    , m_max_tile_map_size{ sf::Vector2u{ 20, 10} }
     , m_grid_size{ 100 }
 {
 }
@@ -28,6 +30,11 @@ std::map<std::string, int> * StateData::supported_keys()
 std::stack<State *> * StateData::states()
 {
     return m_states;
+}
+
+std::string StateData::current_path()
+{
+    return m_current_path;
 }
 
 sf::RenderWindow * StateData::window()

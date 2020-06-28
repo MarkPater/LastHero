@@ -64,7 +64,7 @@ void Game::init_supported_keys()
 
 void Game::init_state_data()
 {
-    m_state_data = std::shared_ptr<StateData>{ new StateData{ m_main_window, m_gfx_settings, &m_supported_keys, &m_states } };
+    m_state_data = std::shared_ptr<StateData>{ new StateData{ m_gfx_settings, &m_supported_keys, &m_states, m_current_path, m_main_window } };
 }
 
 void Game::init_states()

@@ -1,12 +1,14 @@
 #include "states/SettingsState.hpp"
+#include "states/StateData.hpp"
 #include "GraphicsSettings.hpp"
+#include <memory>
 
 SettingsState::SettingsState(std::shared_ptr<StateData> state_data)
     : State{ state_data }
     , m_background{ sf::Vector2f{ m_window->getSize() } }
     , m_video_modes{ sf::VideoMode::getFullscreenModes() }
 {
-    std::cout << "The start of SettingsState\n";
+    std::cout << "SettingsState::SettingsState():\t" << "The start of SettingsState" << "\n";
 
     init_fonts();
     init_gui();
@@ -25,6 +27,7 @@ SettingsState::~SettingsState()
     for (auto & combo_box : m_combo_boxes) {
         delete combo_box.second;
     }
+    std::cout << "SettingsState::~SettingsState():\t" << "The end of SettingsState" << "\n";
 }
 
 void SettingsState::init_fonts()
@@ -48,7 +51,7 @@ void SettingsState::init_gui()
     m_buttons["APPLY"]->set_button_colors(sf::Color(10, 85, 10, 100), sf::Color(20, 110, 20, 120), sf::Color(30, 130, 30, 140));
 
     m_combo_boxes["RESOLUTION"] = new gui::ComboBox(m_font, 1440, 190, 200, 60);
-    m_combo_boxes["RESOLUTION"]->add_items(from_video_modes_to_strings().data(), 8);
+    m_combo_boxes["RESOLUTION"]->add_items(from_video_modes_to_strings().data(), 12);
 }
 
 void SettingsState::init_settings()
@@ -108,8 +111,8 @@ void SettingsState::update_gui(float dt, sf::Vector2f mouse_pos)
         end_state();
     }
     else if (m_buttons["APPLY"]->is_pressed()) {
-        m_gfx_settings->m_window_bounds = m_video_modes[m_combo_boxes["RESOLUTION"]->current_index()];
-        m_window->create(m_gfx_settings->m_window_bounds, m_gfx_settings->m_window_title, sf::Style::Default);
+        m_state_data->gfx_settings()->m_window_bounds = m_video_modes[m_combo_boxes["RESOLUTION"]->current_index()];
+        m_state_data->window()->create(m_state_data->gfx_settings()->m_window_bounds, m_state_data->gfx_settings()->m_window_title, sf::Style::Default);
     }
 }
 

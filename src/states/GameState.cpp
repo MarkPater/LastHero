@@ -4,7 +4,7 @@
 GameState::GameState(std::shared_ptr<StateData> state_data)
     : State{ state_data }
 {
-    std::cout << "The start of GameState\n";
+    std::cout << "GameState::GameState():\t" << "The start of GameState" << "\n";
 
     init_keybinds();
     init_textures();
@@ -15,6 +15,7 @@ GameState::GameState(std::shared_ptr<StateData> state_data)
 
 GameState::~GameState()
 {
+    std::cout << "GameState::~GameState():\t" << "The end of GameState" << "\n";
 }
 
 void GameState::init_keybinds()
@@ -33,7 +34,7 @@ void GameState::init_keybinds()
 void GameState::init_textures()
 {
     if (!m_textures["PLAYER_SHEET"].loadFromFile(m_current_path + "/resources/images/sprites/player/Player_sheet.png")) {
-        assert(false && "GameState::init_textures::!lodaFromFile");
+        assert(false && "GameState::init_textures::!loadFromFile");
         exit(EXIT_FAILURE);
     }
 }

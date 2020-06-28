@@ -35,6 +35,7 @@ protected:
     std::map<std::string, sf::Texture> m_textures;
     std::map<std::string, int> m_keybinds;
     std::stack<State *> * m_states;
+    std::string m_current_path;
 
     sf::RenderWindow * m_window;
     sf::Vector2i m_mouse_pos_screen;
@@ -47,7 +48,6 @@ protected:
     bool m_paused;
     float m_exit_delay_time;
     const float m_max_exit_delay_time;
-    std::string m_current_path;
 };
 
 #endif /* STATE_HPP */

@@ -9,7 +9,7 @@ class Tile
 {
 public:
     Tile();
-    Tile(float x, float y, short grid_size);
+    Tile(float x, float y, short grid_size, sf::Texture & texture, const sf::IntRect & texture_rect);
     ~Tile();
 
     void update();
@@ -21,7 +21,9 @@ private:
     float m_x;
     float m_y;
     short m_grid_size;
+
     sf::RectangleShape m_shape;
+    sf::Texture * m_texture;
 };
 
 #endif /* TILE_MAP */

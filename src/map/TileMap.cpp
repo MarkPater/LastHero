@@ -1,7 +1,10 @@
 #include "map/TileMap.hpp"
-#include "iostream"
+#include <iostream>
+#include <cassert>
 
-TileMap::TileMap(float grid_size, sf::Vector2u max_size)
+TileMap::TileMap(float grid_size,
+                 sf::Vector2u max_size,
+                 std::string current_path)
     : m_grid_size{ grid_size }
     , m_layers{ 1 }
     , m_max_size{ max_size }
@@ -14,6 +17,10 @@ TileMap::TileMap(float grid_size, sf::Vector2u max_size)
             }
         }
     }*/
+    if (!m_tile_map_texture_sheet.loadFromFile(current_path + "/resources/images/sprites/tiles/tileset.png")) {
+        assert(false && "TileMap::TileMap::!loadFromFile");
+        exit(EXIT_FAILURE);
+    }
 }
 
 TileMap::~TileMap()
@@ -27,12 +34,12 @@ TileMap::~TileMap()
     }
 }
 
-void TileMap::add_tile(short x, short y, short z)
+void TileMap::add_tile(short x, short y, short z, const sf::IntRect & tile_rect)
 {
     /* Take three indecies from the mouse position in the grid and add a Tile to the position if the internall tilemap array allows it */
     if (x >= 0 && x < m_max_size.x && y >= 0 && y < m_max_size.y && z >= 0 && z < m_layers) {
         if (!m_map[x][y][z]) {
-            m_map[x][y][z] = new Tile(x * m_grid_size, y * m_grid_size, m_grid_size);
+            m_map[x][y][z] = new Tile(x * m_grid_size, y * m_grid_size, m_grid_size, m_tile_map_texture_sheet, tile_rect);
             std::cout << "TileMap::add_tile():\t" << "Added Tile" << "\n";
         }
     }

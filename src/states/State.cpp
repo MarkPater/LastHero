@@ -4,15 +4,15 @@
 
 State::State(std::shared_ptr<StateData> state_data)
     : m_state_data{ std::move(state_data) }
-    , m_window{ m_state_data->window() }
     , m_supported_keys{ m_state_data->supported_keys() }
     , m_states{ m_state_data->states() }
     , m_gfx_settings{ std::move(m_state_data->gfx_settings()) }
+    , m_current_path{ m_state_data->current_path() }
+    , m_window{ m_state_data->window() }
     , m_quit{ false }
     , m_paused{ false }
     , m_exit_delay_time{ 0.f }
-    , m_max_exit_delay_time{ 10.f } 
-    , m_current_path{ std::filesystem::current_path() }
+    , m_max_exit_delay_time{ 10.f }
 {
     init_mouse_pos_text();
 }

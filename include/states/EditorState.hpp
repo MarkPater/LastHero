@@ -39,6 +39,7 @@ protected:
 
     sf::Font m_font;
     sf::RectangleShape m_selector_rect;
+    sf::IntRect m_tile_rect;
 
     float m_tile_delay_time;
     const float m_tile_max_delay_time;

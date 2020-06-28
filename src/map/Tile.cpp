@@ -10,16 +10,17 @@ Tile::Tile()
     std::srand(std::time(nullptr));
 }
 
-Tile::Tile(float x, float y, short grid_size)
+Tile::Tile(float x, float y, short grid_size, sf::Texture & texture, const sf::IntRect & texture_rect)
     : m_x{ x }
     , m_y{ y }
     , m_grid_size{ grid_size }
     , m_shape{ sf::Vector2f{ grid_size, grid_size } }
+    , m_texture{ &texture }
 {
     m_shape.setFillColor(sf::Color::White);
     m_shape.setPosition(m_x, m_y);
-    m_shape.setOutlineColor(sf::Color::Black);
-    m_shape.setOutlineThickness(2);
+    m_shape.setTexture(m_texture);
+    m_shape.setTextureRect(texture_rect);
 }
 
 Tile::~Tile()
