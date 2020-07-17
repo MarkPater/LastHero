@@ -12,7 +12,7 @@ StateData::StateData(std::shared_ptr<GraphicsSettings> gfx_settings,
     , m_states{ states }
     , m_current_path{ current_path }
     , m_window{ window }
-    , m_max_tile_map_size{ sf::Vector2u{ 20, 10} }
+    , m_max_tile_map_size{ sf::Vector2u{ 20, 14 } }
     , m_grid_size{ 100 }
 {
 }

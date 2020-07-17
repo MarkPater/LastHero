@@ -13,18 +13,18 @@ public:
     EditorState(std::shared_ptr<StateData> state_data);
     virtual ~EditorState();
 
-    void init_gui();
     void init_font();
+    void init_gui();
     void init_buttons();
     void init_pause_menu();
     bool tile_delay_occurred();
     void update_editor_input();
     void update_pause_menu_input();
-    void update_gui();
     void update_buttons(sf::Vector2f mouse_pos);
+    void update_gui();
     void update_tile_delay_time(float dt);
-    void render_gui(sf::RenderTarget & target);
     void render_buttons(sf::RenderTarget & target);
+    void render_gui(sf::RenderTarget & target);
 
     virtual void init_mouse_pos_text() override;
     virtual void init_keybinds() override;

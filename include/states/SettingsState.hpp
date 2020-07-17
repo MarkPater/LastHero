@@ -19,6 +19,7 @@ public:
     void init_settings();
     void init_background();
     void update_gui(float dt, sf::Vector2f mouse_pos);
+    void update_buttons();
     void render_gui(sf::RenderTarget & target);
 
     virtual void init_mouse_pos_text() override;
@@ -30,8 +31,8 @@ public:
 private:
     std::vector<std::string> from_video_modes_to_strings() const;
 
-    std::map<std::string, gui::ComboBox *> m_combo_boxes;
-    std::map<std::string, gui::Button *> m_buttons;
+    std::map<std::string, std::unique_ptr<gui::ComboBox>> m_combo_boxes;
+    std::map<std::string, std::unique_ptr<gui::Button>> m_buttons;
     std::vector<sf::VideoMode> m_video_modes;
     std::shared_ptr<GraphicsSettings> m_gfx_settings;
 

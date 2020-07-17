@@ -2,12 +2,13 @@
 #define GAME_STATE_HPP
 
 #include "states/State.hpp"
-#include "GUI/PauseMenu.hpp"
 
 #include <memory>
 
+class Player;
 class TileMap;
 class StateData;
+class PauseMenu;
 
 class GameState : public State 
 {

@@ -216,7 +216,6 @@ gui::ComboBox::ComboBox(sf::Font & font, unsigned x, unsigned y, unsigned width,
     , m_height(height)
     , m_last_id(0)
 {
-
 }
 
 gui::ComboBox::~ComboBox()

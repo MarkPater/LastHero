@@ -1,7 +1,8 @@
 #include "states/SettingsState.hpp"
 #include "states/StateData.hpp"
 #include "GraphicsSettings.hpp"
-#include <memory>
+
+#include <fstream>
 
 SettingsState::SettingsState(std::shared_ptr<StateData> state_data)
     : State{ state_data }
@@ -20,13 +21,6 @@ SettingsState::SettingsState(std::shared_ptr<StateData> state_data)
 
 SettingsState::~SettingsState()
 {
-    for (auto & button : m_buttons) {
-        delete button.second;
-    }
-
-    for (auto & combo_box : m_combo_boxes) {
-        delete combo_box.second;
-    }
     std::cout << "SettingsState::~SettingsState():\t" << "The end of SettingsState" << "\n";
 }
 
@@ -45,12 +39,12 @@ void SettingsState::init_background()
 
 void SettingsState::init_gui()
 {
-    m_buttons["BACK"] = new gui::Button(1365, 120, 150, 50, m_font, "Exit");
-    m_buttons["BACK"]->set_button_colors(sf::Color(85, 10, 10, 100), sf::Color(110, 20, 20, 120), sf::Color(130, 30, 30, 140));
-    m_buttons["APPLY"] = new gui::Button(1550, 120, 150, 50, m_font, "Apply", 40);
-    m_buttons["APPLY"]->set_button_colors(sf::Color(10, 85, 10, 100), sf::Color(20, 110, 20, 120), sf::Color(30, 130, 30, 140));
+    m_buttons["BACK"] = std::unique_ptr<gui::Button>{ new gui::Button{ 1365, 120, 150, 50, m_font, "Exit" } };
+    m_buttons["BACK"]->set_button_colors(sf::Color{ 85, 10, 10, 100 }, sf::Color{ 110, 20, 20, 120 }, sf::Color{ 130, 30, 30, 140 });
+    m_buttons["APPLY"] = std::unique_ptr<gui::Button>{ new gui::Button{ 1550, 120, 150, 50, m_font, "Apply", 40 } };
+    m_buttons["APPLY"]->set_button_colors(sf::Color{ 10, 85, 10, 100 }, sf::Color{ 20, 110, 20, 120 }, sf::Color{ 30, 130, 30, 140 });
 
-    m_combo_boxes["RESOLUTION"] = new gui::ComboBox(m_font, 1440, 190, 200, 60);
+    m_combo_boxes["RESOLUTION"] = std::unique_ptr<gui::ComboBox>{ new gui::ComboBox{ m_font, 1440, 190, 200, 60 } };
     m_combo_boxes["RESOLUTION"]->add_items(from_video_modes_to_strings().data(), 12);
 }
 
@@ -63,15 +57,15 @@ void SettingsState::init_settings()
 
 void SettingsState::init_keybinds() 
 {
-    std::ifstream ifs(m_current_path + "/config/settingsStateKeybinds.ini");
-    std::string action = "", key = "";
+    std::ifstream ifs{ m_current_path + "/config/settingsStateKeybinds.ini" };
+    std::string action{}, key{};
 
     if (ifs.is_open()) {
         while (ifs >> action >> key) {
             m_keybinds[action] = m_supported_keys->at(key);
         }
+        ifs.close();
     }
-    ifs.close();
 }
 
 void SettingsState::init_mouse_pos_text()
@@ -107,12 +101,17 @@ void SettingsState::update_gui(float dt, sf::Vector2f mouse_pos)
         combo_box.second->update(dt, mouse_pos);
     }
 
+    update_buttons();
+}
+
+void SettingsState::update_buttons()
+{
     if (m_buttons["BACK"]->is_pressed()) {
         end_state();
     }
     else if (m_buttons["APPLY"]->is_pressed()) {
-        m_state_data->gfx_settings()->m_window_bounds = m_video_modes[m_combo_boxes["RESOLUTION"]->current_index()];
-        m_state_data->window()->create(m_state_data->gfx_settings()->m_window_bounds, m_state_data->gfx_settings()->m_window_title, sf::Style::Default);
+        m_state_data->gfx_settings()->set_window_bounds(m_video_modes[m_combo_boxes["RESOLUTION"]->current_index()]);
+        m_state_data->window()->create(m_state_data->gfx_settings()->window_bounds(), m_state_data->gfx_settings()->window_title(), sf::Style::Default);
     }
 }
 

@@ -19,7 +19,7 @@ void Entity::set_texture(sf::Texture & texture)
     m_sprite.setTexture(texture);
 }
 
-void Entity::create_movement_component(const float & maxVelocity, const float & acceleration, const float & deceleration)
+void Entity::create_movement_component(float maxVelocity, float acceleration, float deceleration)
 {
     m_movement_component = new MovementComponent(m_sprite, maxVelocity, acceleration, deceleration);
 }
@@ -39,7 +39,7 @@ void Entity::set_position(float x, float y)
     m_sprite.setPosition(x, y);
 }
 
-void Entity::move(const float dir_x, const float dir_y)
+void Entity::move(float dir_x, float dir_y)
 {
     if (m_movement_component) {
         m_movement_component->move(dir_x, dir_y);

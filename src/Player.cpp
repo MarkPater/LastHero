@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-const size_t hero_width{ 192 };
+const size_t HERO_WIDTH{ 192 };
 
 Player::Player(float x, float y, sf::Texture & texture_sheet)
 {
@@ -11,16 +11,16 @@ Player::Player(float x, float y, sf::Texture & texture_sheet)
     create_animation_component(texture_sheet);
     create_hitbox_component(sf::Vector2f(86, 66), sf::Vector2f(86, 111));
 
-    m_animation_component->add_animation("IDLE", 9.f, 0, 0, 13, 0, hero_width, hero_width);
-    m_animation_component->add_animation("WALK", 8.5f, 0, 1, 11, 1, hero_width, hero_width);
-    m_animation_component->add_animation("ATTACK", 5.5f, 0, 2, 13, 2, hero_width*2, hero_width);
+    m_animation_component->add_animation("IDLE", 9.f, 0, 0, 13, 0, HERO_WIDTH, HERO_WIDTH);
+    m_animation_component->add_animation("WALK", 8.5f, 0, 1, 11, 1, HERO_WIDTH, HERO_WIDTH);
+    m_animation_component->add_animation("ATTACK", 5.5f, 0, 2, 13, 2, HERO_WIDTH*2, HERO_WIDTH);
 }
 
 Player::~Player()
 {
 }
 
-void Player::update(const float & dt)
+void Player::update(float dt)
 {
     m_movement_component->update(dt);
     update_attack();
@@ -35,14 +35,14 @@ void Player::update_attack()
     }
 }
 
-void Player::update_annimation(const float & dt)
+void Player::update_annimation(float dt)
 {
     if (m_attacking) {
         if (m_sprite.getScale().x > 0) {        // left
-            m_sprite.setOrigin(hero_width/2, 0);
+            m_sprite.setOrigin(HERO_WIDTH/2, 0);
         }
         else if (m_sprite.getScale().x < 0) {   // right
-            m_sprite.setOrigin(258 + hero_width/2, 0);
+            m_sprite.setOrigin(258 + HERO_WIDTH/2, 0);
         }
 
         if (m_animation_component->play("ATTACK", dt, m_movement_component->get_max_velocity(), m_movement_component->get_max_velocity(), m_attacking)) {

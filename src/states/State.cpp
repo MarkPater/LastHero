@@ -17,10 +17,7 @@ State::State(std::shared_ptr<StateData> state_data)
     init_mouse_pos_text();
 }
 
-State::~State()
-{
-
-}
+State::~State() = default;
 
 void State::init_mouse_pos_text()
 {
@@ -30,7 +27,7 @@ void State::init_mouse_pos_text()
 
 void State::update_mouse_pos_text()
 {
-    m_mouse_pos_text.setPosition(sf::Vector2f(m_mouse_pos_view.x, m_mouse_pos_view.y - 25));
+    m_mouse_pos_text.setPosition(sf::Vector2f{ m_mouse_pos_view.x, m_mouse_pos_view.y - 25 });
 
     std::stringstream ss;
     ss << m_mouse_pos_view.x << "x" << m_mouse_pos_view.y;
@@ -53,7 +50,7 @@ void State::update_mouse_pos()
     m_mouse_pos_window = sf::Mouse::getPosition(*m_window);
     m_mouse_pos_view = m_window->mapPixelToCoords(sf::Mouse::getPosition(*m_window)); //sf::View correct pos
     m_mouse_pos_grid = sf::Vector2i{ m_mouse_pos_view.x - static_cast<int>(m_mouse_pos_view.x) % m_state_data->grid_size()
-                                   , m_mouse_pos_view.y - static_cast<int>(m_mouse_pos_view.y) % m_state_data->grid_size()};
+                                   , m_mouse_pos_view.y - static_cast<int>(m_mouse_pos_view.y) % m_state_data->grid_size() };
 }
 
 void State::update_exit_delay_time(float dt)
@@ -73,7 +70,7 @@ bool State::exit_delay_occurred()
     return false;
 }
 
-const bool & State::get_quit() const 
+bool State::get_quit() const 
 {
     return m_quit;
 }

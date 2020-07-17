@@ -8,7 +8,7 @@
 #include <fstream>
 
 Game::Game() 
-    : m_gfx_settings{ std::shared_ptr<GraphicsSettings>(new GraphicsSettings()) }
+    : m_gfx_settings{ std::shared_ptr<GraphicsSettings>(new GraphicsSettings{}) }
     , m_current_path{ std::filesystem::current_path() }
 {
     std::cout << "The start of GameApp\n";
@@ -35,17 +35,17 @@ void Game::init_graphics_settings()
 
 void Game::init_window()
 {
-    if (m_gfx_settings->m_is_fullscreen) {
-        m_main_window = new sf::RenderWindow(m_gfx_settings->m_window_bounds, m_gfx_settings->m_window_title,
-                                             sf::Style::Fullscreen, m_gfx_settings->m_context_settings);
+    if (m_gfx_settings->is_fullscreen()) {
+        m_main_window = new sf::RenderWindow(m_gfx_settings->window_bounds(), m_gfx_settings->window_title(),
+                                             sf::Style::Fullscreen, m_gfx_settings->context_settings());
     }
     else {
-        m_main_window = new sf::RenderWindow(m_gfx_settings->m_window_bounds, m_gfx_settings->m_window_title,
-                                             sf::Style::Titlebar | sf::Style::Close, m_gfx_settings->m_context_settings);
-        m_main_window->setPosition(sf::Vector2i(0, 0));
+        m_main_window = new sf::RenderWindow(m_gfx_settings->window_bounds(), m_gfx_settings->window_title(),
+                                             sf::Style::Titlebar | sf::Style::Close, m_gfx_settings->context_settings());
+        m_main_window->setPosition(sf::Vector2i{ 0, 0 });
     }
-    m_main_window->setFramerateLimit(m_gfx_settings->m_framerate_limit);
-    m_main_window->setVerticalSyncEnabled(m_gfx_settings->m_vertical_sync_enabled);
+    m_main_window->setFramerateLimit(m_gfx_settings->framerate_limit());
+    m_main_window->setVerticalSyncEnabled(m_gfx_settings->vertical_sync_enabled());
 }
 
 void Game::init_supported_keys()
@@ -69,7 +69,7 @@ void Game::init_state_data()
 
 void Game::init_states()
 {
-    m_states.emplace(new MainMenuState(m_state_data));
+    m_states.emplace(new MainMenuState{ m_state_data });
 }
 
 void Game::update_dt() 

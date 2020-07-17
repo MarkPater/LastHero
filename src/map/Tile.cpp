@@ -2,8 +2,8 @@
 #include <cstdlib>
 
 Tile::Tile()
-    : m_x{ 0.f }
-    , m_y{ 0.f }
+    : m_x{ 0 }
+    , m_y{ 0 }
     , m_grid_size{ 0 }
     , m_shape{ sf::Vector2f{ m_grid_size, m_grid_size } }
 {

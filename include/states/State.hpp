@@ -1,8 +1,17 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 
-#include "Player.hpp"
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+
+#include <stack>
+#include <string>
+#include <map>
 #include <memory>
+#include <iostream>
+#include <cassert>
+#include <fstream>
 
 class GraphicsSettings;
 class StateData;
@@ -13,7 +22,7 @@ public:
     State(std::shared_ptr<StateData> state_data);
     virtual ~State();
 
-    const bool & get_quit() const;
+    bool get_quit() const;
     void pause_menu();
     void unpause_menu();
     virtual void end_state();

@@ -20,16 +20,13 @@ PauseMenu::PauseMenu(const sf::RenderWindow & window, sf::Font & font)
 
 PauseMenu::~PauseMenu()
 {
-    for (auto & button : m_buttons) {
-        delete button.second;
-    }
     m_buttons.clear();
 }
 
-void PauseMenu::add_button(const std::string & action, sf::Text & text, const float & x, const float & y)
+void PauseMenu::add_button(const std::string & action, sf::Text & text, float x, float y)
 {
     std::string s_text = text.getString().toAnsiString();
-    m_buttons[action] = new gui::Button(x, y, text.getGlobalBounds().width + 10, text.getGlobalBounds().height + 5, m_font, s_text);
+    m_buttons[action] = std::unique_ptr<gui::Button>{ new gui::Button{ x, y, text.getGlobalBounds().width + 10, text.getGlobalBounds().height + 5, m_font, s_text } };
 
     m_buttons[action]->set_check_only_text(true);
     m_buttons[action]->set_button_colors();

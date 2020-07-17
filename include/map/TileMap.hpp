@@ -9,9 +9,10 @@ class TileMap
 public:
     TileMap(float grid_size,
             sf::Vector2u max_size,
-            std::string current_path);
+            const std::string & current_path);
     ~TileMap();
-
+    
+    void init_tile_map_texture_sheet(const std::string & current_path);
     void add_tile(short x, short y, short z, const sf::IntRect & tile_rect);
     void remove_tile(short x, short y, short z);
     const sf::Texture * tile_map_texture_sheet() const;

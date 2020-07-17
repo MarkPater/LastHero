@@ -1,5 +1,7 @@
 #include "states/GameState.hpp"
 #include "map/TileMap.hpp"
+#include "GUI/PauseMenu.hpp"
+#include "Player.hpp"
 
 GameState::GameState(std::shared_ptr<StateData> state_data)
     : State{ state_data }
@@ -20,15 +22,15 @@ GameState::~GameState()
 
 void GameState::init_keybinds()
 {
-    std::ifstream ifs(m_current_path + "/config/gameStateKeybinds.ini");
-    std::string action = "", key = "";
+    std::ifstream ifs{ m_current_path + "/config/gameStateKeybinds.ini" };
+    std::string action{}, key{};
 
     if (ifs.is_open()) {
         while (ifs >> action >> key) {
             m_keybinds[action] = m_supported_keys->at(key);
         }
+        ifs.close();
     }
-    ifs.close();
 }
 
 void GameState::init_textures()
@@ -49,7 +51,7 @@ void GameState::init_font()
 
 void GameState::init_pause_menu()
 {
-    m_pause_menu = std::unique_ptr<PauseMenu>{ new PauseMenu(*m_window, m_font) };
+    m_pause_menu = std::unique_ptr<PauseMenu>{ new PauseMenu{ *m_window, m_font } };
 
     sf::Text quit_text;
     quit_text.setString("Quit");
@@ -60,7 +62,7 @@ void GameState::init_pause_menu()
 
 void GameState::init_players()
 {
-    m_player = std::unique_ptr<Player>{ new Player(0, 0, m_textures["PLAYER_SHEET"]) };
+    m_player = std::unique_ptr<Player>{ new Player{ 0, 0, m_textures["PLAYER_SHEET"] } };
 }
 
 void GameState::update_input()

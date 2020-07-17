@@ -4,7 +4,7 @@
 
 TileMap::TileMap(float grid_size,
                  sf::Vector2u max_size,
-                 std::string current_path)
+                 const std::string & current_path)
     : m_grid_size{ grid_size }
     , m_layers{ 1 }
     , m_max_size{ max_size }
@@ -17,10 +17,7 @@ TileMap::TileMap(float grid_size,
             }
         }
     }*/
-    if (!m_tile_map_texture_sheet.loadFromFile(current_path + "/resources/images/sprites/tiles/tileset.png")) {
-        assert(false && "TileMap::TileMap::!loadFromFile");
-        exit(EXIT_FAILURE);
-    }
+    init_tile_map_texture_sheet(current_path);
 }
 
 TileMap::~TileMap()
@@ -31,6 +28,14 @@ TileMap::~TileMap()
                 delete tile;
             }
         }
+    }
+}
+
+void TileMap::init_tile_map_texture_sheet(const std::string & current_path)
+{
+    if (!m_tile_map_texture_sheet.loadFromFile(current_path + "/resources/images/sprites/tiles/tileset.png")) {
+        assert(false && "TileMap::TileMap::!loadFromFile");
+        exit(EXIT_FAILURE);
     }
 }
 
@@ -69,8 +74,7 @@ void TileMap::update(sf::Vector2f mouse_pos)
             for (const auto tile : y) {
                 if (tile) {
                     if (tile->get_tile().getGlobalBounds().contains(mouse_pos)) {
-                        tile->get_tile().setFillColor(sf::Color(tile->get_tile().getFillColor().r, tile->get_tile().getFillColor().g, tile->get_tile().getFillColor().b, 200));
-                        break;
+                        // Do something
                     }
                 }
             }

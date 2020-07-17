@@ -19,9 +19,6 @@ MainMenuState::MainMenuState(std::shared_ptr<StateData> state_data)
 
 MainMenuState::~MainMenuState()
 {
-    for (auto & button : m_buttons) {
-        delete button.second;
-    }
     std::cout << "MainMenuState::~MainMenuState():\t" << "The end of MainMenuState" << "\n";
 }
 
@@ -34,31 +31,31 @@ void MainMenuState::init_fonts()
 }
 
 void MainMenuState::init_gui()
-{    
-    m_buttons["GAME_STATE"] = new gui::Button(1400, 280, 150, 50, m_font, "New Game");
-    m_buttons["SETTINGS_STATE"] = new gui::Button(1400, 430, 150, 50, m_font, "Settings");
-    m_buttons["EDITOR_STATE"] = new gui::Button(1400, 580, 150, 50, m_font, "Editor");
-    m_buttons["EXIT"] = new gui::Button(1400, 730, 150, 50, m_font, "Exit");
+{   
+    m_buttons["GAME_STATE"] = std::unique_ptr<gui::Button>{ new gui::Button{ 1400, 280, 150, 50, m_font, "New Game" } };
+    m_buttons["SETTINGS_STATE"] = std::unique_ptr<gui::Button>{ new gui::Button{ 1400, 430, 150, 50, m_font, "Settings" } };
+    m_buttons["EDITOR_STATE"] = std::unique_ptr<gui::Button>{ new gui::Button{ 1400, 580, 150, 50, m_font, "Editor" } };
+    m_buttons["EXIT"] = std::unique_ptr<gui::Button>{ new gui::Button{ 1400, 730, 150, 50, m_font, "Exit" } };
 
     for (auto & button : m_buttons) {
         button.second->set_check_only_text(true);
         button.second->set_button_colors();
-        button.second->set_outline_text_colors(sf::Color(15, 125, 120, 30), sf::Color(50, 10, 85, 225), sf::Color(135, 30, 30, 255));
-        button.second->set_text_colors(sf::Color(250, 40, 40, 250), sf::Color(20, 100, 185, 225), sf::Color(135, 130, 130, 255));
+        button.second->set_outline_text_colors(sf::Color{ 15, 125, 120, 30 }, sf::Color{ 50, 10, 85, 225 }, sf::Color{ 135, 30, 30, 255 });
+        button.second->set_text_colors(sf::Color{ 250, 40, 40, 250 }, sf::Color{ 20, 100, 185, 225 }, sf::Color{ 135, 130, 130, 255 });
     }
 }
 
 void MainMenuState::init_keybinds()
 {
-    std::ifstream ifs(m_current_path + "/config/mainMenuStateKeybinds.ini");
-    std::string action = "", key = "";
+    std::ifstream ifs{ m_current_path + "/config/mainMenuStateKeybinds.ini" };
+    std::string action{}, key{};
 
     if (ifs.is_open()) {
         while (ifs >> action >> key) {
             m_keybinds[action] = m_supported_keys->at(key);
         }
+        ifs.close();
     }
-    ifs.close();
 }
 
 void MainMenuState::init_background()
@@ -90,13 +87,13 @@ void MainMenuState::update_buttons(sf::Vector2f mousePos)
     }
 
     if (m_buttons["GAME_STATE"]->is_pressed()) {
-        m_states->push(new GameState(m_state_data));
+        m_states->push(new GameState{ m_state_data });
     }
     else if (m_buttons["EDITOR_STATE"]->is_pressed()) {
-        m_states->push(new EditorState(m_state_data));
+        m_states->push(new EditorState{ m_state_data });
     }
     else if (m_buttons["SETTINGS_STATE"]->is_pressed()) {
-        m_states->push(new SettingsState(m_state_data));
+        m_states->push(new SettingsState{ m_state_data });
     }
     else if (m_buttons["EXIT"]->is_pressed()) {
         end_state();
