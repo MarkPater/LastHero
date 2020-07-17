@@ -127,6 +127,31 @@ namespace gui
         const unsigned m_height;
         unsigned short m_last_id;
     };
+
+    /// Texture selector
+    class TextureSelector
+    {
+    public:
+        TextureSelector(int x, int y, 
+                        int width, int height,
+                        int grid_size,
+                        const sf::Texture * texture_sheet);
+
+        bool is_active() const;
+        sf::IntRect selected_tile_rect() const;
+        void update(sf::Vector2i mouse_pos_window);
+        void render(sf::RenderTarget & render_target);
+
+    private:
+        sf::Vector2f mouse_pos_grid(sf::Vector2i mouse_pos_window) const;
+
+        sf::Sprite m_texture_sheet;
+        sf::RectangleShape m_bounds;
+        sf::RectangleShape m_selector_rect;
+
+        int m_grid_size;
+        bool m_is_active;
+    };
 }
 
 #endif /* GUI_HPP */

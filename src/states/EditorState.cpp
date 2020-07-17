@@ -38,6 +38,9 @@ void EditorState::init_gui()
                                                         m_state_data->max_tile_map_size(),
                                                         m_state_data->current_path() } };
 
+    m_texture_selector = std::unique_ptr<gui::TextureSelector>{ 
+        new gui::TextureSelector{ 10, 10, 400, 400, m_state_data->grid_size(), m_tile_map->tile_map_texture_sheet() } };
+
     m_selector_rect.setSize(sf::Vector2f{ m_state_data->grid_size(), m_state_data->grid_size() });
     m_selector_rect.setFillColor(sf::Color{ 200, 200, 200, 140 });
     m_selector_rect.setOutlineColor(sf::Color::Green);
@@ -114,38 +117,24 @@ void EditorState::update_mouse_pos_text()
 void EditorState::update_editor_input()
 {
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && tile_delay_occurred()) {
-        m_tile_map->add_tile(m_mouse_pos_grid.x / m_state_data->grid_size(),
-                             m_mouse_pos_grid.y / m_state_data->grid_size(),
-                             0, m_tile_rect);
+        if (m_texture_selector->is_active()) {
+            m_tile_rect = m_texture_selector->selected_tile_rect();
+            m_selector_rect.setTextureRect(m_tile_rect);
+        }
+        else {
+            m_tile_map->add_tile(m_mouse_pos_grid.x / m_state_data->grid_size(),
+                                m_mouse_pos_grid.y / m_state_data->grid_size(),
+                                0, m_tile_rect);
+        }
     }
     else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right) && tile_delay_occurred()) {
-        m_tile_map->remove_tile(m_mouse_pos_grid.x / m_state_data->grid_size(),
-                                m_mouse_pos_grid.y / m_state_data->grid_size(),
-                                0);
-    }
-    
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && tile_delay_occurred()) {
-        if (m_tile_rect.left >= 100) {
-            m_tile_rect.left -= 100;
-            m_selector_rect.setTextureRect(m_tile_rect);
+        if (m_texture_selector->is_active()) {
+
         }
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && tile_delay_occurred()) {
-        if (m_tile_rect.left < 100) {
-            m_tile_rect.left += 100;
-            m_selector_rect.setTextureRect(m_tile_rect);
-        }
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && tile_delay_occurred()) {
-        if (m_tile_rect.top >= 100) {
-            m_tile_rect.top -= 100;
-            m_selector_rect.setTextureRect(m_tile_rect);
-        }
-    }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) && tile_delay_occurred()) {
-        if (m_tile_rect.top < 100) {
-            m_tile_rect.top += 100;
-            m_selector_rect.setTextureRect(m_tile_rect);
+        else {
+            m_tile_map->remove_tile(m_mouse_pos_grid.x / m_state_data->grid_size(),
+                                    m_mouse_pos_grid.y / m_state_data->grid_size(),
+                                    0);
         }
     }
 }
@@ -170,10 +159,11 @@ void EditorState::update_buttons(sf::Vector2f mousePos)
 
 void EditorState::update_gui()
 {
+    update_buttons(m_mouse_pos_view);
+
+    m_texture_selector->update(m_mouse_pos_window);
     m_tile_map->update(m_mouse_pos_view);
     m_selector_rect.setPosition(sf::Vector2f{ m_mouse_pos_grid }); // move using grid type movement
-
-    update_buttons(m_mouse_pos_view);
 }
 
 void EditorState::update_tile_delay_time(float dt) {
@@ -208,11 +198,16 @@ void EditorState::render_buttons(sf::RenderTarget & target)
 }
 
 void EditorState::render_gui(sf::RenderTarget & target)
-{
+{   
     m_tile_map->render(target);
-    render_buttons(target);
-    target.draw(m_selector_rect);
+    m_texture_selector->render(target);
+    
+    if (!m_texture_selector->is_active()) {
+        target.draw(m_selector_rect);
+    }
     target.draw(m_rect_pos_text);
+
+    render_buttons(target);
 }
 
 void EditorState::render(sf::RenderTarget * target)

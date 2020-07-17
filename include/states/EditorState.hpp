@@ -36,6 +36,7 @@ public:
 protected:
     std::unique_ptr<TileMap> m_tile_map;
     std::unique_ptr<PauseMenu> m_pause_menu;
+    std::unique_ptr<gui::TextureSelector> m_texture_selector;
     std::map<std::string, std::unique_ptr<gui::Button>> m_buttons;
 
     sf::Font m_font;

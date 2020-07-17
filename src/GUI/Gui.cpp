@@ -338,3 +338,63 @@ void gui::ComboBox::render(sf::RenderTarget & target)
         }
     }
 }
+
+////////////////////////////   gui::TextureSelector   ////////////////////////////
+gui::TextureSelector::TextureSelector(int x, int y, int width, int height, int grid_size, const sf::Texture * texture_sheet)
+    : m_bounds{ sf::Vector2f{ width, height } }
+    , m_selector_rect{ sf::Vector2f{ grid_size, grid_size } }
+    , m_grid_size{ grid_size }
+    , m_is_active{ false }
+{
+    m_bounds.setPosition(x, y);
+    m_bounds.setFillColor(sf::Color{ 50, 50, 50, 100 });
+    m_bounds.setOutlineColor(sf::Color{ 255, 255, 255, 200 });
+    m_bounds.setOutlineThickness(1);
+
+    m_texture_sheet.setPosition(x, y);
+    m_texture_sheet.setTexture(*texture_sheet);
+
+    m_selector_rect.setPosition(x, y);
+    m_selector_rect.setFillColor(sf::Color::Transparent);
+    m_selector_rect.setOutlineColor(sf::Color::Red);
+    m_selector_rect.setOutlineThickness(1);
+}
+
+sf::Vector2f gui::TextureSelector::mouse_pos_grid(sf::Vector2i mouse_pos_window) const
+{
+    int row    = (mouse_pos_window.x - m_bounds.getPosition().x) / m_grid_size;
+    int column = (mouse_pos_window.y - m_bounds.getPosition().y) / m_grid_size;
+
+    return sf::Vector2f{ m_bounds.getPosition().x + row * m_grid_size
+                       , m_bounds.getPosition().y + column * m_grid_size };
+}
+
+bool gui::TextureSelector::is_active() const
+{
+    return m_is_active;
+}
+
+sf::IntRect gui::TextureSelector::selected_tile_rect() const
+{
+    return sf::IntRect{ m_selector_rect.getPosition().x - m_bounds.getPosition().x
+                      , m_selector_rect.getPosition().y - m_bounds.getPosition().y
+                      , m_grid_size, m_grid_size };
+}
+
+void gui::TextureSelector::update(sf::Vector2i mouse_pos_window)
+{
+    m_is_active = m_bounds.getGlobalBounds().contains(mouse_pos_window.x, mouse_pos_window.y);
+
+    if (m_is_active) {
+        m_selector_rect.setPosition(mouse_pos_grid(mouse_pos_window));
+    }
+}
+
+void gui::TextureSelector::render(sf::RenderTarget & render_target)
+{
+    if (m_is_active) {
+        render_target.draw(m_bounds);
+        render_target.draw(m_texture_sheet);
+        render_target.draw(m_selector_rect);
+    }
+}
