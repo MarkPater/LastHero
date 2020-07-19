@@ -3,10 +3,10 @@
 
 #include "states/State.hpp"
 #include "GUI/Gui.hpp"
-#include "map/TileMap.hpp"
 
 class PauseMenu;
 class StateData;
+class TileMap;
 
 class EditorState : public State {
 public:
@@ -21,7 +21,7 @@ public:
     void update_editor_input();
     void update_pause_menu_input();
     void update_buttons(sf::Vector2f mouse_pos);
-    void update_gui();
+    void update_gui(float dt);
     void update_tile_delay_time(float dt);
     void render_buttons(sf::RenderTarget & target);
     void render_gui(sf::RenderTarget & target);
@@ -37,11 +37,12 @@ protected:
     std::unique_ptr<TileMap> m_tile_map;
     std::unique_ptr<PauseMenu> m_pause_menu;
     std::unique_ptr<gui::TextureSelector> m_texture_selector;
+    std::unique_ptr<gui::Sidebar> m_sidebar;
     std::map<std::string, std::unique_ptr<gui::Button>> m_buttons;
 
     sf::Font m_font;
     sf::Text m_rect_pos_text;
-    sf::RectangleShape m_selector_rect;
+    sf::RectangleShape m_selected_rect;
     sf::IntRect m_tile_rect;
 
     float m_tile_delay_time;

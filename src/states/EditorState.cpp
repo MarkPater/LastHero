@@ -1,6 +1,8 @@
 #include "states/EditorState.hpp"
 #include "states/StateData.hpp"
 #include "GUI/PauseMenu.hpp"
+#include "map/TileMap.hpp"
+#include "GraphicsSettings.hpp"
 
 #include <sstream>
 
@@ -36,24 +38,30 @@ void EditorState::init_gui()
 {
     m_tile_map = std::unique_ptr<TileMap>{ new TileMap{ m_state_data->grid_size(),
                                                         m_state_data->max_tile_map_size(),
-                                                        m_state_data->current_path() } };
+                                                        m_state_data->current_path() }
+    };
 
     m_texture_selector = std::unique_ptr<gui::TextureSelector>{ 
-        new gui::TextureSelector{ 10, 10, 400, 400, m_state_data->grid_size(), m_tile_map->tile_map_texture_sheet() } };
+        new gui::TextureSelector{ 10, 10, 400, 400, m_state_data->grid_size(), m_tile_map->tile_map_texture_sheet(), m_font }
+    };
 
-    m_selector_rect.setSize(sf::Vector2f{ m_state_data->grid_size(), m_state_data->grid_size() });
-    m_selector_rect.setFillColor(sf::Color{ 200, 200, 200, 140 });
-    m_selector_rect.setOutlineColor(sf::Color::Green);
-    m_selector_rect.setOutlineThickness(1);
-    m_selector_rect.setTexture(m_tile_map->tile_map_texture_sheet());
-    m_selector_rect.setTextureRect(m_tile_rect);
+    m_sidebar = std::unique_ptr<gui::Sidebar>{ new gui::Sidebar{ m_gfx_settings->window_bounds(), gui::WindowSide::Left, 85 } };
+
+    m_selected_rect.setSize(sf::Vector2f{ m_state_data->grid_size(), m_state_data->grid_size() });
+    m_selected_rect.setFillColor(sf::Color{ 200, 200, 200, 140 });
+    m_selected_rect.setOutlineColor(sf::Color::Green);
+    m_selected_rect.setOutlineThickness(1);
+    m_selected_rect.setTexture(m_tile_map->tile_map_texture_sheet());
+    m_selected_rect.setTextureRect(m_tile_rect);
 
     init_buttons();
 }
 
 void EditorState::init_buttons()
 {
-    m_buttons["EXIT"] = std::unique_ptr<gui::Button>{ new gui::Button{ m_window->getSize().x / 1.1, m_window->getSize().y / 1.1, 150, 50, m_font, "Exit" } };
+    m_buttons["EXIT"] = std::unique_ptr<gui::Button>{ 
+        new gui::Button{ m_window->getSize().x / 1.1, m_window->getSize().y / 1.1, 150, 50, m_font, "Exit" }
+    };
     m_buttons["EXIT"]->set_check_only_text(true);
     m_buttons["EXIT"]->set_button_colors();
 }
@@ -119,12 +127,12 @@ void EditorState::update_editor_input()
     if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && tile_delay_occurred()) {
         if (m_texture_selector->is_active()) {
             m_tile_rect = m_texture_selector->selected_tile_rect();
-            m_selector_rect.setTextureRect(m_tile_rect);
+            m_selected_rect.setTextureRect(m_tile_rect);
         }
-        else {
+        else if (!m_sidebar->is_active()) {
             m_tile_map->add_tile(m_mouse_pos_grid.x / m_state_data->grid_size(),
-                                m_mouse_pos_grid.y / m_state_data->grid_size(),
-                                0, m_tile_rect);
+                                 m_mouse_pos_grid.y / m_state_data->grid_size(),
+                                 0, m_tile_rect);
         }
     }
     else if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right) && tile_delay_occurred()) {
@@ -157,13 +165,14 @@ void EditorState::update_buttons(sf::Vector2f mousePos)
     }
 }
 
-void EditorState::update_gui()
+void EditorState::update_gui(float dt)
 {
     update_buttons(m_mouse_pos_view);
 
-    m_texture_selector->update(m_mouse_pos_window);
     m_tile_map->update(m_mouse_pos_view);
-    m_selector_rect.setPosition(sf::Vector2f{ m_mouse_pos_grid }); // move using grid type movement
+    m_texture_selector->update(dt, m_mouse_pos_window);
+    m_sidebar->update(sf::Vector2f{ m_mouse_pos_window.x, m_mouse_pos_window.y });
+    m_selected_rect.setPosition(sf::Vector2f{ m_mouse_pos_grid }); // move using grid type movement
 }
 
 void EditorState::update_tile_delay_time(float dt) {
@@ -184,7 +193,7 @@ void EditorState::update(float dt)
     }
     else {
         update_tile_delay_time(dt);
-        update_gui();
+        update_gui(dt);
         update_editor_input();
         update_mouse_pos_text();
     }
@@ -201,9 +210,10 @@ void EditorState::render_gui(sf::RenderTarget & target)
 {   
     m_tile_map->render(target);
     m_texture_selector->render(target);
-    
-    if (!m_texture_selector->is_active()) {
-        target.draw(m_selector_rect);
+    m_sidebar->render(target);
+
+    if (!m_texture_selector->is_active() && !m_sidebar->is_active()) {
+        target.draw(m_selected_rect);
     }
     target.draw(m_rect_pos_text);
 

@@ -1,5 +1,8 @@
 #include "GUI/Gui.hpp"
+#include "GraphicsSettings.hpp"
+
 #include <cassert>
+#include <iostream>
 
 ////////////////////////////   gui::Button   ////////////////////////////
 gui::Button::Button(unsigned x,
@@ -287,7 +290,7 @@ void gui::ComboBox::hide_elements()
 void gui::ComboBox::update_delay_time(float dt)
 {
     if (m_delay_time <= m_max_delay_time) {
-        m_delay_time += 50.f * dt;
+        m_delay_time += 50 * dt;
     }
 }
 
@@ -340,33 +343,37 @@ void gui::ComboBox::render(sf::RenderTarget & target)
 }
 
 ////////////////////////////   gui::TextureSelector   ////////////////////////////
-gui::TextureSelector::TextureSelector(int x, int y, int width, int height, int grid_size, const sf::Texture * texture_sheet)
+gui::TextureSelector::TextureSelector(int x, int y, int width, int height, int grid_size, const sf::Texture * texture_sheet, sf::Font & font)
     : m_bounds{ sf::Vector2f{ width, height } }
     , m_selector_rect{ sf::Vector2f{ grid_size, grid_size } }
+    , m_ts_button{ std::unique_ptr<gui::Button>{ new gui::Button{ x, y, 65, 65, font, "TS", 35 } } }
     , m_grid_size{ grid_size }
+    , m_is_visible{ false }
     , m_is_active{ false }
+    , m_delay_time{ -10 }
+    , m_max_delay_time{ 10 }
+    , m_x_offset{ 85 }
 {
-    m_bounds.setPosition(x, y);
+    m_bounds.setPosition(x + m_x_offset, y);
     m_bounds.setFillColor(sf::Color{ 50, 50, 50, 100 });
     m_bounds.setOutlineColor(sf::Color{ 255, 255, 255, 200 });
     m_bounds.setOutlineThickness(1);
 
-    m_texture_sheet.setPosition(x, y);
+    m_texture_sheet.setPosition(x + m_x_offset, y);
     m_texture_sheet.setTexture(*texture_sheet);
 
-    m_selector_rect.setPosition(x, y);
+    m_selector_rect.setPosition(x + m_x_offset, y);
     m_selector_rect.setFillColor(sf::Color::Transparent);
     m_selector_rect.setOutlineColor(sf::Color::Red);
     m_selector_rect.setOutlineThickness(1);
+
+    m_ts_button->set_outline_button_colors(sf::Color{ 255, 255, 255, 135 }, sf::Color{ 255, 255, 255, 150 }, sf::Color{ 255, 255, 255, 255 });
+    m_ts_button->set_button_colors(sf::Color{ 50, 50, 50, 175 }, sf::Color{ 80, 80, 80, 195 }, sf::Color{ 110, 110, 110, 215 });
 }
 
-sf::Vector2f gui::TextureSelector::mouse_pos_grid(sf::Vector2i mouse_pos_window) const
+bool gui::TextureSelector::is_visible() const
 {
-    int row    = (mouse_pos_window.x - m_bounds.getPosition().x) / m_grid_size;
-    int column = (mouse_pos_window.y - m_bounds.getPosition().y) / m_grid_size;
-
-    return sf::Vector2f{ m_bounds.getPosition().x + row * m_grid_size
-                       , m_bounds.getPosition().y + column * m_grid_size };
+    return m_is_visible;
 }
 
 bool gui::TextureSelector::is_active() const
@@ -381,20 +388,114 @@ sf::IntRect gui::TextureSelector::selected_tile_rect() const
                       , m_grid_size, m_grid_size };
 }
 
-void gui::TextureSelector::update(sf::Vector2i mouse_pos_window)
+void gui::TextureSelector::update_delay_time(float dt)
 {
-    m_is_active = m_bounds.getGlobalBounds().contains(mouse_pos_window.x, mouse_pos_window.y);
+    if (m_delay_time <= m_max_delay_time) {
+        m_delay_time += 50 * dt;
+    }
+}
 
-    if (m_is_active) {
-        m_selector_rect.setPosition(mouse_pos_grid(mouse_pos_window));
+bool gui::TextureSelector::delay_occured()
+{
+    if (m_delay_time > m_max_delay_time) {
+        m_delay_time = 0;
+        return true;
+    }
+    return false;
+}
+
+sf::Vector2f gui::TextureSelector::mouse_pos_grid(sf::Vector2i mouse_pos_window) const
+{
+    int row    = (mouse_pos_window.x - m_bounds.getPosition().x) / m_grid_size;
+    int column = (mouse_pos_window.y - m_bounds.getPosition().y) / m_grid_size;
+
+    return sf::Vector2f{ m_bounds.getPosition().x + row * m_grid_size
+                       , m_bounds.getPosition().y + column * m_grid_size };
+
+}
+
+void gui::TextureSelector::update(float dt, sf::Vector2i mouse_pos_window)
+{
+    m_ts_button->update(static_cast<sf::Vector2f>(mouse_pos_window));
+    update_delay_time(dt);
+
+    if (m_ts_button->is_pressed() && delay_occured()) {
+        m_is_visible = !m_is_visible;
+    }
+
+    if (m_is_visible) {
+        m_is_active = m_bounds.getGlobalBounds().contains(mouse_pos_window.x, mouse_pos_window.y);
+
+        if (m_is_active) {
+            m_selector_rect.setPosition(mouse_pos_grid(mouse_pos_window));
+        }
     }
 }
 
 void gui::TextureSelector::render(sf::RenderTarget & render_target)
 {
-    if (m_is_active) {
+    m_ts_button->render(render_target);
+
+    if (m_is_visible) {
         render_target.draw(m_bounds);
         render_target.draw(m_texture_sheet);
         render_target.draw(m_selector_rect);
     }
+}
+
+////////////////////////////   gui::Sidebar   ////////////////////////////
+gui::Sidebar::Sidebar(sf::VideoMode window_bounds, gui::WindowSide window_side, int thickness)
+    : m_is_visible{ true }
+    , m_is_active{ false }
+{
+    switch (window_side) {
+        case gui::WindowSide::Left: {
+            m_body.setPosition(0, 0);
+            m_body.setSize(sf::Vector2f{ thickness, window_bounds.height });
+            break;
+        }
+        case gui::WindowSide::Right: {
+            m_body.setPosition(window_bounds.width - thickness, 0);
+            m_body.setSize(sf::Vector2f{ thickness, window_bounds.height });
+            break;
+        }
+        case gui::WindowSide::Up: {
+            m_body.setPosition(0, 0);
+            m_body.setSize(sf::Vector2f{ window_bounds.width, thickness });
+            break;
+        }
+        case gui::WindowSide::Down: {
+            m_body.setPosition(0, window_bounds.height - thickness);
+            m_body.setSize(sf::Vector2f{ window_bounds.width, thickness });
+            break;
+        }
+        default: {
+            assert(false && "Sidebar::Sidebar::undefined_side_state");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    m_body.setOutlineThickness(1);
+    m_body.setOutlineColor(sf::Color{ 200, 200, 200, 180 });
+    m_body.setFillColor(sf::Color{ 50, 50, 50, 100 });
+}
+
+bool gui::Sidebar::is_visible() const
+{
+    return m_is_visible;
+}
+
+bool gui::Sidebar::is_active() const
+{
+    return m_is_active;
+}
+
+void gui::Sidebar::update(sf::Vector2f mouse_pos)
+{
+    m_is_active = m_body.getGlobalBounds().contains(mouse_pos);
+}
+
+void gui::Sidebar::render(sf::RenderTarget & render_target)
+{
+    render_target.draw(m_body);
 }

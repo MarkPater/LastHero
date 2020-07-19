@@ -1,5 +1,7 @@
 #include "states/State.hpp"
 #include "states/StateData.hpp"
+#include "GraphicsSettings.hpp"
+
 #include <filesystem>
 
 State::State(std::shared_ptr<StateData> state_data)

@@ -7,9 +7,19 @@
 
 #include <vector>
 #include <string>
+#include <memory>
+
+class GraphicsSettings;
 
 namespace gui 
 {
+    enum class WindowSide {
+        Left = 0,
+        Right,
+        Up,
+        Down
+    };
+
     /// Simple button
     class Button
     {
@@ -135,21 +145,48 @@ namespace gui
         TextureSelector(int x, int y, 
                         int width, int height,
                         int grid_size,
-                        const sf::Texture * texture_sheet);
+                        const sf::Texture * texture_sheet,
+                        sf::Font & font);
 
+        bool is_visible() const;
         bool is_active() const;
         sf::IntRect selected_tile_rect() const;
-        void update(sf::Vector2i mouse_pos_window);
+        void update(float dt, sf::Vector2i mouse_pos_window);
         void render(sf::RenderTarget & render_target);
 
     private:
+        void update_delay_time(float dt);
+        bool delay_occured();
         sf::Vector2f mouse_pos_grid(sf::Vector2i mouse_pos_window) const;
 
         sf::Sprite m_texture_sheet;
         sf::RectangleShape m_bounds;
         sf::RectangleShape m_selector_rect;
 
+        std::unique_ptr<gui::Button> m_ts_button;
         int m_grid_size;
+        bool m_is_visible;
+        bool m_is_active;
+        float m_delay_time;
+        const float m_max_delay_time;
+        const int m_x_offset;
+    };
+
+    /// Sidebar
+    class Sidebar
+    {
+    public:
+        Sidebar(sf::VideoMode window_bounds, gui::WindowSide window_side, int thickness);
+
+        bool is_active() const;
+        bool is_visible() const;
+        void update(sf::Vector2f mouse_pos);
+        void render(sf::RenderTarget & render_target);
+
+    private:
+        sf::RectangleShape m_body;
+
+        bool m_is_visible;
         bool m_is_active;
     };
 }

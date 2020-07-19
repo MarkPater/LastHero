@@ -8,7 +8,7 @@
 #include <fstream>
 
 Game::Game() 
-    : m_gfx_settings{ std::shared_ptr<GraphicsSettings>(new GraphicsSettings{}) }
+    : m_gfx_settings{ std::shared_ptr<GraphicsSettings>{ new GraphicsSettings{} } }
     , m_current_path{ std::filesystem::current_path() }
 {
     std::cout << "The start of GameApp\n";
