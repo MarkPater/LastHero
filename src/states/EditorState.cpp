@@ -82,12 +82,22 @@ void EditorState::init_keybinds()
 void EditorState::init_pause_menu()
 {
     m_pause_menu = std::unique_ptr<PauseMenu>{ new PauseMenu{ *m_window, m_font } };
+    sf::Text button_text;
+    
+    button_text.setString("Save");
+    m_pause_menu->add_button("SAVE", button_text,
+        m_pause_menu->get_container().getPosition().x + m_pause_menu->get_container().getSize().x / 2 - button_text.getGlobalBounds().width / 2,
+        m_pause_menu->get_container().getPosition().y + m_pause_menu->get_container().getSize().y / 4.2 - button_text.getGlobalBounds().height);
+    
+    button_text.setString("Load");
+    m_pause_menu->add_button("LOAD", button_text,
+        m_pause_menu->get_container().getPosition().x + m_pause_menu->get_container().getSize().x / 2 - button_text.getGlobalBounds().width / 2,
+        m_pause_menu->get_container().getPosition().y + m_pause_menu->get_container().getSize().y / 2.7 - button_text.getGlobalBounds().height);
 
-    sf::Text quit_text;
-    quit_text.setString("Quit");
-    m_pause_menu->add_button("QUIT", quit_text,
-        m_pause_menu->get_container().getPosition().x + m_pause_menu->get_container().getSize().x / 2 - quit_text.getGlobalBounds().width / 2,
-        m_pause_menu->get_container().getPosition().y + m_pause_menu->get_container().getSize().y / 1.1 - quit_text.getGlobalBounds().height);
+    button_text.setString("Quit");
+    m_pause_menu->add_button("QUIT", button_text,
+        m_pause_menu->get_container().getPosition().x + m_pause_menu->get_container().getSize().x / 2 - button_text.getGlobalBounds().width / 2,
+        m_pause_menu->get_container().getPosition().y + m_pause_menu->get_container().getSize().y / 1.1 - button_text.getGlobalBounds().height);
 }
 
 void EditorState::init_mouse_pos_text()
@@ -151,6 +161,12 @@ void EditorState::update_pause_menu_input()
 {
     if (m_pause_menu->is_button_pressed("QUIT")) {
         end_state();
+    }
+    else if (m_pause_menu->is_button_pressed("SAVE")) {
+        m_tile_map->save_to_file(m_current_path + "/map_info");
+    }
+    else if (m_pause_menu->is_button_pressed("LOAD")) {
+        m_tile_map->load_from_file(m_current_path + "/map_info");
     }
 }
 

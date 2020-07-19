@@ -5,6 +5,8 @@
 #include "SFML/Window.hpp"
 #include "SFML/System.hpp"
 
+#include <string>
+
 class Tile
 {
 public:
@@ -12,10 +14,11 @@ public:
     Tile(float x, float y, short grid_size, sf::Texture & texture, const sf::IntRect & texture_rect);
     ~Tile();
 
+    const sf::RectangleShape & get_tile() const;
+    std::string get_info() const;
+
     void update();
     void render(sf::RenderTarget & target);
-
-    sf::RectangleShape & get_tile();
 
 private:
     float m_x;
